@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Layout from '@/components/layout';
-// import { useRouter } from 'next/router';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { faPrint } from '@fortawesome/free-solid-svg-icons'
-import ViewLessonPlanComponent from '@/components/view-lesson-plan.component';
+import TextContentPresentationComponent from '@/components/text-content-presentation.component';
 
 export default function Plan() {
   // State for form inputs
@@ -16,7 +13,9 @@ export default function Plan() {
   });
 
   const [lessonPlan, setLessonPlan] = useState('');
+  const [lessonMaterials, setLessonMaterials] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [lessonMaterialsLoading, setLessonMaterialsLoading] = useState(false)
 
 //   const router = useRouter()
 
@@ -65,6 +64,48 @@ export default function Plan() {
 
   };
 
+  //Handle request materials
+  const handleRequestMaterials = async () => {
+
+    console.log('I got called!')
+    
+    // e.preventDefault()
+    setLessonMaterialsLoading(true)
+
+    if (!lessonPlan) {
+        console.error("You don't have a lesson plan yet, can't generate a handout")
+        return
+    }
+
+    const requestData = {
+        level: formData.level,
+        lessonPlan: lessonPlan
+    }
+
+    try {
+        const response = await fetch('/api/generate-lesson-handout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData)
+        })
+
+        const data = await response.json()
+
+        if (response.ok) {
+            setLessonMaterials(data.lessonHandout)
+            setLessonMaterialsLoading(false)
+        }
+
+        console.log('HANDOUT: ', data.lessonHandout)
+    } catch (error) {
+        console.error('Failed to generate handouts: ', error)
+        setLessonMaterialsLoading(false)
+    }
+
+  }
+
 
   if (isLoading) {
     return <p>Loading...</p>    //TODO placeholder for loading state
@@ -76,59 +117,20 @@ export default function Plan() {
             <Layout title='Your Lesson' >
 
                 {/* Lesson Plan */}
-                <ViewLessonPlanComponent lessonPlan={lessonPlan} />
+                <TextContentPresentationComponent title='Lesson Plan' mdContent={lessonPlan} />
+
+                {/* Lesson Materials */}
+                {lessonMaterials ? (
+                    <TextContentPresentationComponent title='Handouts' mdContent={lessonMaterials} />
+                ) : lessonMaterialsLoading ? ('Loading...') : (
+                    <button onClick={handleRequestMaterials} >
+                        Generate Materials
+                    </button>
+                )}
 
             </Layout>
         )
-        return (
-          <Layout title="Lesson Plan">
-          <div className="flex">
-  {/* Left Column for Lesson Plan */}
-  <div className="flex-grow p-4">
-    <h2 className="text-xl font-semibold mb-4">Your Lesson Plan</h2>
-    <div 
-      className="border p-4 rounded-md shadow-sm bg-white leading-relaxed"
-      dangerouslySetInnerHTML={{ __html: lessonPlan }}      
-    />
-  </div>
 
-  {/* Right Column for Actions */}
-  <div className="flex-shrink-0 p-4">
-    <button 
-      onClick={() => openForPrint(lessonPlan)}
-      className="bg-gray-500 hover:bg-blue-500 text-white p-3 rounded-full shadow-lg focus:outline-none focus:ring focus:ring-blue-300 mb-4"
-    >
-      <FontAwesomeIcon icon={faPrint} />
-      <span className="ml-2">Print</span>
-    </button>
-    <button 
-      // Add onClick handler for generating materials
-      className="bg-gray-500 hover:bg-blue-500 text-white p-3 rounded-full shadow-lg focus:outline-none focus:ring focus:ring-blue-300"
-    >
-      {/* Add icon for materials */}
-      <span className="ml-2">Generate Materials</span>
-    </button>
-  </div>
-</div>
-
-            {/* <div className="relative max-w-xl mx-auto space-y-4">
-                <button onClick={() => openForPrint(lessonPlan)} className="bottom-5 right-5 z-10 bg-gray-500 hover:bg-blue-500 text-white p-3 rounded-full shadow-lg focus:outline-none focus:ring focus:ring-blue-300" >
-                    <FontAwesomeIcon icon={faPrint} />
-                    <span className="ml-2" >PRINT</span>
-                </button>
-              <h2 className="text-xl font-semibold">Your Lesson Plan</h2>
-              <div 
-                className="border p-4 rounded-md shadow-sm bg-white"
-                dangerouslySetInnerHTML={{ __html: lessonPlan }}      
-              />
-              <div className="text-center my-4">
-                <Link href="/plan" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Create Another Plan
-                </Link>
-              </div>
-            </div> */}
-          </Layout>
-        );
       }
 
   return (
