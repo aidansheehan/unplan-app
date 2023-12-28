@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Layout from '@/components/layout';
 import TextContentPresentationComponent from '@/components/text-content-presentation.component';
+import LoadingSpinner from '@/components/loading-spinner';
 
 export default function Plan() {
   // State for form inputs
@@ -107,12 +108,8 @@ export default function Plan() {
   }
 
 
-  if (isLoading) {
-    return <p>Loading...</p>    //TODO placeholder for loading state
-  }
-
     // Display lesson plan UI
-    if (lessonPlan) {
+    if (lessonPlan && !isLoading) {
         return (
             <Layout title='Your Lesson' >
 
@@ -122,10 +119,12 @@ export default function Plan() {
                 {/* Lesson Materials */}
                 {lessonMaterials ? (
                     <TextContentPresentationComponent title='Handouts' mdContent={lessonMaterials} />
-                ) : lessonMaterialsLoading ? ('Loading...') : (
-                    <button onClick={handleRequestMaterials} >
-                        Generate Materials
-                    </button>
+                ) : lessonMaterialsLoading ? (<LoadingSpinner />) : (
+                    <div className='flex flex-grow justify-center align-center relative max-h-[50%]'>
+                        <button onClick={handleRequestMaterials} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" >
+                            Generate Materials
+                        </button>
+                    </div>
                 )}
 
             </Layout>
@@ -136,72 +135,82 @@ export default function Plan() {
   return (
 
     <Layout title='Create Your Lesson Plan'>
-      <form onSubmit={handleSubmit} className="max-w-xl mx-auto space-y-4">
-        <div>
-          <label htmlFor="topic" className="block text-sm font-medium text-gray-700">Topic</label>
-          <input
-            type="text"
-            name="topic"
-            id="topic"
-            value={formData.topic}
-            onChange={handleChange}
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
-            placeholder="Enter lesson topic"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="level" className="block text-sm font-medium text-gray-700">Student Level</label>
-          <select
-            name="level"
-            id="level"
-            value={formData.level}
-            onChange={handleChange}
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
-            required
-          >
-            <option value="">Select a level</option>
-            <option value="beginner">Beginner</option>
-            <option value="intermediate">Intermediate</option>
-            <option value="advanced">Advanced</option>
-          </select>
-        </div>
-        <div>
-          <label htmlFor="duration" className="block text-sm font-medium text-gray-700">Duration</label>
-          <input
-            type="text"
-            name="duration"
-            id="duration"
-            value={formData.duration}
-            onChange={handleChange}
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
-            placeholder="Enter lesson duration"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="objectives" className="block text-sm font-medium text-gray-700">Objectives</label>
-          <textarea
-            name="objectives"
-            id="objectives"
-            value={formData.objectives}
-            onChange={handleChange}
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
-            placeholder="Enter lesson objectives"
-            required
-          />
-        </div>
-        <div className="text-center">
-          <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Submit Plan
-          </button>
-        </div>
-      </form>
-      <div className="text-center my-4">
-        <Link href="/" className="text-blue-600 hover:underline">
-            Go back to Home
-        </Link>
-      </div>
+        {
+            isLoading ? (
+                <LoadingSpinner />
+            ) : (
+                <>
+                    <form onSubmit={handleSubmit} className="max-w-xl mx-auto space-y-4">
+                        <div>
+                        <label htmlFor="topic" className="block text-sm font-medium text-gray-700">Topic</label>
+                        <input
+                            type="text"
+                            name="topic"
+                            id="topic"
+                            value={formData.topic}
+                            onChange={handleChange}
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+                            placeholder="Enter lesson topic"
+                            required
+                        />
+                        </div>
+                        <div>
+                        <label htmlFor="level" className="block text-sm font-medium text-gray-700">Student Level</label>
+                        <select
+                            name="level"
+                            id="level"
+                            value={formData.level}
+                            onChange={handleChange}
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+                            required
+                        >
+                            <option value="">Select a level</option>
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                        </select>
+                        </div>
+                        <div>
+                        <label htmlFor="duration" className="block text-sm font-medium text-gray-700">Duration</label>
+                        <input
+                            type="text"
+                            name="duration"
+                            id="duration"
+                            value={formData.duration}
+                            onChange={handleChange}
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+                            placeholder="Enter lesson duration"
+                            required
+                        />
+                        </div>
+                        <div>
+                        <label htmlFor="objectives" className="block text-sm font-medium text-gray-700">Objectives</label>
+                        <textarea
+                            name="objectives"
+                            id="objectives"
+                            value={formData.objectives}
+                            onChange={handleChange}
+                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+                            placeholder="Enter lesson objectives"
+                            required
+                        />
+                        </div>
+                        <div className="text-center">
+                        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Submit Plan
+                        </button>
+                        </div>
+                    </form>
+                    <div className="text-center my-4">
+                        <Link href="/" className="text-blue-600 hover:underline">
+                            Go back to Home
+                        </Link>
+                    </div>
+                </>
+
+            )
+        }
+
     </Layout>
 
   );

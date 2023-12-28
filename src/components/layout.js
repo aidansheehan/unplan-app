@@ -10,7 +10,7 @@ const Layout = ({ children, title }) => {
         <p>Effortless Lesson Planning for ESL Teachers</p>
       </header>
       
-      <main className="flex-grow p-4">
+      <main className="flex-grow p-4 relative">
         {children}
       </main>
       
