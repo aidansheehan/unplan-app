@@ -1,9 +1,3 @@
-[ ] Ensure lesson plan displayed nicely and PRINTS well
-[ ] Generate mats
-[ ] Init firebase project with firebase storage
-    [ ] Save lesson plans to server on generation Q: how will you handle duplicates?
-    [ ] 
-
 ### TODO MVP
 [x] Ensure lesson plan displayed nicely and PRINTS well
 [x] Generate mats
@@ -15,7 +9,7 @@
         [ ] Group by beginner, intermediate, advanced
         [ ] Implement a search box
 
-...
+### Extra
 [ ] Implement star rating for lesson plans, save ratings to server too
 [ ] Implement a dialog to request a second lesson plan - user can write their probs with lesson plan 1, generate a second, then choose which of the two plans to proceed with (for mats generation)
 [ ] You could implement a lesson library that YOU audit
