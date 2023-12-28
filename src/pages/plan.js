@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Layout from '@/components/layout';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import { marked } from 'marked';
 
 export default function Plan() {
@@ -16,7 +16,7 @@ export default function Plan() {
   const [lessonPlan, setLessonPlan] = useState('');
   const [isLoading, setIsLoading] = useState(false)
 
-  const router = useRouter()
+//   const router = useRouter()
 
   // Handle form input changes
   const handleChange = (e) => {
@@ -63,6 +63,46 @@ export default function Plan() {
 
   };
 
+  const openForPrint = (htmlContent) => {
+
+    //Create standalone HTML content
+    const standaloneHtmlContent = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Lesson Plan</title>
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+      <style>
+        body {
+          font-family: 'Roboto', sans-serif;
+          margin: 20px;
+          line-height: 1.6;
+          margin: 30px;
+        }
+          body {
+            margin: 30px;
+          }
+      </style>
+    </head>
+    <body>
+      ${htmlContent}
+    </body>
+    </html>
+    `;
+
+    const blob = new Blob([standaloneHtmlContent], { type: 'text/html'})
+    const url = URL.createObjectURL(blob)
+
+    const printWindow = window.open(url)
+
+    printWindow.onload = () => {
+        setTimeout(() => {
+            printWindow.print() //Trigger the print dialog
+            URL.revokeObjectURL(url)
+        }, 1000)
+    }
+  }
+
   if (isLoading) {
     return <p>Loading...</p>    //TODO placeholder for loading state
   }
@@ -78,6 +118,9 @@ export default function Plan() {
                 dangerouslySetInnerHTML={{ __html: lessonPlan }}      
               />
               <div className="text-center my-4">
+              <button onClick={() => openForPrint(lessonPlan)} >
+                Download the Lesson Plan
+              </button>
                 <Link href="/plan" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Create Another Plan
                 </Link>
