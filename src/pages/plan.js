@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Layout from '@/components/layout';
 // import { useRouter } from 'next/router';
-import { marked } from 'marked';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { faPrint } from '@fortawesome/free-solid-svg-icons'
+import ViewLessonPlanComponent from '@/components/view-lesson-plan.component';
 
 export default function Plan() {
   // State for form inputs
@@ -46,7 +48,7 @@ export default function Plan() {
           console.log('DATA: ', data)
     
           if (response.ok) {
-            setLessonPlan(marked(data.lessonPlan))
+            setLessonPlan(data.lessonPlan)
             setIsLoading(false)
             // Navigate to the new page and pass the lesson plan data
             // router.push({
@@ -63,45 +65,6 @@ export default function Plan() {
 
   };
 
-  const openForPrint = (htmlContent) => {
-
-    //Create standalone HTML content
-    const standaloneHtmlContent = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>Lesson Plan</title>
-      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-      <style>
-        body {
-          font-family: 'Roboto', sans-serif;
-          margin: 20px;
-          line-height: 1.6;
-          margin: 30px;
-        }
-          body {
-            margin: 30px;
-          }
-      </style>
-    </head>
-    <body>
-      ${htmlContent}
-    </body>
-    </html>
-    `;
-
-    const blob = new Blob([standaloneHtmlContent], { type: 'text/html'})
-    const url = URL.createObjectURL(blob)
-
-    const printWindow = window.open(url)
-
-    printWindow.onload = () => {
-        setTimeout(() => {
-            printWindow.print() //Trigger the print dialog
-            URL.revokeObjectURL(url)
-        }, 1000)
-    }
-  }
 
   if (isLoading) {
     return <p>Loading...</p>    //TODO placeholder for loading state
@@ -110,22 +73,60 @@ export default function Plan() {
     // Display lesson plan UI
     if (lessonPlan) {
         return (
+            <Layout title='Your Lesson' >
+
+                {/* Lesson Plan */}
+                <ViewLessonPlanComponent lessonPlan={lessonPlan} />
+
+            </Layout>
+        )
+        return (
           <Layout title="Lesson Plan">
-            <div className="max-w-xl mx-auto space-y-4">
+          <div className="flex">
+  {/* Left Column for Lesson Plan */}
+  <div className="flex-grow p-4">
+    <h2 className="text-xl font-semibold mb-4">Your Lesson Plan</h2>
+    <div 
+      className="border p-4 rounded-md shadow-sm bg-white leading-relaxed"
+      dangerouslySetInnerHTML={{ __html: lessonPlan }}      
+    />
+  </div>
+
+  {/* Right Column for Actions */}
+  <div className="flex-shrink-0 p-4">
+    <button 
+      onClick={() => openForPrint(lessonPlan)}
+      className="bg-gray-500 hover:bg-blue-500 text-white p-3 rounded-full shadow-lg focus:outline-none focus:ring focus:ring-blue-300 mb-4"
+    >
+      <FontAwesomeIcon icon={faPrint} />
+      <span className="ml-2">Print</span>
+    </button>
+    <button 
+      // Add onClick handler for generating materials
+      className="bg-gray-500 hover:bg-blue-500 text-white p-3 rounded-full shadow-lg focus:outline-none focus:ring focus:ring-blue-300"
+    >
+      {/* Add icon for materials */}
+      <span className="ml-2">Generate Materials</span>
+    </button>
+  </div>
+</div>
+
+            {/* <div className="relative max-w-xl mx-auto space-y-4">
+                <button onClick={() => openForPrint(lessonPlan)} className="bottom-5 right-5 z-10 bg-gray-500 hover:bg-blue-500 text-white p-3 rounded-full shadow-lg focus:outline-none focus:ring focus:ring-blue-300" >
+                    <FontAwesomeIcon icon={faPrint} />
+                    <span className="ml-2" >PRINT</span>
+                </button>
               <h2 className="text-xl font-semibold">Your Lesson Plan</h2>
               <div 
                 className="border p-4 rounded-md shadow-sm bg-white"
                 dangerouslySetInnerHTML={{ __html: lessonPlan }}      
               />
               <div className="text-center my-4">
-              <button onClick={() => openForPrint(lessonPlan)} >
-                Download the Lesson Plan
-              </button>
                 <Link href="/plan" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Create Another Plan
                 </Link>
               </div>
-            </div>
+            </div> */}
           </Layout>
         );
       }
