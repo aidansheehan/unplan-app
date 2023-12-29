@@ -5,7 +5,8 @@
 [x] Init firebase project with firebase storage
     [x] Save lesson plans to server on generation
     [x] Navigate to page for this lesson so at least links to lessons are sharable and reloadable
-        [ ] Find lesson by ID in db, retrieve handout and plan markdown, display
+        [x] Find lesson by ID in db, retrieve handout and plan markdown, display
+            [ ] Fix crazy long page load times
 
 [ ] Implement a LESSON LIBRARY
     [ ] Lessons displayed in lesson library if 'public' true on lesson (This'll be something you do manually, auditing lessons by loading up page with lesson ID)
