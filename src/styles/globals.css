@@ -2,31 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-} */
-/* globals.css */
-
 body {
   font-family: 'Open Sans', sans-serif; /* Example font */
   color: #333; /* Text color */
@@ -71,17 +46,9 @@ h6 {
   color: #718096; /* Even more subtle color */
 }
 
-/* h1, h2, h3, h4, h5, h6 {
-  margin-top: 1.2em;
-  margin-bottom: 0.6em;
-  color: #1a202c; /* Darker color for headings */
-/* } */
-
 p {
   margin-bottom: 1em;
 }
-/* globals.css */
-/* globals.css */
 
 ul, ol {
   padding-left: 20px;
@@ -113,11 +80,6 @@ ul ol {
 ol ul {
   list-style-type: square; /* Different style for ordered list inside unordered list */
 }
-
-/* ul, ol {
-  padding-left: 20px; /* Indent for list items */
-  margin-bottom: 1em;
-/* } */ 
 
 li {
   margin-bottom: 0.5em; /* Space between list items */

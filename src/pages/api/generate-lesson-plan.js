@@ -1,8 +1,22 @@
 import OpenAI from "openai";
 
+import { storage, db } from '../../../firebaseConfig.js'
+import { ref, uploadBytes } from 'firebase/storage'
+import { collection, addDoc } from 'firebase/firestore'
+
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
+
+    //Test firestore TODO remove
+    try {
+      const docRef = await addDoc(collection(db, "users"), {
+        first: "Ada",
+        last: "Lovelace",
+        born: 1815
+      })
+      console.log("Document written with ID: ", docRef.id)
+    } catch (err) {console.log(err)}
 
     const openai = new OpenAI()
 
@@ -26,9 +40,20 @@ export default async function handler(req, res) {
         model: "gpt-3.5-turbo"
     })
 
-    console.log(completion.choices)
+    //Destructure completion for lesson plan content
+    const { content } = completion.choices[0].message
+  
+    const contentRef = ref(storage, 'test/lesson-plan-2.md')    //Content ref
 
-    console.log('completion: ', completion.choices[0].message.content)
+    //Create a blob of the file
+    const contentBlob = new Blob([content], { type: 'text/markdown' })
+
+    //Upload the blob to firebase storage
+    uploadBytes(contentRef, contentBlob).then((snapshot) => {
+      console.log('Uploaded a blob or file!')
+    }).catch(err => console.log('error: ', err))
+
+
 
     res.status(200).json({ lessonPlan: completion.choices[0].message.content })
 
