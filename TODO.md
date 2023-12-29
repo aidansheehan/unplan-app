@@ -7,18 +7,20 @@
     [x] Navigate to page for this lesson so at least links to lessons are sharable and reloadable
         [x] Find lesson by ID in db, retrieve handout and plan markdown, display
             [x] Fix crazy long page load times
-                [ ] Implement placeholder content for LP + Handouts, disable print btn while loading
+                [x] Implement placeholder content for LP + Handouts, disable print btn while loading
 
 [ ] Implement a LESSON LIBRARY
-    [ ] Lessons displayed in lesson library if 'public' true on lesson (This'll be something you do manually, auditing lessons by loading up page with lesson ID)
-    [ ] Group by beginner, intermediate, advanced
-    [ ] Let's use a basic carousel for now
+    [x] Lessons displayed in lesson library, click to link to lessons
+    [ ] Implement search bar
 
 [ ] Implement basic site navigation
+    [ ] Could you include a link to 'your last lesson' - lessonId stored in local storage?
 
 [ ] Implement a really basic terms of use page
 
 [ ] Improve landing page
+
+[ ] Improve loading page as is quite a long load time (after generate lesson - give a message, whatever)
 
 ### Extra
 [ ] Search box in lesson library
