@@ -1,10 +1,36 @@
-import { ref, getDownloadURL } from 'firebase/storage'
-import { db, storage } from '../../../firebaseConfig'
+import { db } from '../../../firebaseConfig'
 import { doc, getDoc } from 'firebase/firestore'
 import Layout from '@/components/layout'
 import TextContentPresentationComponent from '@/components/text-content-presentation.component'
+import { useEffect, useState } from 'react'
 
-const ViewLesson = ({lessonPlanContent, handoutContent}) => {
+const ViewLesson = ({lessonPlanUrl, handoutUrl}) => {
+
+    const [ lessonPlanContent, setLessonPlanContent ]   = useState('Loading lesson plan...')
+    const [ handoutContent, setHandoutContent ]         = useState('Loading handouts...')
+
+  // Fetch markdown content using the API route
+  const fetchMarkdownContent = async (urlPath) => {
+    try {
+      const response = await fetch(`/api/fetch-markdown-content?urlPath=${encodeURIComponent(urlPath)}`);
+      const data = await response.json();
+      return data.content;
+    } catch (error) {
+      console.error('Error fetching markdown content:', error);
+      return 'Failed to load content.';
+    }
+  };
+
+    //componentDidMount
+    useEffect(() => {
+
+        //Fetch lesson plan markdown content
+        fetchMarkdownContent(lessonPlanUrl).then(content => setLessonPlanContent(content))
+
+        //Fetch handout markdown content
+        fetchMarkdownContent(handoutUrl).then(content => setHandoutContent(content))
+    }, [lessonPlanUrl, handoutUrl])
+
     return (
         <Layout title='Your Lesson' >
 
@@ -29,7 +55,7 @@ export async function getServerSideProps(context) {
     const lessonDocRef  = doc(db, 'lessons', lessonId)
     const lessonDoc     = await getDoc(lessonDocRef)
 
-    //lessonDoc not found
+    //lessonDoc not found TODO handle
     if (!lessonDoc.exists()) {
         return {
             notFound: true
@@ -39,25 +65,16 @@ export async function getServerSideProps(context) {
     //Get lessonData
     const lessonData = lessonDoc.data()
 
-    //Function to fetch markdown content from storage
-    const fetchMarkdownContent = async (urlPath) => {
-        try {
-            const url       = await getDownloadURL(ref(storage, urlPath))
-            const response  = await fetch(url)
+    //Destructure lessonData
+    const { lessonPlanUrl, handoutUrl } = lessonData
 
-            return await response.text()
-        } catch (error) {
-            console.error('Error fetching markdown content:', error)
-            return ''
+    return {
+        props: {
+            lessonPlanUrl,
+            handoutUrl
         }
     }
 
-    const lessonPlanContent = await fetchMarkdownContent(lessonData.lessonPlanUrl)  //Fetch lessonPlanContent
-    const handoutContent    = await fetchMarkdownContent(lessonData.handoutUrl)     //Fetch handoutContent
-
-    return {
-        props: { lessonPlanContent, handoutContent }
-    }
 }
 
 export default ViewLesson
