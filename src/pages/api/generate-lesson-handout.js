@@ -1,4 +1,7 @@
 import OpenAI from "openai"
+import { storage, db } from '../../../firebaseConfig.js'
+import { ref, uploadBytes } from 'firebase/storage'
+import { doc, updateDoc } from 'firebase/firestore'
 
 export default async function handler(req, res) {
 
@@ -8,13 +11,9 @@ export default async function handler(req, res) {
         const openai = new OpenAI()
 
         //Get form data
-        const { level, lessonPlan } = req.body
+        const { level, lessonPlan, lessonPlanId } = req.body
 
-        // //Messages
-        // const messages = [
-        //     { role: "system", content: 'Read the user provided lesson plan. Generate a handout sheet for students complete with all activities to supplement the lesson plan. USE MARKDOWN SYNTAX' },
-        //     { role: "user", content: `Here is the lesson plan: ${lessonPlan}` }
-        // ]
+        //Construct messages
         const messages = [
             { role: "system", content: `Create a student handout for this lesson. THE PROVIDED PLAN IS FOR THE TEACHER. CREATE THE STUDENT ACTIVITES HANDOUT. USE MARKDOWN. USE SIMPLE, GRADED ENGLISH APPROPRIATE FOR ${level} students` },
             { role: "user", content: `Here is the lesson plan: ${lessonPlan}` },
@@ -59,9 +58,7 @@ export default async function handler(req, res) {
                 `
             },
 
-        ]
-        console.log('messages: ', messages)
-        
+        ]        
 
         //Generate handout
         const completion = await openai.chat.completions.create({
@@ -70,12 +67,18 @@ export default async function handler(req, res) {
             
         })
 
-        console.log('COMPLETION CHOICES: ', completion.choices)
-
         //Get content
         const { content } = completion.choices[0].message
 
-        res.status(200).json({ lessonHandout: content })
+        //Save materials to Firebase Storage
+        const handoutRef = ref(storage, `lesson-handouts/${lessonPlanId}.md`)
+        await uploadBytes(handoutRef, new Blob([content], { type: 'text/markdown' }))
+
+        //Update firestore with materials URL
+        const lessonDocRef = doc(db, 'lessons', lessonPlanId)
+        await updateDoc(lessonDocRef, { handoutUrl: `lesson-handouts/${lessonPlanId}.md` })
+
+        res.status(200).json({ lessonId: lessonPlanId, lessonHandout: content })
 
     } else {
         // Handle non-POST requests, or add logic to handle other methods if needed

@@ -1,5 +1,5 @@
-import OpenAI from "openai";
-
+import OpenAI from "openai"
+import { v4 as uuidv4 } from 'uuid'
 import { storage, db } from '../../../firebaseConfig.js'
 import { ref, uploadBytes } from 'firebase/storage'
 import { collection, addDoc } from 'firebase/firestore'
@@ -8,16 +8,7 @@ import { collection, addDoc } from 'firebase/firestore'
 export default async function handler(req, res) {
   if (req.method === 'POST') {
 
-    //Test firestore TODO remove
-    try {
-      const docRef = await addDoc(collection(db, "users"), {
-        first: "Ada",
-        last: "Lovelace",
-        born: 1815
-      })
-      console.log("Document written with ID: ", docRef.id)
-    } catch (err) {console.log(err)}
-
+    //Initialize OpenAI
     const openai = new OpenAI()
 
     //Initialize messages
@@ -26,6 +17,7 @@ export default async function handler(req, res) {
     //Get form data
     const { topic, level, duration, objectives } = req.body;
 
+    //Construct messages object
     messages.push({
         role: "user",
         content: `Topic: ${topic}
@@ -35,6 +27,7 @@ export default async function handler(req, res) {
         ${objectives}`
     })
 
+    //Get response from GPT
     const completion = await openai.chat.completions.create({
         messages: messages,
         model: "gpt-3.5-turbo"
@@ -42,20 +35,25 @@ export default async function handler(req, res) {
 
     //Destructure completion for lesson plan content
     const { content } = completion.choices[0].message
-  
-    const contentRef = ref(storage, 'test/lesson-plan-2.md')    //Content ref
+
+    // Generate unique lesson id
+    const uniqueLessonId = uuidv4()
+
+    //Create content ref
+    const contentRef = ref(storage, `lesson-plans/${uniqueLessonId}.md`)
 
     //Create a blob of the file
     const contentBlob = new Blob([content], { type: 'text/markdown' })
 
     //Upload the blob to firebase storage
-    uploadBytes(contentRef, contentBlob).then((snapshot) => {
-      console.log('Uploaded a blob or file!')
-    }).catch(err => console.log('error: ', err))
+    await uploadBytes(contentRef, contentBlob)
 
+    const docRef = await addDoc(collection(db, 'lessons'), {
+      topic, level, duration, objectives,
+      lessonPlanUrl: `lesson-plans/${uniqueLessonId}.md`
+    })
 
-
-    res.status(200).json({ lessonPlan: completion.choices[0].message.content })
+    res.status(200).json({ lessonPlanId: docRef.id, lessonPlan: content })
 
   } else {
     // Handle non-POST requests, or add logic to handle other methods if needed
