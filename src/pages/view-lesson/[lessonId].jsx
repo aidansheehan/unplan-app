@@ -6,39 +6,39 @@ import { useEffect, useState } from 'react'
 
 const ViewLesson = ({lessonPlanUrl, handoutUrl}) => {
 
-    const [ lessonPlanContent, setLessonPlanContent ]   = useState('Loading lesson plan...')
-    const [ handoutContent, setHandoutContent ]         = useState('Loading handouts...')
+    // const [ lessonPlanContent, setLessonPlanContent ]   = useState('Loading lesson plan...')
+    // const [ handoutContent, setHandoutContent ]         = useState('Loading handouts...')
 
-  // Fetch markdown content using the API route
-  const fetchMarkdownContent = async (urlPath) => {
-    try {
-      const response = await fetch(`/api/fetch-markdown-content?urlPath=${encodeURIComponent(urlPath)}`);
-      const data = await response.json();
-      return data.content;
-    } catch (error) {
-      console.error('Error fetching markdown content:', error);
-      return 'Failed to load content.';
-    }
-  };
+//   // Fetch markdown content using the API route
+//   const fetchMarkdownContent = async (urlPath) => {
+//     try {
+//       const response = await fetch(`/api/fetch-markdown-content?urlPath=${encodeURIComponent(urlPath)}`);
+//       const data = await response.json();
+//       return data.content;
+//     } catch (error) {
+//       console.error('Error fetching markdown content:', error);
+//       return 'Failed to load content.';
+//     }
+//   }
 
-    //componentDidMount
-    useEffect(() => {
+    // //componentDidMount
+    // useEffect(() => {
 
-        //Fetch lesson plan markdown content
-        fetchMarkdownContent(lessonPlanUrl).then(content => setLessonPlanContent(content))
+    //     //Fetch lesson plan markdown content
+    //     fetchMarkdownContent(lessonPlanUrl).then(content => setLessonPlanContent(content))
 
-        //Fetch handout markdown content
-        fetchMarkdownContent(handoutUrl).then(content => setHandoutContent(content))
-    }, [lessonPlanUrl, handoutUrl])
+    //     //Fetch handout markdown content
+    //     fetchMarkdownContent(handoutUrl).then(content => setHandoutContent(content))
+    // }, [lessonPlanUrl, handoutUrl])
 
     return (
         <Layout title='Your Lesson' >
 
             {/* Lesson Plan */}
-            <TextContentPresentationComponent title='Lesson Plan' mdContent={lessonPlanContent} />
+            <TextContentPresentationComponent title='Lesson Plan' mdContentUrl={lessonPlanUrl} />
 
             {/* Lesson Handouts */}
-            <TextContentPresentationComponent title='Handouts' mdContent={handoutContent} />
+            <TextContentPresentationComponent title='Handouts' mdContentUrl={handoutUrl} />
 
         </Layout>
 
