@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
     }, [router])
 
     return (
-<aside className="bg-blue-600 p-4 row-start-2 row-end-3 col-start-1 flex flex-col justify-center">
+<aside className="bg-blue-600 p-4 flex flex-col justify-center fixed mt-[var(--header-height)] mb-[var(--footer-height)] h-[calc(100%-var(--header-height)-var(--footer-height))] w-[var(--sidebar-width)]">
   <nav>
     <ul className="space-y-4">
     {navItems.map(item => (

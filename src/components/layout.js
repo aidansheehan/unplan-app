@@ -39,19 +39,19 @@ const Layout = ({ children, title }) => {
   const toggleNav = () => setIsNavOpen(!isNavOpen);
 
   return (
-    <div className="grid grid-rows-layout grid-cols-layout min-h-screen">
-      <header className="col-start-1 col-end-3 row-start-1 bg-blue-500 p-4 text-white">
-        <h1 className="text-2xl font-bold font-permanent-marker">{APP_TITLE}</h1>
+    <div className="flex flex-col min-h-screen">
+      <header className="bg-blue-500 text-white h-[var(--header-height)] flex justify-between items-center">
+        <h1 className="text-2xl font-bold font-permanent-marker ml-4">{APP_TITLE}</h1>
       </header>
 
       <SidebarComponent navItems={NAV_ITEMS} />
 
-      <main className="row-start-2 row-end-3 col-start-2 col-end-3 p-4">
+      <main className="flex-grow flex flex-col items-center justify-center p-4 ml-[var(--sidebar-width)] ">
         <h2>{title}</h2>
         {children}
       </main>
 
-      <footer className="col-start-1 col-end-3 row-start-3 bg-gray-200 p-4 text-center">
+      <footer className="h-[var(--footer-height)] text-center bg-gray-200 flex justify-center items-center">
         © 2023 Aidan Sheehan
       </footer>
     </div>

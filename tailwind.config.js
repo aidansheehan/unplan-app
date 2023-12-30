@@ -14,7 +14,7 @@ module.exports = {
       },
       fontFamily: {
         'permanent-marker': ['Permanent Marker', 'cursive'], // Add this line
-      },
+      }
     },
   },
   plugins: [],

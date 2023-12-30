@@ -9,6 +9,11 @@ body {
 }
 
 /* globals.css */
+:root {
+  --header-height: 4rem; /* Adjust as needed */
+  --footer-height: 2rem; /* Adjust as needed */
+  --sidebar-width: 14rem;
+}
 
 .grid-rows-layout {
   grid-template-rows: auto 1fr auto; /* Header, content, footer */
