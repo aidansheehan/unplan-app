@@ -33,7 +33,7 @@ const NAV_ITEMS = [
 ]
 
 const Layout = ({ children, title }) => {
-  const APP_TITLE = title || 'ESL EasyPlan';
+  const APP_TITLE = 'EASY PLAN ESL';
   const [isNavOpen, setIsNavOpen] = useState(false);
 
   const toggleNav = () => setIsNavOpen(!isNavOpen);
@@ -41,34 +41,13 @@ const Layout = ({ children, title }) => {
   return (
     <div className="grid grid-rows-layout grid-cols-layout min-h-screen">
       <header className="col-start-1 col-end-3 row-start-1 bg-blue-500 p-4 text-white">
-        <h1 className="text-2xl font-bold">{title || 'ESL EasyPlan'}</h1>
-        <p>Effortless Lesson Planning for ESL Teachers</p>
-        {/* ... other header content */}
+        <h1 className="text-2xl font-bold font-permanent-marker">{APP_TITLE}</h1>
       </header>
 
       <SidebarComponent navItems={NAV_ITEMS} />
 
-      {/* <nav className={`absolute top-full left-0 w-full bg-blue-600 p-4 md:p-0 md:static md:flex ${isNavOpen ? 'block' : 'hidden'} transition-all ease-in-out duration-300`}>
-        <ul className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-6">
-          <li className="hover:text-blue-300 transition-colors duration-200">
-            <Link href="/"><FontAwesomeIcon icon={faHome} fixedWidth /> Home</Link>
-          </li>
-          <li className="hover:text-blue-300 transition-colors duration-200">
-            <Link href="/plan"><FontAwesomeIcon icon={faClipboardList} fixedWidth /> Plan</Link>
-          </li>
-          <li className="hover:text-blue-300 transition-colors duration-200">
-            <Link href="/library"><FontAwesomeIcon icon={faBook} fixedWidth /> Library</Link>
-          </li>
-          <li className="hover:text-blue-300 transition-colors duration-200">
-            <Link href="/terms"><FontAwesomeIcon icon={faScroll} fixedWidth /> Terms</Link>
-          </li>
-          <li className="hover:text-blue-300 transition-colors duration-200">
-            <Link href="/feedback"><FontAwesomeIcon icon={faComments} fixedWidth /> Feedback</Link>
-          </li>
-        </ul>
-      </nav> */}
-
       <main className="row-start-2 row-end-3 col-start-2 col-end-3 p-4">
+        <h2>{title}</h2>
         {children}
       </main>
 

@@ -19,8 +19,8 @@ import { useEffect, useState } from "react";
 <aside className="bg-blue-600 p-4 row-start-2 row-end-3 col-start-1 flex flex-col justify-center">
   <nav>
     <ul className="space-y-4">
-      {navItems.map(item => (
-        <li key={item.href} className={`rounded-md transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-md ${activePage === item.href ? 'bg-blue-700 text-white' : 'hover:bg-blue-500 text-white'}`}>
+    {navItems.map(item => (
+        <li key={item.href} className={`rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg text-white ${activePage === item.href ? 'bg-blue-700' : 'hover:bg-blue-500'}`}>
           <Link href={item.href} className="flex items-center space-x-2 p-3">
             <FontAwesomeIcon icon={item.icon} fixedWidth />
             <span className="text-lg">{item.text}</span>
@@ -30,7 +30,6 @@ import { useEffect, useState } from "react";
     </ul>
   </nav>
 </aside>
-
 
     )
 };
