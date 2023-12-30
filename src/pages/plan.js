@@ -168,11 +168,7 @@ const Plan = () => {
                         </button>
                         </div>
                     </form>
-                    <div className="text-center my-4">
-                        <Link href="/" className="text-blue-600 hover:underline">
-                            Go back to Home
-                        </Link>
-                    </div>
+
                 </div>
 
             )
