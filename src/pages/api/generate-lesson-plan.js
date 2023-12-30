@@ -15,12 +15,13 @@ export default async function handler(req, res) {
     const messages = [{role: "system", content: 'You are a CELTA trained ESL lesson planning assistant. Create a lesson plan for the user\'s class. USE MARKDOWN'}]
 
     //Get form data
-    const { topic, level, duration, objectives } = req.body;
+    const { topic, level, duration, objectives, ageGroup } = req.body;
 
     //Construct messages object
     messages.push({
         role: "user",
         content: `Topic: ${topic}
+        Age Group: ${ageGroup}
         Level: ${level}
         Duration: ${duration} minutes
         Objectives:
@@ -48,8 +49,9 @@ export default async function handler(req, res) {
     //Upload the blob to firebase storage
     await uploadBytes(contentRef, contentBlob)
 
+    //Write metadata to db
     const docRef = await addDoc(collection(db, 'lessons'), {
-      topic, level, duration, objectives,
+      topic, level, duration, objectives, ageGroup,
       lessonPlanUrl: `lesson-plans/${uniqueLessonId}.md`
     })
 

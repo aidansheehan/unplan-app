@@ -9,7 +9,7 @@ import FullPageLoading from '@/components/full-page.loading.component';
  */
 const Plan = () => {
 
-    const [ formData, setFormData ] = useState({ topic: '', level: '', duration: '', objectives: '' })
+    const [ formData, setFormData ] = useState({ topic: '', level: '', duration: 60, objectives: '', ageGroup: 'Adults' })
     const [ isLoading, setIsLoading ] = useState(false)
 
     const router = useRouter()
@@ -79,7 +79,7 @@ const Plan = () => {
                             value={formData.topic}
                             onChange={handleChange}
                             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
-                            placeholder="Enter lesson topic"
+                            placeholder="e.g., Irregular Verbs, Food Vocabulary, Past Tense"
                             required
                         />
                         </div>
@@ -99,19 +99,57 @@ const Plan = () => {
                             <option value="advanced">Advanced</option>
                         </select>
                         </div>
+
                         <div>
-                        <label htmlFor="duration" className="block text-sm font-medium text-gray-700">Duration</label>
-                        <input
-                            type="text"
-                            name="duration"
-                            id="duration"
-                            value={formData.duration}
-                            onChange={handleChange}
-                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
-                            placeholder="Enter lesson duration"
-                            required
-                        />
+                            <label htmlFor="ageGroup" className="block text-sm font-medium text-gray-700">Student Age Group</label>
+                            <select
+                                name="ageGroup"
+                                id="ageGroup"
+                                value={formData.ageGroup} // Set 'adults' as default value
+                                onChange={handleChange}
+                                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+                                required
+                            >
+                                <option value="kindergarten">Kindergarten</option>
+                                <option value="kids">Kids</option>
+                                <option value="teens">Teens</option>
+                                <option value="adults">Adults</option>
+                            </select>
                         </div>
+
+                        <div>
+                            <label htmlFor="duration" className="block text-sm font-medium text-gray-700">
+                                Duration (minutes)
+                            </label>
+                            <div className="flex flex-wrap items-center gap-2 mt-1">
+                                <input
+                                type="number"
+                                name="duration"
+                                id="duration"
+                                value={formData.duration}
+                                onChange={handleChange}
+                                className="p-2 border border-gray-300 rounded-md shadow-sm"
+                                placeholder="e.g., 60"
+                                min="5"
+                                step="5"
+                                required
+                                />
+
+                                <button type="button" onClick={() => setFormData({...formData, duration: 60})}
+                                        className="p-2 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100">
+                                60 min
+                                </button>
+                                <button type="button" onClick={() => setFormData({...formData, duration: 90})}
+                                        className="p-2 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100">
+                                90 min
+                                </button>
+                                <button type="button" onClick={() => setFormData({...formData, duration: 120})}
+                                        className="p-2 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100">
+                                120 min
+                                </button>
+                            </div>
+                        </div>
+
                         <div>
                         <label htmlFor="objectives" className="block text-sm font-medium text-gray-700">Objectives</label>
                         <textarea
@@ -120,7 +158,7 @@ const Plan = () => {
                             value={formData.objectives}
                             onChange={handleChange}
                             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
-                            placeholder="Enter lesson objectives"
+                            placeholder="e.g., Students can understand the use of present perfect tense, Students can order food in a restaurant"
                             required
                         />
                         </div>

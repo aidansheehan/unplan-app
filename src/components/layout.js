@@ -53,7 +53,7 @@ const Layout = ({ children, title }) => {
 
       <SidebarComponent navItems={NAV_ITEMS} isNavOpen={isNavOpen} />
 
-      <main className="flex-grow flex flex-col items-center justify-center p-4 md:ml-[var(--sidebar-width)] mt-[var(--header-height)]">
+      <main className="flex-grow flex flex-col items-center justify-center p-4 md:ml-[var(--sidebar-width)] mt-[var(--header-height)] mb-[var(--footer-height)]">
         <h1 className='text-xl fontsemibold mb-4' >{title}</h1>
         {children}
       </main>
