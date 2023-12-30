@@ -8,11 +8,13 @@ const ViewLesson = ({lessonPlanUrl, handoutUrl}) => {
     return (
         <Layout title='Your Lesson' >
 
-            {/* Lesson Plan */}
-            <TextContentPresentationComponent title='Lesson Plan' mdContentUrl={lessonPlanUrl} />
+            <div className='w-full h-full'  >
+                {/* Lesson Plan */}
+                <TextContentPresentationComponent title='Lesson Plan' mdContentUrl={lessonPlanUrl} />
 
-            {/* Lesson Handouts */}
-            <TextContentPresentationComponent title='Handouts' mdContentUrl={handoutUrl} />
+                {/* Lesson Handouts */}
+                <TextContentPresentationComponent title='Handouts' mdContentUrl={handoutUrl} />
+            </div>
 
         </Layout>
 

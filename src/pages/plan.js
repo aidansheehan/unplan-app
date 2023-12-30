@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Layout from '@/components/layout';
-import TextContentPresentationComponent from '@/components/text-content-presentation/text-content-presentation.component';
 import LoadingSpinner from '@/components/loading-spinner';
 import { useRouter } from 'next/router';
 
@@ -66,7 +65,7 @@ const Plan = () => {
             isLoading ? (
                 <LoadingSpinner />
             ) : (
-                <>
+                <div className='w-full h-full'>
                     <form onSubmit={handleSubmit} className="max-w-xl mx-auto space-y-4">
                         <div>
                         <label htmlFor="topic" className="block text-sm font-medium text-gray-700">Topic</label>
@@ -133,7 +132,7 @@ const Plan = () => {
                             Go back to Home
                         </Link>
                     </div>
-                </>
+                </div>
 
             )
         }

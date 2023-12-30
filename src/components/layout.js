@@ -40,7 +40,7 @@ const Layout = ({ children, title }) => {
         </ul>
       </nav>
 
-      <main className="flex-grow p-4 relative">
+      <main className="flex-grow flex items-center justify-center">
         {children}
       </main>
 
