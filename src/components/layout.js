@@ -32,7 +32,7 @@ const NAV_ITEMS = [
   {
     href: '/terms',
     icon: faScroll,
-    text: 'Terms'
+    text: 'Terms of Use'
   }
 ]
 
@@ -53,8 +53,8 @@ const Layout = ({ children, title }) => {
 
       <SidebarComponent navItems={NAV_ITEMS} isNavOpen={isNavOpen} />
 
-      <main className="flex-grow flex flex-col items-center justify-center p-4 md:ml-[var(--sidebar-width)] mt-[var(--header-height)] mb-[var(--footer-height)]">
-        <h1 className='text-xl fontsemibold mb-2 mt-8' >{title}</h1>
+      <main className="flex-grow flex flex-col items-center justify-center md:ml-[var(--sidebar-width)] mt-[var(--header-height)] mb-[var(--footer-height)]">
+        { title ? <h1 className='text-xl fontsemibold mb-2 mt-8' >{title}</h1> : <></> }
         {children}
       </main>
 

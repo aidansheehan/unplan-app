@@ -22,3 +22,13 @@ body {
 .grid-cols-layout {
   grid-template-columns: 200px 1fr; /* Sidebar width and content */
 }
+
+html {
+  overflow: hidden;
+  height: 100%;
+}
+
+body {
+  overflow: auto;
+  height: 100%;
+}

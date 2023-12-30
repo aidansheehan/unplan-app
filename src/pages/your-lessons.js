@@ -34,11 +34,11 @@ const YourLessons = () => {
         <Layout title='Your Lessons'>
             {
                 isLoading ? (
-                    <div className="min-h-96 flex justify-center items-center">
+                    <div className="min-h-96 flex justify-center items-center p-4">
                         <LoadingSpinner />
                     </div>
                 ) : (
-                    <ul className="min-h-96">
+                    <ul className="min-h-96 p-4">
 
                         {lessons.length > 0 ? (
                             <LessonsGrid lessons={lessons} />

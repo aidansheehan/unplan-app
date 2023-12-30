@@ -51,8 +51,8 @@ const Feedback = () => {
                     className="w-full max-w-md p-6 mx-auto bg-white rounded shadow-md space-y-4"
                 >
                     <div>
-                        <h2 className="text-lg font-semibold text-center">I Value Your Feedback</h2>
-                        <p className="text-sm text-center">Let me know how I can improve your experience. Your suggestions, ideas for new features, or any challenges you're facing are greatly appreciated!</p>
+                        <h2 className="text-lg font-semibold text-center">We Value Your Feedback</h2>
+                        <p className="text-sm text-center">Let us know how we can improve your experience. Your suggestions, ideas for new features, or any challenges you're facing are greatly appreciated!</p>
                     </div>
                     <textarea
                         className="w-full h-40 p-4 border-2 border-gray-300 rounded resize-none focus:border-blue-500 focus:outline-none"
