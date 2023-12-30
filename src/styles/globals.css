@@ -10,3 +10,10 @@ body {
 
 /* globals.css */
 
+.grid-rows-layout {
+  grid-template-rows: auto 1fr auto; /* Header, content, footer */
+}
+
+.grid-cols-layout {
+  grid-template-columns: 200px 1fr; /* Sidebar width and content */
+}
