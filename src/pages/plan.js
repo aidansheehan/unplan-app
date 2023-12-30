@@ -1,139 +1,66 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Layout from '@/components/layout';
-import TextContentPresentationComponent from '@/components/text-content-presentation.component';
+import TextContentPresentationComponent from '@/components/text-content-presentation/text-content-presentation.component';
 import LoadingSpinner from '@/components/loading-spinner';
+import { useRouter } from 'next/router';
 
-export default function Plan() {
-  // State for form inputs
-  const [formData, setFormData] = useState({
-    topic: '',
-    level: '',
-    duration: '',
-    objectives: '',
-  });
+/**
+ * Page to plan a lesson
+ */
+const Plan = () => {
 
-  const [lessonPlan, setLessonPlan] = useState('');
-  const [lessonMaterials, setLessonMaterials] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [lessonMaterialsLoading, setLessonMaterialsLoading] = useState(false)
+    const [ formData, setFormData ] = useState({ topic: '', level: '', duration: '', objectives: '' })
+    const [ isLoading, setIsLoading ] = useState(false)
 
-//   const router = useRouter()
+    const router = useRouter()
 
-  // Handle form input changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
-  };
+    //Handle form input changes
+    const handleChange = (e) => {
+        const { name, value } = e.target
+        setFormData({ ...formData, [name]: value })
+    }
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true)
+    //Handle form submission
+    const handleSubmit = async (e) => {
+        e.preventDefault()  //Prevent default form submission behaviour
+        setIsLoading(true)  //Set loading state true
 
-    try {
-        const response = await fetch('/api/generate-lesson-plan', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-          });
-    
-          const data = await response.json();
+        try {
+            //Generate lesson plan
+            const lessonResponse = await fetch('/api/generate-lesson-plan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
 
-          console.log('DATA: ', data)
-    
-          if (response.ok) {
-            setLessonPlan(data.lessonPlan)
+            if (!lessonResponse.ok) throw new Error('Failed to generate lesson plan')
+
+            const lessonData = await lessonResponse.json()
+
+            //Generate lesson materials
+            const handoutResponse = await fetch('/api/generate-lesson-handout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ level: formData.level, lessonPlan: lessonData.lessonPlan, lessonPlanId: lessonData.lessonPlanId })
+            })
+
+            if (!handoutResponse.ok) throw new Error('Failed to generate lesson materials')
+            const handoutData = await handoutResponse.json()
+
             setIsLoading(false)
-            // Navigate to the new page and pass the lesson plan data
-            // router.push({
-            //   pathname: '/lesson-plan',
-            //   query: { plan: JSON.stringify(data.lessonPlan) },
-            // });
-          } else {
-            throw new Error(data.error);
-          }
-    } catch (error) {
-        console.error('Failed to generate lesson plan:', error)
-        setIsLoading(false)
-    }
 
-  };
-
-  //Handle request materials
-  const handleRequestMaterials = async () => {
-
-    console.log('I got called!')
-    
-    // e.preventDefault()
-    setLessonMaterialsLoading(true)
-
-    if (!lessonPlan) {
-        console.error("You don't have a lesson plan yet, can't generate a handout")
-        return
-    }
-
-    const requestData = {
-        level: formData.level,
-        lessonPlan: lessonPlan
-    }
-
-    try {
-        const response = await fetch('/api/generate-lesson-handout', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestData)
-        })
-
-        const data = await response.json()
-
-        if (response.ok) {
-            setLessonMaterials(data.lessonHandout)
-            setLessonMaterialsLoading(false)
+            //Redirect to view page with lesson ID
+            router.push(`/view-lesson/${handoutData.lessonId}`)
+            
+        } catch (error) {
+            console.error(error)
+            setIsLoading(false)
         }
 
-        console.log('HANDOUT: ', data.lessonHandout)
-    } catch (error) {
-        console.error('Failed to generate handouts: ', error)
-        setLessonMaterialsLoading(false)
     }
 
-  }
-
-
-    // Display lesson plan UI
-    if (lessonPlan && !isLoading) {
-        return (
-            <Layout title='Your Lesson' >
-
-                {/* Lesson Plan */}
-                <TextContentPresentationComponent title='Lesson Plan' mdContent={lessonPlan} />
-
-                {/* Lesson Materials */}
-                {lessonMaterials ? (
-                    <TextContentPresentationComponent title='Handouts' mdContent={lessonMaterials} />
-                ) : lessonMaterialsLoading ? (<LoadingSpinner />) : (
-                    <div className='flex flex-grow justify-center align-center relative max-h-[50%]'>
-                        <button onClick={handleRequestMaterials} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" >
-                            Generate Materials
-                        </button>
-                    </div>
-                )}
-
-            </Layout>
-        )
-
-      }
-
-  return (
-
+    return (
     <Layout title='Create Your Lesson Plan'>
         {
             isLoading ? (
@@ -212,6 +139,7 @@ export default function Plan() {
         }
 
     </Layout>
-
-  );
+    )
 }
+
+export default Plan
