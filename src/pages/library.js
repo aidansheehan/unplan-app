@@ -10,7 +10,7 @@ const Library = ({lessons}) => {
 
     return (
         <Layout title='Lesson Library' >
-            <div className="p-6">
+            <div className="p-6 min-h-96">
                 <LessonsGrid lessons={lessons} />
             </div>
         </Layout>

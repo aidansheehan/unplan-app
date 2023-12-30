@@ -32,7 +32,7 @@ const YourLessons = () => {
 
     return (
         <Layout title='Your Lessons'>
-                <ul>
+                <ul className="min-h-96">
                     {
                         isLoading ? (
                             <LoadingSpinner />
