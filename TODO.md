@@ -17,11 +17,9 @@
 [ ] Implement a really basic terms of use page
 [ ] Implement sign up to mailing list
 [ ] Improve landing page
-[ ] Improve loading page as is quite a long load time (after generate lesson - give a message, whatever)
-[ ] Add placeholder example text to form inputs to show ppl how to use
-[ ] Fix lesson duration (should specify units, have suggestions)
+[ ] LOADING PAGE Improve loading page as is quite a long load time (after generate lesson - give a message,  countdown and indication of time to process, whatever)
+[ ] FORM IMPROVEMENTS: Add placeholder example text to form inputs to show ppl how to use, fix lesson duration (should specify units, have suggestions)
 
 ### Extra
-[ ] Search box in lesson library
 [ ] Implement star rating for lesson plans, save ratings to server too
 [ ] Implement a dialog to request a second lesson plan - user can write their probs with lesson plan 1, generate a second, then choose which of the two plans to proceed with (for mats generation)
