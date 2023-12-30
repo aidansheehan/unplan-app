@@ -12,7 +12,7 @@
     [x] Lessons displayed in lesson library, click to link to lessons
     [ ] Implement search bar
 [x] Feedback page
-[ ] Implement basic site navigation
+[x] Implement basic site navigation
     [ ] Could you include a link to 'your last lesson' - lessonId stored in local storage?
 [ ] Implement a really basic terms of use page
 [ ] Implement sign up to mailing list
@@ -23,3 +23,5 @@
 ### Extra
 [ ] Implement star rating for lesson plans, save ratings to server too
 [ ] Implement a dialog to request a second lesson plan - user can write their probs with lesson plan 1, generate a second, then choose which of the two plans to proceed with (for mats generation)
+[ ] Animate header menu (mobile)
+[ ] Animate open lesson plan / open mats

@@ -40,8 +40,8 @@ const Layout = ({ children, title }) => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="bg-blue-500 text-white h-[var(--header-height)] flex justify-between items-center pl-4 pr-4 text-2xl">
-        <h1 className="font-bold font-permanent-marker">{APP_TITLE}</h1>
+      <header className="bg-blue-500 text-white h-[var(--header-height)] flex justify-between items-center pl-4 pr-4 text-2xl fixed w-full z-10">
+        <span className="font-bold font-permanent-marker">{APP_TITLE}</span>
         <button className="p-2 md:hidden" onClick={toggleNav} >
           <FontAwesomeIcon icon={isNavOpen ? faTimes : faBars} className="text-white" />
         </button>
@@ -49,12 +49,12 @@ const Layout = ({ children, title }) => {
 
       <SidebarComponent navItems={NAV_ITEMS} isNavOpen={isNavOpen} />
 
-      <main className="flex-grow flex flex-col items-center justify-center p-4 md:ml-[var(--sidebar-width)]">
-        <h2>{title}</h2>
+      <main className="flex-grow flex flex-col items-center justify-center p-4 md:ml-[var(--sidebar-width)] mt-[var(--header-height)]">
+        <h1 className='text-xl fontsemibold mb-4' >{title}</h1>
         {children}
       </main>
 
-      <footer className="h-[var(--footer-height)] text-center bg-gray-200 flex justify-center items-center">
+      <footer className="h-[var(--footer-height)] text-center bg-gray-200 flex justify-center items-center fixed w-full bottom-0 z-10">
         © 2023 Aidan Sheehan
       </footer>
     </div>
