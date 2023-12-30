@@ -15,11 +15,11 @@
 [ ] Implement basic site navigation
     [ ] Could you include a link to 'your last lesson' - lessonId stored in local storage?
 [ ] Implement a really basic terms of use page
+[ ] Implement sign up to mailing list
 [ ] Improve landing page
 [ ] Improve loading page as is quite a long load time (after generate lesson - give a message, whatever)
 [ ] Add placeholder example text to form inputs to show ppl how to use
 [ ] Fix lesson duration (should specify units, have suggestions)
-[ ] 
 
 ### Extra
 [ ] Search box in lesson library
