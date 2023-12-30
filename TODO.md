@@ -17,8 +17,8 @@
 [x] Implement basic site navigation
 [x] Implement basic user lessons lib
 [x] Implement a really basic terms of use page
-[ ] LOADING PAGE Improve loading page as is quite a long load time (after generate lesson - give a message,  countdown and indication of time to process, whatever)
-[ ] FORM IMPROVEMENTS: Add placeholder example text to form inputs to show ppl how to use, fix lesson duration (should specify units, have suggestions)
+[x] LOADING PAGE Improve loading page as is quite a long load time (after generate lesson - give a message,  countdown and indication of time to process, whatever)
+[ ] FORM IMPROVEMENTS: Add placeholder example text to form inputs to show ppl how to use, fix lesson duration (should specify units, have suggestions), add student age group
 [ ] Implement sign up to mailing list
 [ ] Improve landing page
 

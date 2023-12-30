@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Layout from '@/components/layout';
-import LoadingSpinner from '@/components/loading-spinner';
 import { useRouter } from 'next/router';
+import FullPageLoading from '@/components/full-page.loading.component';
 
 /**
  * Page to plan a lesson
@@ -63,10 +63,10 @@ const Plan = () => {
     }
 
     return (
-    <Layout title='Create Your Lesson Plan'>
+    <Layout title={isLoading ? '' : 'Create Your Lesson Plan'}>
         {
             isLoading ? (
-                <LoadingSpinner />
+                <FullPageLoading />
             ) : (
                 <div className='w-full h-full'>
                     <form onSubmit={handleSubmit} className="max-w-xl mx-auto space-y-4">

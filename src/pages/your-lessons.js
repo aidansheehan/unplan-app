@@ -32,22 +32,24 @@ const YourLessons = () => {
 
     return (
         <Layout title='Your Lessons'>
-                <ul className="min-h-96">
-                    {
-                        isLoading ? (
-                            <LoadingSpinner />
-                        ) : (
-                            <>
-                                {lessons.length > 0 ? (
-                                    <LessonsGrid lessons={lessons} />
-                                ) : (
-                                    <p>No lessons planned yet.</p>
-                                )}
-                            </>
-                        )
-                    }                    
+            {
+                isLoading ? (
+                    <div className="min-h-96 flex justify-center items-center">
+                        <LoadingSpinner />
+                    </div>
+                ) : (
+                    <ul className="min-h-96">
 
-                </ul>
+                        {lessons.length > 0 ? (
+                            <LessonsGrid lessons={lessons} />
+                        ) : (
+                            <p>No lessons planned yet.</p>
+                        )}
+
+                    </ul>
+                )
+            }
+
         </Layout>
     )
 }
