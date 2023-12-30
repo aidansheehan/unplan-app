@@ -6,10 +6,26 @@ import Layout from '@/components/layout';
 export default function Home() {
   return (
     <Layout>
+          {/* Hero Section */}
+          <section className="bg-blue-100 text-gray-800 px-4 py-12 md:py-24">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-center leading-tight text-blue-900">
+            Effortless Lesson Planning for ESL Teachers
+          </h2>
+          <p className="mt-4 text-lg md:text-xl text-center text-blue-700">
+            Create custom lesson plans and access a wide range of materials designed to make ESL teaching both effective and enjoyable.
+          </p>
+          <div className="mt-8 text-center">
+            <Link href="/plan" className="inline-block bg-orange-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors duration-300">
+                Get Started
+            </Link>
+          </div>
+        </div>
+      </section>
       {/* Features Section */}
       <section className="flex-grow flex flex-col justify-center items-center bg-blue-50">
         <div className="text-center py-8 px-4">
-          <h2 className="text-2xl font-semibold text-blue-700 mb-4">Why Choose EASY PLAN ESL?</h2>
+          <h2 className="text-2xl font-semibold text-blue-700 mb-4">Why Choose <span className='font-bold font-permanent-marker' >EASY PLAN ESL</span>?</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {FeatureCard(faLaptopCode, 'Quick Lesson Generation', 'Generate custom lesson plans quickly with just a few clicks.', 'bg-orange-100', 'text-orange-500')}
             {FeatureCard(faBookOpen, 'Diverse Materials', 'Access a variety of ESL teaching materials for different levels and topics.', 'bg-green-100', 'text-green-500')}
