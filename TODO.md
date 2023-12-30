@@ -10,15 +10,17 @@
                 [x] Implement placeholder content for LP + Handouts, disable print btn while loading
 [ ] Implement a LESSON LIBRARY
     [x] Lessons displayed in lesson library, click to link to lessons
+    [x] Only display lessons with public flag
+    [ ] Add example lessons
     [ ] Implement search bar
 [x] Feedback page
 [x] Implement basic site navigation
-    [ ] Could you include a link to 'your last lesson' - lessonId stored in local storage?
-[ ] Implement a really basic terms of use page
-[ ] Implement sign up to mailing list
-[ ] Improve landing page
+[x] Implement basic user lessons lib
+[x] Implement a really basic terms of use page
 [ ] LOADING PAGE Improve loading page as is quite a long load time (after generate lesson - give a message,  countdown and indication of time to process, whatever)
 [ ] FORM IMPROVEMENTS: Add placeholder example text to form inputs to show ppl how to use, fix lesson duration (should specify units, have suggestions)
+[ ] Implement sign up to mailing list
+[ ] Improve landing page
 
 ### Extra
 [ ] Implement star rating for lesson plans, save ratings to server too

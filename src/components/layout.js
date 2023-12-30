@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faClipboardList, faBook, faBars, faTimes, faScroll, faComments } from '@fortawesome/free-solid-svg-icons';
-// import Link from 'next/link';
+import { faHome, faClipboardList, faBook, faBars, faTimes, faScroll, faComments, faChalkboardTeacher } from '@fortawesome/free-solid-svg-icons';
 import SidebarComponent from './sidebar-component';
 
 const NAV_ITEMS = [
@@ -12,7 +11,7 @@ const NAV_ITEMS = [
   },
   {
     href: '/plan',
-    icon: faClipboardList,
+    icon: faChalkboardTeacher,
     text: 'Plan'
   },
   {
@@ -21,14 +20,19 @@ const NAV_ITEMS = [
     text: 'Lesson Library'
   },
   {
-    href: '/terms',
-    icon: faScroll,
-    text: 'Terms'
+    href: '/your-lessons',
+    icon: faClipboardList,
+    text: 'Your Lessons'
   },
   {
     href: '/feedback',
     icon: faComments,
     text: 'Feedback'
+  },
+  {
+    href: '/terms',
+    icon: faScroll,
+    text: 'Terms'
   }
 ]
 

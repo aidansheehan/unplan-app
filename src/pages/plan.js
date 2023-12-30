@@ -47,7 +47,10 @@ const Plan = () => {
             if (!handoutResponse.ok) throw new Error('Failed to generate lesson materials')
             const handoutData = await handoutResponse.json()
 
-            setIsLoading(false)
+            //Store lesson ID in local storage
+            const storedLessonIds = JSON.parse(localStorage.getItem('lessonIds')) || []
+            storedLessonIds.push(handoutData.lessonId)
+            localStorage.setItem('lessonIds', JSON.stringify(storedLessonIds))
 
             //Redirect to view page with lesson ID
             router.push(`/view-lesson/${handoutData.lessonId}`)

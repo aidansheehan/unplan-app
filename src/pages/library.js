@@ -1,7 +1,7 @@
-import { collection, getDocs } from "firebase/firestore"
+import { collection, getDocs, query, where } from "firebase/firestore"
 import { db } from "../../firebaseConfig"
 import Layout from "@/components/layout"
-import LessonCard from "@/components/lesson-card.component"
+import LessonsGrid from "@/components/lessons-grid.component"
 
 /**
  * Page to display lesson library
@@ -11,11 +11,7 @@ const Library = ({lessons}) => {
     return (
         <Layout title='Lesson Library' >
             <div className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {lessons.map(lesson => (
-                        <LessonCard key={lesson.id} lesson={lesson} />
-                    ))}
-                </div>
+                <LessonsGrid lessons={lessons} />
             </div>
         </Layout>
     )
@@ -24,8 +20,8 @@ const Library = ({lessons}) => {
 
 export async function getServerSideProps() {
 
-    //Fetch all lesson data from firestore
-    const lessonsCollectionRef = collection(db, 'lessons')
+    //Fetch all lesson data from firestore with public flag
+    const lessonsCollectionRef = query(collection(db, 'lessons'), where('public', '==', true ))
 
     const lessonsSnapshot = await getDocs(lessonsCollectionRef)
     
