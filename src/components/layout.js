@@ -40,13 +40,16 @@ const Layout = ({ children, title }) => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="bg-blue-500 text-white h-[var(--header-height)] flex justify-between items-center">
-        <h1 className="text-2xl font-bold font-permanent-marker ml-4">{APP_TITLE}</h1>
+      <header className="bg-blue-500 text-white h-[var(--header-height)] flex justify-between items-center pl-4 pr-4 text-2xl">
+        <h1 className="font-bold font-permanent-marker">{APP_TITLE}</h1>
+        <button className="p-2 md:hidden" onClick={toggleNav} >
+          <FontAwesomeIcon icon={isNavOpen ? faTimes : faBars} className="text-white" />
+        </button>
       </header>
 
-      <SidebarComponent navItems={NAV_ITEMS} />
+      <SidebarComponent navItems={NAV_ITEMS} isNavOpen={isNavOpen} />
 
-      <main className="flex-grow flex flex-col items-center justify-center p-4 ml-[var(--sidebar-width)] ">
+      <main className="flex-grow flex flex-col items-center justify-center p-4 md:ml-[var(--sidebar-width)]">
         <h2>{title}</h2>
         {children}
       </main>
