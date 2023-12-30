@@ -6,7 +6,7 @@ import LessonCard from "@/components/lesson-card.component"
 /**
  * Page to display lesson library
  */
-const LessonLibrary = ({lessons}) => {
+const Library = ({lessons}) => {
 
     return (
         <Layout title='Lesson Library' >
@@ -41,4 +41,4 @@ export async function getServerSideProps() {
     }
 }
 
-export default LessonLibrary
+export default Library

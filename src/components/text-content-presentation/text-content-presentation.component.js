@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPrint, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import styles from './markdown.module.scss'
 
 const TextContentPresentationComponent = ({mdContentUrl, title}) => {
 
@@ -109,7 +110,7 @@ const TextContentPresentationComponent = ({mdContentUrl, title}) => {
                             </div>
                             )}
                 
-                        <div className={`${isCollapsed ? 'max-h-40 overflow-hidden' : ''}`}>
+                        <div className={`${styles.markdownContent} ${isCollapsed ? 'max-h-40 overflow-hidden' : ''}`}>
                             <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
                         </div>
                 

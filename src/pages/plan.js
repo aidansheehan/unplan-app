@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Layout from '@/components/layout';
-import TextContentPresentationComponent from '@/components/text-content-presentation.component';
+import TextContentPresentationComponent from '@/components/text-content-presentation/text-content-presentation.component';
 import LoadingSpinner from '@/components/loading-spinner';
 import { useRouter } from 'next/router';
 

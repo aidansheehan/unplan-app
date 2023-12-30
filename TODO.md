@@ -22,6 +22,8 @@
 
 [ ] Improve loading page as is quite a long load time (after generate lesson - give a message, whatever)
 
+[ ] Add placeholder example text to form inputs to show ppl how to use
+
 ### Extra
 [ ] Search box in lesson library
 [ ] Implement star rating for lesson plans, save ratings to server too

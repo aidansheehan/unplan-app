@@ -1,7 +1,7 @@
 import { db } from '../../../firebaseConfig'
 import { doc, getDoc } from 'firebase/firestore'
 import Layout from '@/components/layout'
-import TextContentPresentationComponent from '@/components/text-content-presentation.component'
+import TextContentPresentationComponent from '@/components/text-content-presentation/text-content-presentation.component'
 
 const ViewLesson = ({lessonPlanUrl, handoutUrl}) => {
 
