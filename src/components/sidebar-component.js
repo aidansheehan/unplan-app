@@ -16,8 +16,8 @@ import { useEffect, useState } from "react";
     }, [router])
 
     return (
-<aside className={`bg-gray-200 md:bg-blue-600 flex mt-[var(--header-height)] flex-col justify-between fixed inset-x-0 md:inset-y-0 h-[calc(100%-var(--header-height))] md:h-auto w-full md:w-[var(--sidebar-width)] z-10 ${isNavOpen ? 'flex' : 'hidden'} md:flex`}>
-  <nav className="flex-grow">
+<aside className={`bg-gray-200 md:bg-blue-600 flex mt-[var(--header-height)] flex-col justify-between fixed inset-x-0 md:inset-y-0 h-[calc(100%-var(--header-height))] md:h-auto w-full md:w-[var(--sidebar-width)] z-10 ${isNavOpen ? 'flex' : 'hidden'} md:flex overflow-auto`}>
+  <nav className="flex-grow py-8">
     <ul className="space-y-4 h-full flex flex-col justify-center">
       {navItems.map(item => (
         <li key={item.href} className={`rounded-lg text-black md:text-white ${activePage === item.href ? 'bg-orange-500 md:bg-blue-700' : 'md:hover:bg-blue-500'} flex items-center justify-center md:justify-start text-center md:text-left`}>

@@ -12,7 +12,7 @@ const NAV_ITEMS = [
   {
     href: '/plan',
     icon: faChalkboardTeacher,
-    text: 'Plan'
+    text: 'New Lesson Plan'
   },
   {
     href: '/library',
