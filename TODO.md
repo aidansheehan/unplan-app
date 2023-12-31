@@ -21,7 +21,10 @@
 [x] FORM IMPROVEMENTS: Add placeholder example text to form inputs to show ppl how to use, fix lesson duration (should specify units, have suggestions), add student age group
 [ ] Implement sign up to mailing list
 [x] Improve landing page
-[ ] Fix landscape menu broken
+[x] Fix landscape menu broken
+[ ] Fix / standardize lesson lib + your lessons layout
+[ ] Add padding to top of text display components so text not flush with top. Investigate better handling of raw HTML - can you process as close as possible to PDF?
+[ ] Error handling
 
 ### Extra
 [ ] Implement star rating for lesson plans, save ratings to server too
