@@ -25,6 +25,7 @@
 [ ] Fix / standardize lesson lib + your lessons layout
 [ ] Add padding to top of text display components so text not flush with top. Investigate better handling of raw HTML - can you process as close as possible to PDF?
 [ ] Error handling
+[ ] Age group should also demand user selction like level for consistent UX
 
 ### Extra
 [ ] Implement star rating for lesson plans, save ratings to server too

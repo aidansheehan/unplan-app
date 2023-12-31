@@ -1,61 +1,35 @@
-import { collection, getDocs, query, where } from "firebase/firestore"
-import { db } from "../../firebaseConfig"
 import Layout from "@/components/layout"
 import LessonsGrid from "@/components/lessons-grid.component"
-import { useEffect, useState } from "react"
+import LoadingSpinner from "@/components/loading-spinner"
+import SearchBarComponent from "@/components/search-bar.component"
+import useLessons from "@/hooks/use-lessons.hook"
 
 /**
  * Page to display lesson library
  */
-const Library = ({ lessons }) => {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [filteredLessons, setFilteredLessons] = useState([]);
+const Library = () => {
 
-    useEffect(() => {
-        const lowercasedSearchTerm = searchTerm.toLowerCase();
-        console.log('lessons: ', lessons)
-        const filtered = lessons.filter(lesson => 
-            lesson.topic.toLowerCase().includes(lowercasedSearchTerm) ||
-            lesson.level.toLowerCase().includes(lowercasedSearchTerm) ||
-            // lesson.objective.toLowerCase().includes(lowercasedSearchTerm) ||
-            (lesson.ageGroup && lesson.ageGroup.toLowerCase().includes(lowercasedSearchTerm))
-        );
-        setFilteredLessons(filtered);
-    }, [searchTerm, lessons]);
+    //Function to fetch library lessons
+    const fetchlibraryLessons = async () => {
+        const res = await fetch('/api/get-lessons?public=true')
+        if (!res.ok) {
+            throw new Error(`Failed to fetch public lessons, status: ${response.status}`)
+        }
+        return res.json()
+    }
+
+    const { isLoading, searchTerm, setSearchTerm, filteredLessons } = useLessons(fetchlibraryLessons)
 
     return (
-        <Layout title='Lesson Library'>
-            <div className="p-6 min-h-96 w-full">
-                <input 
-                    type="text"
-                    placeholder="Search lessons..."
-                    className="w-full p-2 mb-8 border rounded shadow"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <LessonsGrid lessons={filteredLessons} />
+        <Layout title='Lesson Library' >
+            <div className="p-8 w-full flex-grow flex flex-col" >
+                <SearchBarComponent searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+                {isLoading ? <LoadingSpinner /> : <LessonsGrid lessons={filteredLessons} />}
             </div>
         </Layout>
-    );
+    )
+
 }
 
-export async function getServerSideProps() {
-
-    //Fetch all lesson data from firestore with public flag
-    const lessonsCollectionRef = query(collection(db, 'lessons'), where('public', '==', true ))
-
-    const lessonsSnapshot = await getDocs(lessonsCollectionRef)
-    
-    const lessons = lessonsSnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-    }))
-
-    return {
-        props: {
-            lessons
-        }
-    }
-}
 
 export default Library
