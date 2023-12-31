@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
 import Layout from '@/components/layout';
 import { useRouter } from 'next/router';
 import FullPageLoading from '@/components/full-page.loading.component';
+import { useError } from '@/context/error.context';
 
 /**
  * Page to plan a lesson
@@ -13,6 +13,7 @@ const Plan = () => {
     const [ isLoading, setIsLoading ] = useState(false)
 
     const router = useRouter()
+    const { handleError } = useError()
 
     //Handle form input changes
     const handleChange = (e) => {
@@ -62,12 +63,16 @@ const Plan = () => {
                 router.push(`/view-lesson/${handoutData.lessonId}`)
             } catch (err) {
                 console.error("Error calling createStudentHandout:", err.message);
+                setIsLoading(false)
+                handleError(error)
             }
 
             
         } catch (error) {
             console.error(error)
             setIsLoading(false)
+            handleError(error)
+
         }
 
     }

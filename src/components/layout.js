@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faClipboardList, faBook, faBars, faTimes, faScroll, faComments, faChalkboardTeacher } from '@fortawesome/free-solid-svg-icons';
 import SidebarComponent from './sidebar-component';
+import ErrorDisplayComponent from './error-display.component';
 
 const NAV_ITEMS = [
   {
@@ -61,6 +62,7 @@ const Layout = ({ children, title }) => {
       <footer className="h-[var(--footer-height)] text-center bg-gray-200 flex justify-center items-center absolute w-full bottom-0 z-20">
         © 2023 Aidan Sheehan
       </footer>
+      <ErrorDisplayComponent />
     </div>
   );
 };

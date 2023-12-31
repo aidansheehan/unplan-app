@@ -2,6 +2,7 @@ import Layout from "@/components/layout"
 import LessonsGrid from "@/components/lessons-grid.component"
 import LoadingSpinner from "@/components/loading-spinner"
 import SearchBarComponent from "@/components/search-bar.component"
+import { useError } from "@/context/error.context"
 import useLessons from "@/hooks/use-lessons.hook"
 
 /**
@@ -9,11 +10,14 @@ import useLessons from "@/hooks/use-lessons.hook"
  */
 const Library = () => {
 
+    const { handleError } = useError()
+
     //Function to fetch library lessons
     const fetchlibraryLessons = async () => {
         const res = await fetch('/api/get-lessons?public=true')
         if (!res.ok) {
-            throw new Error(`Failed to fetch public lessons, status: ${response.status}`)
+            handleError(res.status)
+            throw new Error(`Failed to fetch public lessons, status: ${res.status}`)
         }
         return res.json()
     }
