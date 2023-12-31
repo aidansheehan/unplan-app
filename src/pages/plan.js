@@ -68,7 +68,7 @@ const Plan = () => {
             isLoading ? (
                 <FullPageLoading />
             ) : (
-                <div className='w-full h-full'>
+                <div className='w-full h-full p-4'>
                     <form onSubmit={handleSubmit} className="max-w-xl mx-auto space-y-4">
                         <div>
                         <label htmlFor="topic" className="block text-sm font-medium text-gray-700">Topic</label>
