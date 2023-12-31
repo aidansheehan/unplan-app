@@ -23,7 +23,7 @@ export default function Home() {
         </div>
       </section>
       {/* Features Section */}
-      <section className="flex-grow flex flex-col justify-center items-center bg-blue-50">
+      <section className="flex-grow flex flex-col justify-center items-center bg-blue-50 w-full">
         <div className="text-center py-8 px-4">
           <h2 className="text-2xl font-semibold text-blue-700 mb-4">Why Choose <span className='font-bold font-permanent-marker' >EASY PLAN ESL</span>?</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
