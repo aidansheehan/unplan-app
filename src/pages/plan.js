@@ -27,7 +27,7 @@ const Plan = () => {
 
         try {
             //Generate lesson plan
-            const lessonResponse = await fetch('/api/generate-lesson-plan', {
+            const lessonResponse = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}generateLessonPlan`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
@@ -38,22 +38,32 @@ const Plan = () => {
             const lessonData = await lessonResponse.json()
 
             //Generate lesson materials
-            const handoutResponse = await fetch('/api/generate-lesson-handout', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ level: formData.level, lessonPlan: lessonData.lessonPlan, lessonPlanId: lessonData.lessonPlanId })
-            })
 
-            if (!handoutResponse.ok) throw new Error('Failed to generate lesson materials')
-            const handoutData = await handoutResponse.json()
+            try {
+                const handoutResponse = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}createStudentHandout`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ level: formData.level, lessonPlan: lessonData.lessonPlan, lessonPlanId: lessonData.lessonPlanId })
+                })
+    
+                if (!handoutResponse.ok) {
+                    const errorText = await handoutResponse.text();
+                    throw new Error(`Failed to generate lesson materials: ${errorText}`);
+                  }
+                
+                const handoutData = await handoutResponse.json()
+    
+                //Store lesson ID in local storage
+                const storedLessonIds = JSON.parse(localStorage.getItem('lessonIds')) || []
+                storedLessonIds.push(handoutData.lessonId)
+                localStorage.setItem('lessonIds', JSON.stringify(storedLessonIds))
+    
+                //Redirect to view page with lesson ID
+                router.push(`/view-lesson/${handoutData.lessonId}`)
+            } catch (err) {
+                console.error("Error calling createStudentHandout:", err.message);
+            }
 
-            //Store lesson ID in local storage
-            const storedLessonIds = JSON.parse(localStorage.getItem('lessonIds')) || []
-            storedLessonIds.push(handoutData.lessonId)
-            localStorage.setItem('lessonIds', JSON.stringify(storedLessonIds))
-
-            //Redirect to view page with lesson ID
-            router.push(`/view-lesson/${handoutData.lessonId}`)
             
         } catch (error) {
             console.error(error)
