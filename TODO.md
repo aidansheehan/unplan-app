@@ -22,12 +22,14 @@
 [ ] Implement sign up to mailing list
 [x] Improve landing page
 [x] Fix landscape menu broken
-[ ] Fix / standardize lesson lib + your lessons layout
-[ ] Add padding to top of text display components so text not flush with top. Investigate better handling of raw HTML - can you process as close as possible to PDF?
+[x] Fix / standardize lesson lib + your lessons layout
+[x] Add padding to top of text display components so text not flush with top.
 [ ] Error handling
+[ ] Age group should also demand user selction like level for consistent UX
 
 ### Extra
 [ ] Implement star rating for lesson plans, save ratings to server too
 [ ] Implement a dialog to request a second lesson plan - user can write their probs with lesson plan 1, generate a second, then choose which of the two plans to proceed with (for mats generation)
 [ ] Animate header menu (mobile)
 [ ] Animate open lesson plan / open mats
+[ ] Investigate better handling of raw HTML - can you process as close as possible to PDF?

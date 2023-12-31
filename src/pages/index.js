@@ -4,6 +4,7 @@ import { faLaptopCode, faBookOpen, faClock, faPrint } from '@fortawesome/free-so
 import Layout from '@/components/layout';
 
 export default function Home() {
+
   return (
     <Layout>
           {/* Hero Section */}

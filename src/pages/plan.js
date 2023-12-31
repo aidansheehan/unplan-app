@@ -9,7 +9,7 @@ import FullPageLoading from '@/components/full-page.loading.component';
  */
 const Plan = () => {
 
-    const [ formData, setFormData ] = useState({ topic: '', level: '', duration: 60, objectives: '', ageGroup: 'Adults' })
+    const [ formData, setFormData ] = useState({ topic: '', level: '', duration: 60, objectives: '', ageGroup: '' })
     const [ isLoading, setIsLoading ] = useState(false)
 
     const router = useRouter()
@@ -120,6 +120,7 @@ const Plan = () => {
                                 className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
                                 required
                             >
+                                <option value="">Select an Age Group</option>
                                 <option value="kindergarten">Kindergarten</option>
                                 <option value="kids">Kids</option>
                                 <option value="teens">Teens</option>

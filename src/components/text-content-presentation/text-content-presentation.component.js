@@ -89,7 +89,7 @@ const TextContentPresentationComponent = ({mdContentUrl, title}) => {
 
     return (
         <div className="relative border p-4 rounded-md shadow-sm bg-white mb-7">
-            <h2 className="text-center text-xl font-semibold bg-gray-100 p-2 rounded border-b border-gray-300" >
+            <h2 className="text-center text-xl font-semibold bg-gray-100 p-2 rounded border-b border-gray-300 mb-5" >
                 {title}
             </h2>
 
