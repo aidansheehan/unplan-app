@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
     }, [router])
 
     return (
-<aside className={`bg-gray-200 md:bg-blue-600 flex mt-[var(--header-height)] flex-col justify-between fixed inset-x-0 md:inset-y-0 h-[calc(100%-var(--header-height)-var(--footer-height))] md:h-auto w-full md:w-[var(--sidebar-width)] z-5 ${isNavOpen ? 'flex' : 'hidden'} md:flex`}>
+<aside className={`bg-gray-200 md:bg-blue-600 flex mt-[var(--header-height)] flex-col justify-between fixed inset-x-0 md:inset-y-0 h-[calc(100%-var(--header-height))] md:h-auto w-full md:w-[var(--sidebar-width)] z-10 ${isNavOpen ? 'flex' : 'hidden'} md:flex`}>
   <nav className="flex-grow">
     <ul className="space-y-4 h-full flex flex-col justify-center">
       {navItems.map(item => (
