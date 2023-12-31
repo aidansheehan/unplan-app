@@ -20,8 +20,6 @@ export default async function handler(req, res) {
             text: feedback
         }
 
-        console.log('HELLO WORLD')
-
         try {
             await transporter.sendMail(mailOptions)
             res.status(200).json({ message: 'Feedback sent' })
