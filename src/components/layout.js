@@ -43,7 +43,7 @@ const Layout = ({ children, title }) => {
   const toggleNav = () => setIsNavOpen(!isNavOpen);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen relative">
       <header className="bg-blue-500 text-white h-[var(--header-height)] flex justify-between items-center pl-4 pr-4 text-2xl fixed w-full z-10">
         <span className="font-bold font-permanent-marker">{APP_TITLE}</span>
         <button className="p-2 md:hidden" onClick={toggleNav} >
@@ -58,7 +58,7 @@ const Layout = ({ children, title }) => {
         {children}
       </main>
 
-      <footer className="h-[var(--footer-height)] text-center bg-gray-200 flex justify-center items-center fixed w-full bottom-0 z-10">
+      <footer className="h-[var(--footer-height)] text-center bg-gray-200 flex justify-center items-center absolute w-full bottom-0 z-10">
         © 2023 Aidan Sheehan
       </footer>
     </div>
