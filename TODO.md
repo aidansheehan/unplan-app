@@ -24,10 +24,12 @@
 [x] Fix landscape menu broken
 [x] Fix / standardize lesson lib + your lessons layout
 [x] Add padding to top of text display components so text not flush with top.
-[ ] Error handling
-[ ] Age group should also demand user selction like level for consistent UX
+[x] Error handling
+[x] Age group should also demand user selction like level for consistent UX
 
 ### Extra
+[ ] Improve load screen - can handle lesson plan + mats seperately, then display a green lesson plan created! generating materials ... for user experience of PROGRESS. Maybe also implement a TIMEOUT and display error screen if it takes like a minute?
+[ ] Should maybe have checkbox 'generate handout activities' so users can decide if they want them or not?
 [ ] Implement star rating for lesson plans, save ratings to server too
 [ ] Implement a dialog to request a second lesson plan - user can write their probs with lesson plan 1, generate a second, then choose which of the two plans to proceed with (for mats generation)
 [ ] Animate header menu (mobile)

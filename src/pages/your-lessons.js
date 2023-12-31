@@ -2,9 +2,12 @@ import Layout from "@/components/layout";
 import LessonsGrid from "@/components/lessons-grid.component";
 import LoadingSpinner from "@/components/loading-spinner";
 import SearchBarComponent from "@/components/search-bar.component";
+import { useError } from "@/context/error.context";
 import useLessons from "@/hooks/use-lessons.hook";
 
 const YourLessons = () => {
+
+    const { handleError } = useError()
 
     //Function to fetch user's lessons
     const fetchYourLessons = async () => {
@@ -12,6 +15,7 @@ const YourLessons = () => {
         const lessonIdsQuery = storedLessonIds.join(',')
         const res = await fetch(`/api/get-lessons?ids=${lessonIdsQuery}`)
         if (!res.ok) {
+            handleError(res.status)
             throw new Error(`Failed to fetch lessons, status: ${res.status}`)
         }
         return res.json()

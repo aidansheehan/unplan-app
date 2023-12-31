@@ -4,8 +4,6 @@ import { db } from "../../../firebaseConfig"
 export default async function handler(req, res) {
     try {
 
-        console.log('req query: ', req.query)
-
         // Check if 'public' query param exists to fetch public lessons
         if (req.query.public === 'true') {
             const publicLessonsQuery = query(collection(db, 'lessons'), where('public', '==', true));
@@ -14,7 +12,6 @@ export default async function handler(req, res) {
                 id: doc.id,
                 ...doc.data()
             }));
-            console.log('Public Lessons: ', publicLessons)
             res.status(200).json(publicLessons);
             return;
         }
