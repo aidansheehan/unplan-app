@@ -29,10 +29,9 @@ const TextContentPresentationComponent = ({mdContentUrl, title}) => {
             <html>
             <head>
               <title>Lesson Plan</title>
-              <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
               <style>
                 body {
-                  font-family: 'Roboto', sans-serif;
+                  font-family: 'Arial', sans-serif;
                   margin: 20px;
                   line-height: 1.6;
                   margin: 30px;
@@ -54,10 +53,8 @@ const TextContentPresentationComponent = ({mdContentUrl, title}) => {
         const printWindow = window.open(url)
         
         printWindow.onload = () => {
-            setTimeout(() => {
                 printWindow.print() //Trigger the print dialog
                 URL.revokeObjectURL(url)
-            }, 1000)
         }
     }
 

@@ -21,7 +21,7 @@ import { useEffect, useState } from "react";
     <ul className="space-y-4 h-full flex flex-col justify-center">
       {navItems.map(item => (
         <li key={item.href} className={`rounded-lg text-black md:text-white ${activePage === item.href ? 'bg-orange-500 md:bg-blue-700' : 'md:hover:bg-blue-500'} flex items-center justify-center md:justify-start text-center md:text-left`}>
-          <Link href={item.href} className="flex items-center md:justify-start w-full p-3">
+          <Link href={item.href} className="font-bree flex items-center md:justify-start w-full p-3">
             <FontAwesomeIcon icon={item.icon} fixedWidth />
             <span className="text-lg ml-2">{item.text}</span>
           </Link>

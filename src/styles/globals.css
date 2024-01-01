@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  font-family: 'Roboto', Helvetica, Arial, sans-serif;
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
   color: #333; /* Text color */
   line-height: 1.6; /* Line height for better readability */
 

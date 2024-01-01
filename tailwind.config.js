@@ -13,7 +13,12 @@ module.exports = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       fontFamily: {
-        'permanent-marker': ['Permanent Marker', 'cursive'], // Add this line
+        'permanent-marker': [ 'Permanent Marker', 'monospace'],
+        'bree': ['Bree Serif', 'serif']
+
+      },
+      boxShadow: {
+        'bottom': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
       }
     },
   },
