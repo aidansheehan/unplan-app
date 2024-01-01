@@ -11,7 +11,7 @@ export default function Home() {
           <section className="bg-blue-100 text-gray-800 px-4 py-12 md:py-24 w-full">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-5xl md:text-6xl font-bold text-center leading-tight text-blue-900 font-bree">
-            Free, Effortless Lesson Planning for ESL Teachers.
+            Free, Effortless Lesson Planning for ESL Teachers
           </h2>
           <p className="mt-8 md:mt-12 text-lg md:text-xl text-center text-blue-700">
             Create custom lesson plans and activities in seconds.

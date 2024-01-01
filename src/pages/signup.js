@@ -56,12 +56,12 @@ const Signup = () => {
         <Layout >
             <div className="w-full h-full p-4 flex justify-center items-center">
                 <div className="bg-blue-100 rounded-lg p-6 shadow-lg w-full max-w-md leading-7 ">
-                    <h2 className="text-2xl font-bold text-blue-900 mb-4">Join Our Mailing List</h2>
+                    <h2 className="text-2xl font-bold text-blue-900 mb-4 font-bree">Join Our Mailing List</h2>
                     <ul className="text-lg text-blue-700 list-disc list-inside mb-6 ">
                         <li >Be the first to know about new and exciting features as we roll them out.</li>
                         <li className="mt-2">Engage with us and play a crucial role in creating innovative tools that transform ESL teaching.</li>
                     </ul>
-                    <p className="text-lg text-blue-700 mb-6 font-bold">
+                    <p className="font-bree text-lg text-blue-700 mb-6 font-bold">
                         Subscribe now and let’s shape the future of ESL education together.
                     </p>
                     {/* Display the form or the success message */}

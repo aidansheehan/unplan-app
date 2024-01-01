@@ -33,7 +33,7 @@ const Feedback = () => {
     }
 
     if (isSent) return (
-        <Layout title='Feedback'>
+        <Layout >
             <div className="flex flex-col items-center justify-center">
                 <p>Thanks for your feedback!</p>
                 <Link href='/' className="text-blue-500 hover:underline">
@@ -44,7 +44,7 @@ const Feedback = () => {
     )
 
     return (
-        <Layout title='Give Feedback'>
+        <Layout >
             <div className="flex flex-col items-center justify-center w-full h-full">
                 <form 
                     onSubmit={handleSubmit}
