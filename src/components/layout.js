@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faClipboardList, faBook, faBars, faTimes, faScroll, faComments, faChalkboardTeacher } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faClipboardList, faBook, faBars, faTimes, faScroll, faComments, faChalkboardTeacher, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import SidebarComponent from './sidebar-component';
 import ErrorDisplayComponent from './error-display.component';
 
@@ -29,6 +29,11 @@ const NAV_ITEMS = [
     href: '/feedback',
     icon: faComments,
     text: 'Feedback'
+  },
+  {
+    href: '/signup',
+    icon: faEnvelope,
+    text: 'Join Mailing List'
   },
   {
     href: '/terms',
