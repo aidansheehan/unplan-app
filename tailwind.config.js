@@ -13,7 +13,9 @@ module.exports = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       fontFamily: {
-        'permanent-marker': ['Permanent Marker', 'cursive'], // Add this line
+        'permanent-marker': ['Permanent Marker', 'cursive'],
+        'bree': ['Bree Serif', 'serif']
+
       }
     },
   },
