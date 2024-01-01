@@ -50,7 +50,7 @@ const Layout = ({ children, title }) => {
 
   return (
     <div className="flex flex-col min-h-screen relative">
-      <header className="bg-blue-500 text-white h-[var(--header-height)] flex justify-between items-center pl-4 pr-4 text-2xl fixed w-full z-10">
+      <header className="bg-blue-500 text-white h-[var(--header-height)] flex justify-between items-center pl-4 pr-4 text-2xl fixed w-full z-10 shadow-bottom">
         <span className="font-bold font-permanent-marker">{APP_TITLE}</span>
         <button className="p-2 md:hidden" onClick={toggleNav} >
           <FontAwesomeIcon icon={isNavOpen ? faTimes : faBars} className="text-white" />
