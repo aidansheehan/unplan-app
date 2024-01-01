@@ -64,7 +64,7 @@ const Layout = ({ children, title }) => {
         {children}
       </main>
 
-      <footer className="h-[var(--footer-height)] text-center bg-gray-200 flex justify-center items-center absolute w-full bottom-0 z-20">
+      <footer className="h-[var(--footer-height)] text-center bg-gray-200 flex justify-center items-center absolute w-full bottom-0 z-20 border-t border-gray-300">
         © 2023 Aidan Sheehan
       </footer>
       <ErrorDisplayComponent />
