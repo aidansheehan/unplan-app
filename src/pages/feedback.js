@@ -34,13 +34,25 @@ const Feedback = () => {
 
     if (isSent) return (
         <Layout title='Feedback'>
-            <div className="flex flex-col items-center justify-center">
-                <p>Thanks for your feedback!</p>
-                <Link href='/' className="text-blue-500 hover:underline">
-                    Home
+        <div className="flex flex-col items-center justify-center w-full h-full">
+            <div className="w-full max-w-md p-6 mx-auto bg-white rounded shadow-md">
+                <h2 className="text-lg font-semibold text-center">Thank You!</h2>
+                <p className="text-sm text-center mt-4">Your feedback is invaluable to us. We're constantly listening to our users and implementing your ideas to improve our platform.</p>
+                <p className="text-sm text-center mt-2">Sign up for our mailing list to see how your suggestions are shaping our future updates!</p>
+
+                <div className="mt-6 text-center">
+                    <Link href="/signup" className="inline-block bg-orange-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors duration-300">
+                        Sign Up for Updates
+                    </Link>
+                </div>
+            </div>
+            <div className="mt-4">
+                <Link href="/" className="text-blue-500 hover:underline">
+                    Back to Home
                 </Link>
             </div>
-        </Layout>
+        </div>
+    </Layout>
     )
 
     return (
