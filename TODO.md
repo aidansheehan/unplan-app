@@ -8,10 +8,10 @@
         [x] Find lesson by ID in db, retrieve handout and plan markdown, display
             [x] Fix crazy long page load times
                 [x] Implement placeholder content for LP + Handouts, disable print btn while loading
-[ ] Implement a LESSON LIBRARY
+[x] Implement a LESSON LIBRARY
     [x] Lessons displayed in lesson library, click to link to lessons
     [x] Only display lessons with public flag
-    [ ] Add example lessons
+    [x] Add example lessons
     [x] Implement search bar
 [x] Feedback page
 [x] Implement basic site navigation
@@ -31,6 +31,8 @@
 [x] Add padding to top of text display components so text not flush with top.
 [x] Error handling
 [x] Age group should also demand user selction like level for consistent UX
+[ ] Tighten firebase rules as much as possible to prevent abuse
+[ ] Make Public
 
 ### Immediate Extra
 [ ] Improve load screen - can handle lesson plan + mats seperately, then display a green lesson plan created! generating materials ... for user experience of PROGRESS. Maybe also implement a TIMEOUT and display error screen if it takes like a minute?
