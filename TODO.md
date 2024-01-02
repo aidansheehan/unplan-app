@@ -35,8 +35,12 @@
 [?] fix feedback form not working (use brevo smtp client?)
 [ ] Windows dt issues
     [ ] Scroll on nav - investigate, either use custom scroll or remove scroll (what do other apps with sidebars do?)
-    [ ] Header overlap main scroll
+    [x] Header overlap main scroll
     [ ] Maybe smaller main text on  homepage by 1? Set up A /B and ask mum thoughts
+[ ] Browser compat. issues
+    [x] Fix overscroll ugly
+    [x] Prevent overscroll where possible
+    [ ] Safari dt can't see lesson cards
 [ ] Tighten firebase rules as much as possible to prevent abuse
 [ ] Make Public
 

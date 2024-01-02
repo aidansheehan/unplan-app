@@ -6,6 +6,7 @@ body {
   font-family: 'Montserrat', Helvetica, Arial, sans-serif;
   color: #333; /* Text color */
   line-height: 1.6; /* Line height for better readability */
+  /* overscroll-behavior-y: none; */
 
 }
 
@@ -24,34 +25,14 @@ body {
   grid-template-columns: 200px 1fr; /* Sidebar width and content */
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overscroll-behavior-y: none;
+}
+
 html {
-  overflow: hidden;
-  height: 100%;
-}
-
-body {
-  overflow: auto;
-  height: 100%;
-}
-
-/* Style for all scrollbars in the application */
-::-webkit-scrollbar {
-  width: 10px; /* Adjust scrollbar width */
-  height: 10px; /* Adjust scrollbar height for horizontal scrollbars */
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: #f0f0f0; /* Light gray track */
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #d0d0d0; /* Slightly darker gray for the thumb */
-  border-radius: 5px; /* Rounded corners for the thumb */
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #b0b0b0; /* Even darker on hover for better visibility */
+  background: linear-gradient(to top, #3b82f6 0%, #3b82f6 50%, #e5e7eb 50%, #e5e7eb 100%);
 }
