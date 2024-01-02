@@ -36,11 +36,11 @@
 [ ] Windows dt issues
     [ ] Scroll on nav - investigate, either use custom scroll or remove scroll (what do other apps with sidebars do?)
     [x] Header overlap main scroll
-    [ ] Maybe smaller main text on  homepage by 1? Set up A /B and ask mum thoughts
-[ ] Browser compat. issues
+    [ ] Maybe smaller main text on  homepage by 1? Set up A /B and ask mum thoughts + possible smaller text on nav text
+[x] Browser compat. issues
     [x] Fix overscroll ugly
     [x] Prevent overscroll where possible
-    [ ] Safari dt can't see lesson cards
+    [x] Safari dt can't see lesson cards
 [ ] Tighten firebase rules as much as possible to prevent abuse
 [ ] Make Public
 
