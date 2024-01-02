@@ -1,10 +1,13 @@
 import nodemailer from 'nodemailer'
 
+// Create a transporter using Brevo SMTP
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp-relay.brevo.com',
+    port: 587,
+    secure: false,
     auth: {
         user: process.env.NEXT_PUBLIC_SEND_EMAIL,
-        pass: process.env.NEXT_PUBLIC_SEND_EMAIL_PASS
+        pass: process.env.NEXT_PUBLIC_BREVO_SMTP_KEY
     }
 })
 
@@ -13,14 +16,17 @@ export default async function handler(req, res) {
     if (req.method === 'POST') {
         const feedback = req.body.feedback;
 
+        // Configure mail options
         const mailOptions = {
-            from: process.env.NEXT_PUBLIC_SEND_EMAIL,
-            to: process.env.NEXT_PUBLIC_TARGET_EMAIL,
+            from: `"Easy Plan ESL" <${process.env.NEXT_PUBLIC_SEND_EMAIL}>`,
+            to: process.env.NEXT_PUBLIC_SEND_EMAIL,
             subject: 'New Feedback [EASY PLAN ESL]',
             text: feedback
         }
 
         try {
+
+            //Send mail
             await transporter.sendMail(mailOptions)
             res.status(200).json({ message: 'Feedback sent' })
         } catch (error) {

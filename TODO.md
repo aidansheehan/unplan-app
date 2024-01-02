@@ -31,7 +31,8 @@
 [x] Add padding to top of text display components so text not flush with top.
 [x] Error handling
 [x] Age group should also demand user selction like level for consistent UX
-[?] Fix signup, feedback forms not working (may be due to lack of env variables in vercel?)
+[x] Fix signup
+[?] fix feedback form not working (use brevo smtp client?)
 [ ] Windows dt issues
     [ ] Scroll on nav - investigate, either use custom scroll or remove scroll (what do other apps with sidebars do?)
     [ ] Header overlap main scroll
