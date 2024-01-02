@@ -31,6 +31,11 @@
 [x] Add padding to top of text display components so text not flush with top.
 [x] Error handling
 [x] Age group should also demand user selction like level for consistent UX
+[?] Fix signup, feedback forms not working (may be due to lack of env variables in vercel?)
+[ ] Windows dt issues
+    [ ] Scroll on nav - investigate, either use custom scroll or remove scroll (what do other apps with sidebars do?)
+    [ ] Header overlap main scroll
+    [ ] Maybe smaller main text on  homepage by 1? Set up A /B and ask mum thoughts
 [ ] Tighten firebase rules as much as possible to prevent abuse
 [ ] Make Public
 
