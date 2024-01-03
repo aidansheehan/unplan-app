@@ -16,6 +16,8 @@
     "cors": "^2.8.5",
     "firebase-admin": "^11.8.0",
     "firebase-functions": "^4.3.1",
+    "firebase-functions-rate-limiter": "^3.9.1",
+    "nodemailer": "^6.9.8",
     "openai": "^4.24.1",
     "uuid": "^9.0.1"
   },

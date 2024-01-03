@@ -33,15 +33,22 @@
 [x] Age group should also demand user selction like level for consistent UX
 [x] Fix signup
 [?] fix feedback form not working (use brevo smtp client?)
-[ ] Windows dt issues
-    [ ] Scroll on nav - investigate, either use custom scroll or remove scroll (what do other apps with sidebars do?)
+[x] Windows dt issues
+    [x] Scroll on nav - investigate, either use custom scroll or remove scroll (what do other apps with sidebars do?)
     [x] Header overlap main scroll
-    [ ] Maybe smaller main text on  homepage by 1? Set up A /B and ask mum thoughts + possible smaller text on nav text
+    [x] Maybe smaller main text on  homepage by 1? Set up A /B and ask mum thoughts + possible smaller text on nav text
 [x] Browser compat. issues
     [x] Fix overscroll ugly
     [x] Prevent overscroll where possible
     [x] Safari dt can't see lesson cards
-[ ] Tighten firebase rules as much as possible to prevent abuse
+[ ] Prevent abuse / 'Security'
+    [x] Implement rate limiting on openAI cloud functions at 1000 calls / day w/ email notification if triggered
+    [ ] Validate cloud function input
+        [ ] Reject if incorrect
+        [ ] Impose size limits to prevent massive inputs (Implement on BE & FE) 
+    [ ] Use CORS to prevent requests from other origins
+    [ ] 
+[ ] Investigate improve markdown file load times?
 [ ] Make Public
 
 ### Immediate Extra

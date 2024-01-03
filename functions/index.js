@@ -3,14 +3,79 @@ const admin = require("firebase-admin");
 const cors = require("cors")({ origin: true });
 const OpenAI = require("openai");
 const { v4: uuidv4 } = require('uuid');
+const { FirebaseFunctionsRateLimiter } = require("firebase-functions-rate-limiter")
+const nodemailer = require("nodemailer")
 
 admin.initializeApp();
 const db = admin.firestore();
 const storage = admin.storage();
 
+//Create a transporter using Brevo SMTP
+const transporter = nodemailer.createTransport({
+  host: 'smtp-relay.brevo.com',
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.MY_EMAIL,
+    pass: process.env.BREVO_SMTP_KEY
+  }
+})
+
+/**
+ * Function to send an email to myself if rate limit exceeded
+ */
+const sendRateLimitEmail = async (processName) => {
+
+  //Get current timestamp
+  const now = new Date()
+
+  // Format the date and time
+  const formattedTimestamp = now.getFullYear() + '-' +
+  String(now.getMonth() + 1).padStart(2, '0') + '-' + // Months are zero-indexed
+  String(now.getDate()).padStart(2, '0') + ' ' +
+  String(now.getHours()).padStart(2, '0') + ':' +
+  String(now.getMinutes()).padStart(2, '0') + ':' +
+  String(now.getSeconds()).padStart(2, '0')
+
+  //Configure mail options
+  const mailOptions = {
+    from: `"RATE LIMITER" <${process.env.MY_EMAIL}>`,
+    to: process.env.MY_EMAIL,
+    subject: 'RATE LIMIT EXCEEDED [EASY PLAN ESL]',
+    text: `Rate limit for ${processName} exceeded at ${formattedTimestamp}`
+  }
+
+  //Send email
+  await transporter.sendMail(mailOptions)
+}
+
+/**
+ * Generate lesson plan rate limiter
+ */
+const gLPLimiter = FirebaseFunctionsRateLimiter.withFirestoreBackend({
+  name: 'generate_lesson_plan_rate_limiter',
+  periodSeconds: 86400,
+  maxCalls: 1000,
+}, db)
+
 exports.generateLessonPlan = functions.https.onRequest(async (req, res) => {
   cors(req, res, async () => {
     if (req.method === 'POST') {
+
+      //Check if rate limiter exceeded
+      const isLimited = await gLPLimiter.isQuotaExceededOrRecordUsage()
+
+      //If rate limit exceeded
+      if (isLimited) {
+        
+        //Send warning email
+        await sendRateLimitEmail('generateLessonPlan')
+
+        //Return error
+        res.status(429).send('Too many requests, please try again later')
+        return
+      }
+
       const openai = new OpenAI();
       const messages = [{ role: "system", content: 'You are a CELTA trained ESL lesson planning assistant. Create a lesson plan for the user\'s class. USE MARKDOWN' }];
 
@@ -48,20 +113,37 @@ exports.generateLessonPlan = functions.https.onRequest(async (req, res) => {
   });
 });
 
+/**
+ * createStudentHandout rate limiter
+ */
+const cSHLimiter = FirebaseFunctionsRateLimiter.withFirestoreBackend({
+  name: 'create_student_handout_rate_limiter',
+  periodSeconds: 86400,
+  maxCalls: 1000
+}, db)
+
 exports.createStudentHandout = functions.https.onRequest(async (req, res) => {
   cors(req, res, async () => {
-    // if (req.method === 'POST')
+
     try {
 
-        console.log("Received request:", {
-            method: req.method,
-            headers: req.headers,
-            origin: req.headers.origin
-          });
+      if (req.method !== 'POST') {
+        throw new Error(`Method ${req.method} Not Allowed`);
+      }
 
-          if (req.method !== 'POST') {
-            throw new Error(`Method ${req.method} Not Allowed`);
-          }
+      //Check if rate limiter exceeded
+      const isLimited = await cSHLimiter.isQuotaExceededOrRecordUsage()
+
+      //If rate limit exceeded
+      if (isLimited) {
+
+        //Send warning email
+        await sendRateLimitEmail('createStudentHandout')
+
+        //Return error
+        res.status(429).send('Too many requests, please try again later')
+        return
+      }
 
       const openai = new OpenAI();
       const { level, lessonPlan, lessonPlanId } = req.body;
