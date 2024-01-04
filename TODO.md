@@ -43,9 +43,10 @@
     [x] Safari dt can't see lesson cards
 [ ] Prevent abuse / 'Security'
     [x] Implement rate limiting on openAI cloud functions at 1000 calls / day w/ email notification if triggered
-    [ ] Validate cloud function input
-        [ ] Reject if incorrect
-        [ ] Impose size limits to prevent massive inputs (Implement on BE & FE) 
+    [x] Validate cloud function input
+        [x] Reject if incorrect
+        [x] Impose size limits to prevent massive inputs (Implement on BE & FE) 
+        [x] Implement on FE too
     [ ] Use CORS to prevent requests from other origins
     [ ] 
 [ ] Investigate improve markdown file load times?
