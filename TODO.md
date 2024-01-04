@@ -49,6 +49,7 @@
     [ ] Use CORS to prevent requests from other origins
     [ ] 
 [ ] Investigate improve markdown file load times?
+[ ] Test, get ppl in different locations to test
 [ ] Make Public
 
 ### Immediate Extra
