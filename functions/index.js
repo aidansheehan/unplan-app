@@ -85,7 +85,6 @@ exports.generateLessonPlan = functions.https.onRequest(async (req, res) => {
       // Validate inputs
       if (typeof topic !== 'string' || topic.length > 50 ||
             typeof level !== 'string' || level.length > 20 ||
-              typeof duration !== 'number' ||
                 typeof objectives !== 'string' || objectives.length > 400 ||
                   typeof ageGroup !== 'string' || ageGroup.length > 20) {
           res.status(400).send('Invalid input parameters');
