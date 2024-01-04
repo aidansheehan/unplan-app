@@ -96,6 +96,7 @@ const Plan = () => {
                             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
                             placeholder="e.g., Irregular Verbs, Food Vocabulary, Past Tense"
                             required
+                            maxLength={50}
                         />
                         </div>
                         <div>
@@ -176,6 +177,7 @@ const Plan = () => {
                             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
                             placeholder="e.g., Students can understand the use of present perfect tense, Students can order food in a restaurant"
                             required
+                            maxLength={400}
                         />
                         </div>
                         <div className="text-center">
