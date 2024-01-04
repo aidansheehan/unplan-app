@@ -1,10 +1,10 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-const cors = require("cors")({ origin: true });
 const OpenAI = require("openai");
 const { v4: uuidv4 } = require('uuid');
 const { FirebaseFunctionsRateLimiter } = require("firebase-functions-rate-limiter")
 const nodemailer = require("nodemailer")
+const cors = require("cors")({ origin: true });
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -79,7 +79,18 @@ exports.generateLessonPlan = functions.https.onRequest(async (req, res) => {
       const openai = new OpenAI();
       const messages = [{ role: "system", content: 'You are a CELTA trained ESL lesson planning assistant. Create a lesson plan for the user\'s class. USE MARKDOWN' }];
 
+      //Extract inputs
       const { topic, level, duration, objectives, ageGroup } = req.body;
+
+      // Validate inputs
+      if (typeof topic !== 'string' || topic.length > 50 ||
+            typeof level !== 'string' || level.length > 20 ||
+              typeof duration !== 'number' ||
+                typeof objectives !== 'string' || objectives.length > 400 ||
+                  typeof ageGroup !== 'string' || ageGroup.length > 20) {
+          res.status(400).send('Invalid input parameters');
+          return;
+      }
 
       messages.push({
         role: "user",
@@ -145,8 +156,17 @@ exports.createStudentHandout = functions.https.onRequest(async (req, res) => {
         return
       }
 
-      const openai = new OpenAI();
+      //Extract inputs
       const { level, lessonPlan, lessonPlanId } = req.body;
+
+      // Validate inputs
+      if (typeof level !== 'string' || level.length > 20 || 
+          typeof lessonPlan !== 'string' || lessonPlan.length > 10000 ) {
+            res.status(400).send('Invalid input parameters')
+            return;
+          }
+
+      const openai = new OpenAI();
 
       const messages = [
         { role: "system", content: `Create a student handout for this lesson. THE PROVIDED PLAN IS FOR THE TEACHER. CREATE THE STUDENT ACTIVITIES HANDOUT. USE MARKDOWN. USE SIMPLE, GRADED ENGLISH APPROPRIATE FOR ${level} students` },
