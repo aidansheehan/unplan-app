@@ -41,7 +41,7 @@
     [x] Fix overscroll ugly
     [x] Prevent overscroll where possible
     [x] Safari dt can't see lesson cards
-[ ] Prevent abuse / 'Security'
+[x] Prevent abuse / 'Security'
     [x] Implement rate limiting on openAI cloud functions at 1000 calls / day w/ email notification if triggered
     [x] Validate cloud function input
         [x] Reject if incorrect
@@ -49,13 +49,23 @@
         [x] Implement on FE too
     [ ] Use CORS to prevent requests from other origins
     [ ] 
-[ ] Investigate improve markdown file load times?
-[ ] Test, get ppl in different locations to test
+[ ] USER FLOW take user to mailing list sign up after feedback
 [ ] Make Public
+
+### Friends feedback
+[ ] Remove kindy
+[ ] Add class profile to initial form (can your students write? can your students read?) - AI will generate appropriate activities and exclude innapropriate activities for that particular class
+[ ] Make localStorage limitations clear to users
+[ ] Radio button to select generate handout -> button to generate handout
+[ ] ... pictures, visual stories
+[ ] ... Shared library of content with votes
+[ ] ... More specificity for ouput generation
 
 ### Immediate Extra
 [ ] Improve load screen - can handle lesson plan + mats seperately, then display a green lesson plan created! generating materials ... for user experience of PROGRESS. Maybe also implement a TIMEOUT and display error screen if it takes like a minute?
 [ ] Should maybe have checkbox 'generate handout activities' so users can decide if they want them or not? + 'Generate materials for this lesson' on other page
+[ ] Investigate improve markdown file load times?
+[ ] 
 
 ### Extra
 [ ] Implement star rating for lesson plans, save ratings to server too
