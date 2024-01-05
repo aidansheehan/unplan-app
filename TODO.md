@@ -48,10 +48,19 @@
         [x] Impose size limits to prevent massive inputs (Implement on BE & FE) 
         [x] Implement on FE too
 [ ] Implement basic activity generation so can test vs lesson planning as core VP
+    [x] Activity display page
     [ ] Activity generation cloud function
+        [x] Find sb who
+        [ ] Grammar / Vocabulary Worksheet
+        [ ] Reading Comprehension
+    [ ] Nav page
     [ ] Activity generation form
+        [ ] Find sb who
+        [ ] Grammar / Vocabulary Worksheet
+        [ ] Reading Comprehension
     [ ] Activity display page
-    [ ] Add to sidebar, move terms somewhere less intrusive to reduce clutter
+    [ ] Add to sidebar
+    [ ] Move terms somewhere less intrusive to reduce clutter
 [ ] Make Public
 
 ### Friends feedback

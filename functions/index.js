@@ -198,3 +198,59 @@ exports.createStudentHandout = functions.https.onRequest(async (req, res) => {
   
   );
 });
+
+exports.generateFindSomeoneWhoWorksheet = functions.https.onRequest(async (req, res) => {
+  cors(req, res, async () => {
+    if (req.method === 'POST') {
+      const openai = new OpenAI();
+
+      // Extract inputs
+      const { topic, level, numberOfItems, ageGroup } = req.body;
+
+      // Validate inputs
+      if (typeof topic !== 'string' || topic.length > 50 ||
+          typeof level !== 'string' || level.length > 20 ||
+          typeof numberOfItems !== 'number' || numberOfItems < 1 || numberOfItems > 20 ||
+          typeof ageGroup !== 'string' || ageGroup.length > 20) {
+        res.status(400).send('Invalid input parameters');
+        return;
+      }
+
+      //Construct messages
+      const messages = [{
+        role: "system",
+        content: `Generate content for a 'Find Someone Who' worksheet to be embedded in a Markdown file. The worksheet is for an ESL class about '${topic}', aimed at ${ageGroup} students at the ${level} level. It should contain ${numberOfItems} items. Create an HTML table with these items, ensuring each item has a brief description and space for students to write names and follow-up answers. The HTML table should be simple and suitable for embedding in a Markdown document.`
+      }];
+      
+      //Get GPT response
+      const completion = await openai.chat.completions.create({
+        messages: messages,
+        model: "gpt-3.5-turbo"
+      });
+
+      const { content } = completion.choices[0].message;
+
+      //Strip newLine & tab characters
+      const formattedContent = content.replace(/\n/g, '').replace(/\t/g, '')
+
+      //Generate a unique worksheet ID
+      const uniqueWorksheetId = uuidv4();
+
+      //Generate content ref
+      const contentRef = storage.bucket().file(`worksheets/findSomeoneWho/${uniqueWorksheetId}.md`);
+
+      //Save generated and formatted HTML table as markdown
+      await contentRef.save(formattedContent, { contentType: 'text/markdown' });
+
+      //Save metadata to firestore and get doc ref
+      const docRef = await admin.firestore().collection('activities').add({
+        topic, level, ageGroup, numberOfItems, activityName: 'Find Someone Who',
+        worksheetUrl: `worksheets/findSomeoneWho/${uniqueWorksheetId}.md`
+      });
+
+      res.status(200).json({ worksheetId: docRef.id });
+    } else {
+      res.status(405).send(`Method ${req.method} Not Allowed`);
+    }
+  });
+});
