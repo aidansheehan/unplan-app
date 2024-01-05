@@ -127,7 +127,6 @@ const Plan = () => {
                                 required
                             >
                                 <option value="">Select an Age Group</option>
-                                <option value="kindergarten">Kindergarten</option>
                                 <option value="kids">Kids</option>
                                 <option value="teens">Teens</option>
                                 <option value="adults">Adults</option>

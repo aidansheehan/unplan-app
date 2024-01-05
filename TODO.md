@@ -54,6 +54,8 @@
 
 ### Friends feedback
 [ ] Remove kindy
+    [x] From form
+    [ ] From library
 [ ] Add class profile to initial form (can your students write? can your students read?) - AI will generate appropriate activities and exclude innapropriate activities for that particular class
 [ ] Make localStorage limitations clear to users
 [ ] Radio button to select generate handout -> button to generate handout
