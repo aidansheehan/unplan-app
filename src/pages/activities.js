@@ -2,6 +2,28 @@ import { faBookOpen, faFileAlt, faUsers } from "@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Layout from "@/components/layout"
 import Link from "next/link"
+import ActivityLinkComponent from "@/components/activity-link.component"
+
+const ACTIVITIES = [
+    {
+        href: '/create-worksheet',
+        icon: faFileAlt,
+        title: 'Create Worksheet',
+        description: 'Design interactive grammar and vocabulary worksheets.'
+    },
+    {
+        href: '/create-findSbWho',
+        icon: faUsers,
+        title: 'Create Find Someone Who',
+        description: 'Engage students in conversational activities.'
+    },
+    {
+        href: '/create-reading-task',
+        icon: faBookOpen,
+        title: 'Create Reading Comprehension',
+        description: 'Craft exercises to improve reading skills'
+    }
+]
 
 /**
  * Page to select a new activity to create
@@ -18,38 +40,31 @@ const Activities = () => {
   </div>
 
   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-    {/* Worksheet Button */}
-    <Link href='create-worksheet' className="border border-gray-300 rounded-lg shadow-sm hover:shadow-md p-4 hover:border-gray-400">
-      <div className="flex items-center justify-center mb-3">
-        <div className="rounded-full bg-gray-200 p-2">
-          <FontAwesomeIcon icon={faFileAlt} className="text-blue-500" />
-        </div>
-      </div>
-      <h3 className="text-lg font-semibold text-center mb-1">Create Worksheet</h3>
-      <p className="text-sm text-gray-600 text-center">Design interactive worksheets for ESL learning.</p>
-    </Link>
+        {
+            ACTIVITIES.map((activity, idx) => {
 
-    {/* Find Someone Who Button */}
-    <Link href='create-findSbWho' className="border border-gray-300 rounded-lg shadow-sm hover:shadow-md p-4 hover:border-gray-400">
-      <div className="flex items-center justify-center mb-3">
-        <div className="rounded-full bg-gray-200 p-2">
-          <FontAwesomeIcon icon={faUsers} className="text-green-500" />
-        </div>
-      </div>
-      <h3 className="text-lg font-semibold text-center mb-1">Create Find Someone Who</h3>
-      <p className="text-sm text-gray-600 text-center">Engage students in conversational activities.</p>
-    </Link>
+                //Destructure activity
+                const { href, icon, title, description } = activity
 
-    {/* Reading Comprehension Button */}
-    <Link href='create-reading-task' className="border border-gray-300 rounded-lg shadow-sm hover:shadow-md p-4 hover:border-gray-400">
-      <div className="flex items-center justify-center mb-3">
-        <div className="rounded-full bg-gray-200 p-2">
-          <FontAwesomeIcon icon={faBookOpen} className="text-red-500" />
-        </div>
-      </div>
-      <h3 className="text-lg font-semibold text-center mb-1">Create Reading Comprehension</h3>
-      <p className="text-sm text-gray-600 text-center">Craft exercises to improve reading skills.</p>
-    </Link>
+                const isEvenIndex   = !(idx % 2)                                            //Check index odd / even
+                const bgColor       = isEvenIndex ? 'bg-orange-100' : 'bg-green-100'        //Assign bg color
+                const iconColor     = isEvenIndex ? 'text-orange-500' : 'text-green-500'    //Assign icon color
+
+                return (
+                    <ActivityLinkComponent 
+                        href={href}
+                        icon={icon}
+                        title={title}
+                        description={description}
+                        bgColor={bgColor}
+                        iconColor={iconColor}
+                        key={idx}
+                    />
+                )
+
+            })
+        }
+
   </div>
 
   {/* TODO here should be library of activities created by user */}

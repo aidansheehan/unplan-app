@@ -53,7 +53,7 @@
         [x] Find sb who
         [ ] Grammar / Vocabulary Worksheet
         [ ] Reading Comprehension
-    [ ] Nav page
+    [x] Nav page
     [ ] Activity generation form
         [ ] Find sb who
         [ ] Grammar / Vocabulary Worksheet
