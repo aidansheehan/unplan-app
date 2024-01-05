@@ -49,7 +49,6 @@
         [x] Implement on FE too
     [ ] Use CORS to prevent requests from other origins
     [ ] 
-[ ] USER FLOW take user to mailing list sign up after feedback
 [ ] Make Public
 
 ### Friends feedback
@@ -67,7 +66,6 @@
 [ ] Improve load screen - can handle lesson plan + mats seperately, then display a green lesson plan created! generating materials ... for user experience of PROGRESS. Maybe also implement a TIMEOUT and display error screen if it takes like a minute?
 [ ] Should maybe have checkbox 'generate handout activities' so users can decide if they want them or not? + 'Generate materials for this lesson' on other page
 [ ] Investigate improve markdown file load times?
-[ ] 
 
 ### Extra
 [ ] Implement star rating for lesson plans, save ratings to server too
