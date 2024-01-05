@@ -47,8 +47,11 @@
         [x] Reject if incorrect
         [x] Impose size limits to prevent massive inputs (Implement on BE & FE) 
         [x] Implement on FE too
-    [ ] Use CORS to prevent requests from other origins
-    [ ] 
+[ ] Implement basic activity generation so can test vs lesson planning as core VP
+    [ ] Activity generation cloud function
+    [ ] Activity generation form
+    [ ] Activity display page
+    [ ] Add to sidebar, move terms somewhere less intrusive to reduce clutter
 [ ] Make Public
 
 ### Friends feedback
@@ -64,8 +67,9 @@
 
 ### Immediate Extra
 [ ] Improve load screen - can handle lesson plan + mats seperately, then display a green lesson plan created! generating materials ... for user experience of PROGRESS. Maybe also implement a TIMEOUT and display error screen if it takes like a minute?
-[ ] Should maybe have checkbox 'generate handout activities' so users can decide if they want them or not? + 'Generate materials for this lesson' on other page
+[ ] checkbox 'generate handout activities' so users can decide if they want them or not? + 'Generate materials for this lesson' on other page to improve load times & decrease API costs
 [ ] Investigate improve markdown file load times?
+[ ] Use CORS to prevent requests from other origins
 
 ### Extra
 [ ] Implement star rating for lesson plans, save ratings to server too
