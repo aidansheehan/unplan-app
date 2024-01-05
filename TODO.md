@@ -61,6 +61,7 @@
     [ ] Activity display page
     [ ] Add to sidebar
     [ ] Move terms somewhere less intrusive to reduce clutter
+    [ ] Make display work (see below, especially for tables)
 [ ] Investigate using an iframe for better text-content-presentation-component display (closer to what will be printed) - can you make it a4 size?
 [ ] Make Public
 
