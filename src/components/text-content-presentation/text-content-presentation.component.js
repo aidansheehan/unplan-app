@@ -28,7 +28,7 @@ const TextContentPresentationComponent = ({mdContentUrl, title}) => {
             <!DOCTYPE html>
             <html>
             <head>
-              <title>Lesson Plan</title>
+              <title>${title}</title>
               <style>
                 body {
                   font-family: 'Arial', sans-serif;
@@ -39,6 +39,43 @@ const TextContentPresentationComponent = ({mdContentUrl, title}) => {
                   body {
                     margin: 30px;
                   }
+
+                /* Style for all tables */
+                table {
+                    width: 100%; /* Full width */
+                    border-collapse: collapse; /* Collapses borders between table cells */
+                    table-layout: fixed; /* Fixed table layout for equal spacing */
+                    word-wrap: break-word; /* Ensures text wraps in cells */
+                }
+
+                /* Style for table headers and cells */
+                th, td {
+                    border: 1px solid #ddd; /* Light grey border */
+                    padding: 8px; /* Add space around content */
+                    text-align: left; /* Align text to the left */
+                    vertical-align: top; /* Align content to the top of the cell */
+                }
+
+                /* Ensure that content in cells can wrap and that there is space for user input */
+                th, td {
+                    min-width: 120px; /* Minimum width for columns */
+                    max-width: 1fr; /* Allows the column to take up the fraction of the table width */
+                }
+
+                /* Style for cells where users will need to write in */
+                td {
+                    height: 50px; /* Fixed height for input cells */
+                }
+
+                /* Additional styling for printing */
+                @media print {
+                    th, td {
+                    padding: 15px; /* Increase padding for better readability in print */
+                    height: auto; /* Auto height for flexibility in print */
+                    }
+                }
+
+
               </style>
             </head>
                 <body>

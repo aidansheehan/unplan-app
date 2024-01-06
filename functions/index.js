@@ -205,22 +205,43 @@ exports.generateFindSomeoneWhoWorksheet = functions.https.onRequest(async (req, 
       const openai = new OpenAI();
 
       // Extract inputs
-      const { topic, level, numberOfItems, ageGroup } = req.body;
+      const { topic, level, numberOfItems, ageGroup, objectives } = req.body;
 
       // Validate inputs
       if (typeof topic !== 'string' || topic.length > 50 ||
           typeof level !== 'string' || level.length > 20 ||
           typeof numberOfItems !== 'number' || numberOfItems < 1 || numberOfItems > 20 ||
-          typeof ageGroup !== 'string' || ageGroup.length > 20) {
+          typeof ageGroup !== 'string' || ageGroup.length > 20 ||
+          typeof objectives !== 'string' || objectives.length > 200) {
         res.status(400).send('Invalid input parameters');
         return;
       }
 
-      //Construct messages
-      const messages = [{
+      //Initialize messages
+      const messages = [{role: "system", content: "You are a CELTA trained ESL lesson material creation assistant. Generate a 'Find Someone Who' worksheet for an ESL class with the following details:"}]
+
+      //Add user details to messages
+      messages.push({
+        role: "user",
+        content: `
+          - Topic: ${topic}
+          - Level: ${level}
+          - Age Group: ${ageGroup}
+          - Objectives: ${objectives}
+        `
+      })
+
+      //Further content instruction
+      messages.push({
         role: "system",
-        content: `Generate content for a 'Find Someone Who' worksheet to be embedded in a Markdown file. The worksheet is for an ESL class about '${topic}', aimed at ${ageGroup} students at the ${level} level. It should contain ${numberOfItems} items. Create an HTML table with these items, ensuring each item has a brief description and space for students to write names and follow-up answers. The HTML table should be simple and suitable for embedding in a Markdown document.`
-      }];
+        content: "The activity should focus on free practice to encourage natural language use related to the topic and objectives. DO NOT ASK DIRECT QUESTIONS ABOUT THE TARGET LANGUAGE. USE CELTA PRINCIPLES TO ENCOURAGE NATURAL, COMMUNICATIVE CONVERSATIONS ELICITING INDEPENDENT USE OF THE TARGET LANGUAGE WITHOUT DIRECT PROMPTING."
+      })
+
+      //Formatting instruction
+      messages.push({
+        role: "system",
+        content: `The worksheet should contain ${numberOfItems} items. CREATE A HTML TABLE WITH THESE ITEMS. INCLUDE COLUMN(S) FOR STUDENT RESPONSES. The HTML table should be simple and suitable for embedding in a Markdown document.`
+      })
       
       //Get GPT response
       const completion = await openai.chat.completions.create({
@@ -230,9 +251,6 @@ exports.generateFindSomeoneWhoWorksheet = functions.https.onRequest(async (req, 
 
       const { content } = completion.choices[0].message;
 
-      //Strip newLine & tab characters
-      const formattedContent = content.replace(/\n/g, '').replace(/\t/g, '')
-
       //Generate a unique worksheet ID
       const uniqueWorksheetId = uuidv4();
 
@@ -240,7 +258,7 @@ exports.generateFindSomeoneWhoWorksheet = functions.https.onRequest(async (req, 
       const contentRef = storage.bucket().file(`worksheets/findSomeoneWho/${uniqueWorksheetId}.md`);
 
       //Save generated and formatted HTML table as markdown
-      await contentRef.save(formattedContent, { contentType: 'text/markdown' });
+      await contentRef.save(content, { contentType: 'text/markdown' });
 
       //Save metadata to firestore and get doc ref
       const docRef = await admin.firestore().collection('activities').add({

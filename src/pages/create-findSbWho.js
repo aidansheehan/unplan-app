@@ -14,7 +14,8 @@ const FindSbWho = () => {
         topic: '',
         level: '',
         numberOfItems: 5,
-        ageGroup: ''
+        ageGroup: '',
+        objectives: ''
     });
     const [ isLoading, setIsLoading ] = useState(false)
 

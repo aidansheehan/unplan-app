@@ -66,6 +66,7 @@
     [ ] Move terms somewhere less intrusive to reduce clutter (Can be part of landing page refactor)
     [ ] Refactor FullPageLoading to handle different activities (maybe show instructions instead of teaching tips)
     [ ] Make display work (see below, especially for tables)
+    [ ] Add 'My Activities' under activity bit
 [ ] Investigate using an iframe for better text-content-presentation-component display (closer to what will be printed) - can you make it a4 size? OR should you leave the /n in table as they seem to work well with the gram / vocab worksheet
 [ ] Make Public
 
