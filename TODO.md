@@ -51,12 +51,12 @@
     [x] Activity display page
     [ ] Activity generation cloud function
         [x] Find sb who
-        [ ] Grammar / Vocabulary Worksheet
+        [x] Grammar / Vocabulary Worksheet
         [ ] Reading Comprehension
     [x] Nav page
     [ ] Activity generation form
         [x] Find sb who
-        [ ] Grammar / Vocabulary Worksheet
+        [x] Grammar / Vocabulary Worksheet
         [ ] Reading Comprehension
     [ ] Rate limiting
         [ ] Find sb who
