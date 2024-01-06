@@ -7,12 +7,6 @@ import { useError } from "@/context/error.context";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-const KeyCodes = {
-    enter: 13
-}
-
-const delimiters = [KeyCodes.enter]
-
 const GrammarVocabWorksheet = () => {
     const [formData, setFormData] = useState({
         topic: '',
