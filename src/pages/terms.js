@@ -15,7 +15,7 @@ const Terms = () => {
       
       <section className="mb-4">
         <h2 className="text-lg font-semibold mb-2">Our Content</h2>
-        <p>Our lesson plans and materials are thoughtfully generated with the help of sophisticated GPT technology. After a thorough review for quality and accuracy, we handpick the best ones to feature in our public library. You're welcome to use these resources for educational purposes—print them, download them, and incorporate them into your teaching.</p>
+        <p>Our lesson plans and materials are thoughtfully generated with the help of sophisticated AI technology. After a thorough review for quality and accuracy, we handpick the best ones to feature in our public library. You're welcome to use these resources for educational purposes—print them, download them, and incorporate them into your teaching.</p>
       </section>
       
       <section className="mb-4">
@@ -25,7 +25,7 @@ const Terms = () => {
       
       <section className="mb-4">
         <h2 className="text-lg font-semibold mb-2">Checking Twice</h2>
-        <p>We pride ourselves on the quality of our materials, but hey, even the best technology can miss a beat. Please review any lesson plans for accuracy before presenting them to your learners.</p>
+        <p>We pride ourselves on the quality of our materials, but even the best technology can miss a beat. Please review any lesson plans for accuracy before presenting them to your learners.</p>
       </section>
       
       <section className="mb-4">
