@@ -326,3 +326,68 @@ exports.generateGrammarVocabularyWorksheet = functions.https.onRequest(async (re
     }
   });
 });
+
+exports.generateReadingComprehensionWorksheet = functions.https.onRequest(async (req, res) => {
+  cors(req, res, async () => {
+    if (req.method === 'POST') {
+      const openai = new OpenAI();
+
+      // Extract inputs
+      const { textComplexityLevel, textLength, topicGenre, numberOfActivities/*, activityTypes*/, learningObjectives, ageGroup, timeAllocation } = req.body;
+
+      // TODO validate inputs
+      // Add your validation logic here based on the expected types and ranges of the parameters
+
+      // Initialize messages for OpenAI
+      const messages = [{ role: "system", content: "You are a CELTA trained ESL lesson material creation assistant. Generate a reading comprehension task with the following details:" }];
+//- Activity Types: ${activityTypes.join(", ")}
+      // Add user details to messages
+      messages.push({
+        role: "user",
+        content: `
+          - Text Complexity Level: ${textComplexityLevel}
+          - Text Length: ${textLength}
+          - Topic/Genre: ${topicGenre}
+          - Number of Activities: ${numberOfActivities}
+          
+          - Learning Objectives: ${learningObjectives}
+          - Age Group: ${ageGroup}
+          - Time Allocation: ${timeAllocation} minutes
+        `
+      });
+
+      // Further content instruction
+      messages.push({
+        role: "system",
+        content: "Create a reading text and activities that are suitable for the specified level and objectives. The activities should range from pre-reading tasks to post-reading tasks, including skimming, scanning, detailed comprehension, inferential and critical thinking tasks, and summarizing. USE MARKDOWN."
+      });
+
+      // Get GPT response
+      const completion = await openai.chat.completions.create({
+        messages: messages,
+        model: "gpt-3.5-turbo"
+      });
+
+      const { content } = completion.choices[0].message;
+
+      // Generate a unique worksheet ID
+      const uniqueWorksheetId = uuidv4();
+
+      // Generate content ref
+      const contentRef = storage.bucket().file(`worksheets/readingComprehension/${uniqueWorksheetId}.md`);
+
+      // Save generated content as markdown
+      await contentRef.save(content, { contentType: 'text/markdown' });
+
+      // Save metadata to firestore and get doc ref
+      const docRef = await admin.firestore().collection('activities').add({
+        textComplexityLevel, textLength, topic: topicGenre, numberOfActivities, /*activityTypes,*/ learningObjectives, ageGroup, timeAllocation, activity: 'readingComprehension',
+        worksheetUrl: `worksheets/readingComprehension/${uniqueWorksheetId}.md`
+      });
+
+      res.status(200).json({ worksheetId: docRef.id });
+    } else {
+      res.status(405).send(`Method ${req.method} Not Allowed`);
+    }
+  });
+});
