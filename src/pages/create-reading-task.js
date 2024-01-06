@@ -34,7 +34,7 @@ const ReadingComprehension = () => {
             const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}generateReadingComprehensionWorksheet`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
+                body: JSON.stringify({...formData, numberOfActivities: +formData.numberOfActivities, timeAllocation: +formData.timeAllocation})
             });
 
             if (!response.ok) throw new Error('Failed to generate activity');

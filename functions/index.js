@@ -335,8 +335,28 @@ exports.generateReadingComprehensionWorksheet = functions.https.onRequest(async 
       // Extract inputs
       const { textComplexityLevel, textLength, topicGenre, numberOfActivities/*, activityTypes*/, learningObjectives, ageGroup, timeAllocation } = req.body;
 
-      // TODO validate inputs
-      // Add your validation logic here based on the expected types and ranges of the parameters
+      // Validate inputs
+      if (typeof textComplexityLevel !== 'string' || !['beginner', 'intermediate', 'advanced'].includes(textComplexityLevel)) {
+        return res.status(400).send('Invalid Text Complexity Level');
+      }
+      if (typeof textLength !== 'string' || !['short', 'medium', 'long'].includes(textLength)) {
+        return res.status(400).send('Invalid Text Length');
+      }
+      if (typeof topicGenre !== 'string' || topicGenre.length === 0 || topicGenre.length > 100) {
+        return res.status(400).send('Invalid Topic/Genre');
+      }
+      if (typeof numberOfActivities !== 'number' || numberOfActivities < 1 || numberOfActivities > 20) {
+        return res.status(400).send('Invalid Number of Activities');
+      }
+      if (typeof learningObjectives !== 'string' || learningObjectives.length === 0 || learningObjectives.length > 200) {
+        return res.status(400).send('Invalid Learning Objectives');
+      }
+      if (typeof ageGroup !== 'string' || !['kids', 'teens', 'adults'].includes(ageGroup)) {
+        return res.status(400).send('Invalid Age Group');
+      }
+      if (typeof timeAllocation !== 'number' || timeAllocation < 10 || timeAllocation > 120) {
+        return res.status(400).send('Invalid Time Allocation');
+      }
 
       // Initialize messages for OpenAI
       const messages = [{ role: "system", content: "You are a CELTA trained ESL lesson material creation assistant. Generate a reading comprehension task with the following details:" }];
