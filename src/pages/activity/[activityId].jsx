@@ -5,11 +5,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { doc, getDoc } from "firebase/firestore"
 import Link from "next/link"
 import { db } from "../../../firebaseConfig"
+import ACTIVITY_INSTRUCTIONS from "@/constants/activity-info.constant"
+import ActivityInstructionsComponent from "@/components/activity-instructions.component"
 
 /**
  * Page to view & print a generated activity
  */
-const ViewActivity = ({worksheetUrl, activityName, topic, error}) => {
+const ViewActivity = ({worksheetUrl, activity, topic, error}) => {
 
     //Handle error
     if (error) {
@@ -32,8 +34,10 @@ const ViewActivity = ({worksheetUrl, activityName, topic, error}) => {
     return (
         <Layout title='Your Activity' >
 
+            <ActivityInstructionsComponent instructionText={ACTIVITY_INSTRUCTIONS[activity].instructions} />
+
             <div className='w-full flex-grow p-4' >
-                <TextContentPresentationComponent title={`${activityName} - ${topic}`} mdContentUrl={worksheetUrl} />
+                <TextContentPresentationComponent title={`${ACTIVITY_INSTRUCTIONS[activity].title} - ${topic}`} mdContentUrl={worksheetUrl} />
             </div>
         </Layout>
     )
@@ -59,12 +63,12 @@ export async function getServerSideProps(context) {
         const activityData = activityDoc.data()
 
         //Destructure activityData
-        const { worksheetUrl, activityName, topic  } = activityData
+        const { worksheetUrl, activity, topic  } = activityData
 
         return {
             props: {
                 worksheetUrl,
-                activityName,
+                activity,
                 topic
             }
         }

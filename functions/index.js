@@ -244,7 +244,7 @@ exports.generateFindSomeoneWhoWorksheet = functions.https.onRequest(async (req, 
 
       //Save metadata to firestore and get doc ref
       const docRef = await admin.firestore().collection('activities').add({
-        topic, level, ageGroup, numberOfItems, activityName: 'Find Someone Who',
+        topic, level, ageGroup, numberOfItems, activity: 'findSbWho',
         worksheetUrl: `worksheets/findSomeoneWho/${uniqueWorksheetId}.md`
       });
 

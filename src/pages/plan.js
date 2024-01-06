@@ -121,7 +121,7 @@ const Plan = () => {
                             <select
                                 name="ageGroup"
                                 id="ageGroup"
-                                value={formData.ageGroup} // Set 'adults' as default value
+                                value={formData.ageGroup}
                                 onChange={handleChange}
                                 className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
                                 required

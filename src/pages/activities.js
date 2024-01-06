@@ -14,7 +14,7 @@ const ACTIVITIES = [
     {
         href: '/create-findSbWho',
         icon: faUsers,
-        title: 'Create Find Someone Who',
+        title: "Create 'Find Someone Who...'",
         description: 'Engage students in conversational activities.'
     },
     {
