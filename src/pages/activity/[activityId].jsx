@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { doc, getDoc } from "firebase/firestore"
 import Link from "next/link"
 import { db } from "../../../firebaseConfig"
-import ACTIVITY_INSTRUCTIONS from "@/constants/activity-info.constant"
+import ACTIVITY_INFO from "@/constants/activity-info.constant"
 import ActivityInstructionsComponent from "@/components/activity-instructions.component"
 
 /**
@@ -34,10 +34,10 @@ const ViewActivity = ({worksheetUrl, activity, topic, error}) => {
     return (
         <Layout title='Your Activity' >
 
-            <ActivityInstructionsComponent instructionText={ACTIVITY_INSTRUCTIONS[activity].instructions} />
+            <ActivityInstructionsComponent instructionText={ACTIVITY_INFO[activity].instructions} />
 
             <div className='w-full flex-grow p-4' >
-                <TextContentPresentationComponent title={`${ACTIVITY_INSTRUCTIONS[activity].title} - ${topic}`} mdContentUrl={worksheetUrl} />
+                <TextContentPresentationComponent title={`${ACTIVITY_INFO[activity].title} - ${topic}`} mdContentUrl={worksheetUrl} />
             </div>
         </Layout>
     )

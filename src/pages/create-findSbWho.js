@@ -1,19 +1,10 @@
 import ActivityInstructionsComponent from "@/components/activity-instructions.component";
 import FullPageLoading from "@/components/full-page.loading.component";
 import Layout from "@/components/layout";
-import ACTIVITY_INSTRUCTIONS from "@/constants/activity-info.constant";
+import ACTIVITY_INFO from "@/constants/activity-info.constant";
 import { useError } from "@/context/error.context";
 import { useRouter } from "next/router";
 import { useState } from "react";
-
-const introText = `
-"Find Someone Who" is a classic ESL activity that encourages students to interact and practice 
-their questioning and answering skills in English. In this activity, students are given a 
-worksheet with various statements or prompts. They must move around the classroom and talk 
-to their classmates to find someone who matches each statement. For example, "Find someone 
-who has been to Europe" requires the student to ask their peers about their travel experiences. 
-It's a great way to get students speaking and to learn more about each other!
-`;
 
 /**
  * Page to create 'Find Someone Who...'
@@ -71,7 +62,7 @@ const FindSbWho = () => {
                 ) : (
                     <div className='w-full h-full p-4'>
                     
-                        <ActivityInstructionsComponent instructionText={ACTIVITY_INSTRUCTIONS.findSbWho.instructions} />
+                        <ActivityInstructionsComponent instructionText={ACTIVITY_INFO.findSbWho.instructions} />
                         <form onSubmit={handleSubmit} className="max-w-xl mx-auto space-y-4">
                             <div >
                                 <label htmlFor="topic" className="block text-sm font-medium text-gray-700">Topic</label>

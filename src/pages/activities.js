@@ -1,9 +1,10 @@
 import { faBookOpen, faFileAlt, faUsers } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Layout from "@/components/layout"
-import Link from "next/link"
 import ActivityLinkComponent from "@/components/activity-link.component"
 
+/**
+ * TODO should maybe be part of ACTIVITY_INFO constant
+ */
 const ACTIVITIES = [
     {
         href: '/create-worksheet',
