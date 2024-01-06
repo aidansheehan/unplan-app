@@ -64,12 +64,13 @@
         [ ] Reading Comprehension
     [x] Add to sidebar
     [x] Move terms somewhere less intrusive to reduce clutter (Can be part of landing page refactor)
-    [ ] Refactor FullPageLoading to handle different activities (maybe show instructions instead of teaching tips)
+    [x] Refactor FullPageLoading to handle different activities (maybe show instructions instead of teaching tips)
     [x] Make display work (see below, especially for tables)
     [ ] Add 'My Activities' under activity bit stored in local storage
     [x] Update Landing Page to advertise both VPs
     [ ] Add CTA to feedback in /activities - 'is there an activity you would like but don't see, tell us about it'?
 [ ] Add CTA to give feedback to bottom of activity / lesson plan view. also link back to 'activities' for activity and 'my lessons' for lessons. Maybe 'your lessons' should be called 'my lessons'?
+[ ] Remove title from layout, standardize like in My Activities everywhere else (<TitleComponent>)
 [ ] Make Public
 
 ### Friends feedback

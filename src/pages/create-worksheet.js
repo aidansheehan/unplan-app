@@ -17,9 +17,6 @@ const GrammarVocabWorksheet = () => {
     const [ targetGrammar, setTargetGrammar ]   = useState([])
     const [isLoading, setIsLoading]             = useState(false)
 
-    //TODO remove make own component
-    const [ inputValue, setInputValue ] = useState('')
-
     const router = useRouter();
     const { handleError } = useError();
 
@@ -60,7 +57,7 @@ const GrammarVocabWorksheet = () => {
         <Layout title={isLoading ? '' : "Create Grammar/Vocabulary Worksheet"}>
             {
                 isLoading ? (
-                    <FullPageLoading />
+                    <FullPageLoading message="Creating Your Worksheet..." />
                 ) : (
                     <div className='w-full h-full p-4'>
                     

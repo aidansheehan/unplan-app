@@ -81,7 +81,7 @@ const Plan = () => {
     <Layout title={isLoading ? '' : 'Create Your Lesson Plan'}>
         {
             isLoading ? (
-                <FullPageLoading />
+                <FullPageLoading message='Creating Your Lesson Plan...' />
             ) : (
                 <div className='w-full h-full p-4'>
                     <form onSubmit={handleSubmit} className="max-w-xl mx-auto space-y-4">

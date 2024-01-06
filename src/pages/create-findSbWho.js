@@ -59,7 +59,7 @@ const FindSbWho = () => {
         <Layout title={isLoading ? '' : "Create 'Find Someone Who...' Worksheet"}>
             {
                 isLoading ? (
-                    <FullPageLoading />
+                    <FullPageLoading message='Creating Your Activity Worksheet...' />
                 ) : (
                     <div className='w-full h-full p-4'>
                     
