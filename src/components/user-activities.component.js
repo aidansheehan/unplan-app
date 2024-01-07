@@ -18,22 +18,17 @@ const UserActivitiesComponent = () => {
 
         const fetchYourActivities = async () => {
 
-            setIsLoading(true)
-
             //Fetch Activity IDs from local storage
             const activityIds = JSON.parse(localStorage.getItem('activityIds')) || []
 
-            console.log(activityIds)
-
             if (activityIds && activityIds.length) {
+                setIsLoading(true)
                 const activityIdsQuery = activityIds.join(',')
                 const res = await fetch(`/api/get-activities?ids=${activityIdsQuery}`)
                 if (!res.ok) {
                     handleError
                 }
                 const activitiesData = await res.json()
-
-                console.log("ACT DATA: ", activitiesData)
                 
                 setActivities(activitiesData)
                 setIsLoading(false)
@@ -49,7 +44,7 @@ const UserActivitiesComponent = () => {
     }
 
     if (activities.length === 0) {
-        return <p className="mb-8">No activities created yet. Start creating!</p>
+        return <p className="mb-8 w-full text-center mt-8">No activities created yet. Start creating!</p>
     }
 
     return (
