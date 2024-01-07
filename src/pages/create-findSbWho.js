@@ -45,6 +45,11 @@ const FindSbWho = () => {
 
             const data = await response.json();
 
+            //Store worksheet / Activity ID in local storage
+            const storedActivityIds = JSON.parse(localStorage.getItem('activityIds')) || []
+            storedActivityIds.push(data.worksheetId)
+            localStorage.setItem('activityIds', JSON.stringify(storedActivityIds))
+
             //Redirect to view page with activity ID
             router.push(`/activity/${data.worksheetId}`);
             

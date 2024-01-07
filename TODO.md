@@ -66,11 +66,11 @@
     [x] Move terms somewhere less intrusive to reduce clutter (Can be part of landing page refactor)
     [x] Refactor FullPageLoading to handle different activities (maybe show instructions instead of teaching tips)
     [x] Make display work (see below, especially for tables)
-    [ ] Add 'My Activities' under activity bit stored in local storage
+    [x] Add 'My Activities' under activity bit stored in local storage
     [x] Update Landing Page to advertise both VPs
-    [ ] Add CTA to feedback in /activities - 'is there an activity you would like but don't see, tell us about it'?
+    [x] Add CTA to feedback in /activities - 'is there an activity you would like but don't see, tell us about it'?
 [ ] Add CTA to give feedback to bottom of activity / lesson plan view. also link back to 'activities' for activity and 'my lessons' for lessons. Maybe 'your lessons' should be called 'my lessons'?
-[ ] Remove title from layout, standardize like in My Activities everywhere else (<TitleComponent>)
+[x] Remove title from layout, standardize like in My Activities everywhere else (<TitleComponent>)
 [ ] Make Public
 
 ### Friends feedback
@@ -90,6 +90,8 @@
 [ ] Investigate improve markdown file load times?
 [ ] Use CORS to prevent requests from other origins
 [ ] Investigate using an iframe for better text-content-presentation-component display (closer to what will be printed) - can you make it a4 size? OR should you leave the /n in table as they seem to work well with the gram / vocab worksheet
+[ ] Refactor shitty my activities logic and components, generic with lesson lib logic
+[ ] Remove title from layout and create <TitleComponent>, standardize appearance across app
 
 ### Extra
 [ ] Implement star rating for lesson plans, save ratings to server too

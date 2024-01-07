@@ -30,7 +30,7 @@ const TagInputComponent = ({tags, setTags, label, placeholder, tagLimit}) => {
 
     //Handle tag addition
     const handleAddition = (tag) => {
-        console.log('tags: ', tags)
+
         setTags([...tags, tag])
         setInputValue('')
     }

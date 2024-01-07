@@ -44,6 +44,12 @@ const GrammarVocabWorksheet = () => {
             if (!response.ok) throw new Error('Failed to generate worksheet');
 
             const data = await response.json();
+
+            //Store worksheet / Activity ID in local storage
+            const storedActivityIds = JSON.parse(localStorage.getItem('activityIds')) || []
+            storedActivityIds.push(data.worksheetId)
+            localStorage.setItem('activityIds', JSON.stringify(storedActivityIds))
+
             router.push(`/activity/${data.worksheetId}`);
 
         } catch (error) {

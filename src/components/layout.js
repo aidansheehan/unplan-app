@@ -67,7 +67,7 @@ const Layout = ({ children, title }) => {
       <SidebarComponent navItems={NAV_ITEMS} isNavOpen={isNavOpen} />
 
       <main className="flex-grow flex flex-col items-center justify-center md:ml-[var(--sidebar-width)] mt-[var(--header-height)] mb-[var(--footer-height)] bg-white">
-        { title ? <h1 className='text-xl fontsemibold mb-2 mt-8 font-bree' >{title}</h1> : <></> }
+        { title ? <h1 className='text-2xl font-bold mb-2 mt-8' >{title}</h1> : <></> }
         {children}
       </main>
 
