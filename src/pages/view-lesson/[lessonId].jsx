@@ -51,7 +51,7 @@ export async function getServerSideProps(context) {
         const lessonDocRef  = doc(db, 'lessons', lessonId)
         const lessonDoc     = await getDoc(lessonDocRef)
 
-        //lessonDoc not found TODO handle
+        //lessonDoc not found
         if (!lessonDoc.exists()) {
             throw new Error('Lesson not found')
         }

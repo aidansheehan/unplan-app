@@ -198,3 +198,287 @@ exports.createStudentHandout = functions.https.onRequest(async (req, res) => {
   
   );
 });
+
+/**
+ * FindSbWho rate limiter
+ */
+const fSbWhoLimiter = FirebaseFunctionsRateLimiter.withFirestoreBackend({
+  name: 'find_sb_who_rate_limiter',
+  periodSeconds: 86400,
+  maxCalls: 1000
+}, db)
+exports.generateFindSomeoneWhoWorksheet = functions.https.onRequest(async (req, res) => {
+  cors(req, res, async () => {
+    if (req.method === 'POST') {
+
+      //Check if rate limiter exceeded
+      const isLimited = await fSbWhoLimiter.isQuotaExceededOrRecordUsage()
+
+      //If rate limit exceeded
+      if (isLimited) {
+
+        //Send warning email
+        await sendRateLimitEmail('findSbWhoWorksheet')
+
+        //Return error
+        res.status(429).send('Too many requests, please try again later')
+        return
+      }
+
+      const openai = new OpenAI();
+
+      // Extract inputs
+      const { topic, level, numberOfItems, ageGroup, objectives } = req.body;
+
+      // Validate inputs
+      if (typeof topic !== 'string' || topic.length > 50 ||
+          typeof level !== 'string' || level.length > 20 ||
+          typeof numberOfItems !== 'number' || numberOfItems < 1 || numberOfItems > 20 ||
+          typeof ageGroup !== 'string' || ageGroup.length > 20 ||
+          typeof objectives !== 'string' || objectives.length > 200) {
+        res.status(400).send('Invalid input parameters');
+        return;
+      }
+
+      //Initialize messages
+      const messages = [{role: "system", content: "You are a CELTA trained ESL lesson material creation assistant. Generate a 'Find Someone Who' worksheet for an ESL class with the following details:"}]
+
+      //Add user details to messages
+      messages.push({
+        role: "user",
+        content: `
+          - Topic: ${topic}
+          - Level: ${level}
+          - Age Group: ${ageGroup}
+          - Objectives: ${objectives}
+        `
+      })
+
+      //Further content instruction
+      messages.push({
+        role: "system",
+        content: "The activity should focus on free practice to encourage natural language use related to the topic and objectives. DO NOT ASK DIRECT QUESTIONS ABOUT THE TARGET LANGUAGE. USE CELTA PRINCIPLES TO ENCOURAGE NATURAL, COMMUNICATIVE CONVERSATIONS ELICITING INDEPENDENT USE OF THE TARGET LANGUAGE WITHOUT DIRECT PROMPTING."
+      })
+
+      //Formatting instruction
+      messages.push({
+        role: "system",
+        content: `The worksheet should contain ${numberOfItems} items. CREATE A HTML TABLE WITH THESE ITEMS. INCLUDE COLUMN(S) FOR STUDENT RESPONSES. The HTML table should be simple and suitable for embedding in a Markdown document.`
+      })
+      
+      //Get GPT response
+      const completion = await openai.chat.completions.create({
+        messages: messages,
+        model: "gpt-3.5-turbo"
+      });
+
+      const { content } = completion.choices[0].message;
+
+      //Generate a unique worksheet ID
+      const uniqueWorksheetId = uuidv4();
+
+      //Generate content ref
+      const contentRef = storage.bucket().file(`worksheets/findSomeoneWho/${uniqueWorksheetId}.md`);
+
+      //Save generated and formatted HTML table as markdown
+      await contentRef.save(content, { contentType: 'text/markdown' });
+
+      //Save metadata to firestore and get doc ref
+      const docRef = await admin.firestore().collection('activities').add({
+        topic, level, ageGroup, numberOfItems, activity: 'findSbWho',
+        worksheetUrl: `worksheets/findSomeoneWho/${uniqueWorksheetId}.md`
+      });
+
+      res.status(200).json({ worksheetId: docRef.id });
+    } else {
+      res.status(405).send(`Method ${req.method} Not Allowed`);
+    }
+  });
+});
+
+/**
+ * gramVocab rate limiter
+ */
+const gramVocabLimiter = FirebaseFunctionsRateLimiter.withFirestoreBackend({
+  name: 'gram_vocab_rate_limiter',
+  periodSeconds: 86400,
+  maxCalls: 1000
+}, db)
+
+exports.generateGrammarVocabularyWorksheet = functions.https.onRequest(async (req, res) => {
+  cors(req, res, async () => {
+    if (req.method === 'POST') {
+
+      //Check if rate limiter exceeded
+      const isLimited = await gramVocabLimiter.isQuotaExceededOrRecordUsage()
+
+      //If rate limit exceeded
+      if (isLimited) {
+
+        //Send warning email
+        await sendRateLimitEmail('grammarVocabWorksheet')
+
+        //Return error
+        res.status(429).send('Too many requests, please try again later')
+        return
+      }
+
+      const openai = new OpenAI();
+
+      // Extract inputs
+      const { topic, level, length, targetWords, targetGrammar } = req.body;
+
+      // Validate inputs
+      if (typeof topic !== 'string' || topic.length > 50 ||
+          typeof level !== 'string' || level.length > 20 ||
+          typeof length !== 'number' || length < 1 || length > 50 ||
+          (targetWords && (!Array.isArray(targetWords) || targetWords.some(word => typeof word !== 'string'))) || targetWords.length > 20 ||
+          (targetGrammar && (!Array.isArray(targetGrammar) || targetGrammar.some(grammar => typeof grammar !== 'string'))) || targetGrammar.length > 5 ) {
+        res.status(400).send('Invalid input parameters');
+        return;
+      }
+
+      // Construct messages
+      const messages = [{
+        role: "system",
+        content: `Generate a grammar/vocabulary worksheet. The worksheet is for an ESL class about '${topic}', aimed at students at the ${level} level. It should include activities focusing on '${targetWords ? targetWords.join(", ") : ''}' and '${targetGrammar ? targetGrammar.join(", ") : ''}', progressing from controlled to free practice. The worksheet should contain ${length} activities. USE MARKDOWN. LEAVE SPACE FOR STUDENT ANSWERS.`
+      }];
+      
+      // Get GPT response
+      const completion = await openai.chat.completions.create({
+        messages: messages,
+        model: "gpt-3.5-turbo"
+      });
+
+      const { content } = completion.choices[0].message;
+
+      // Generate a unique worksheet ID
+      const uniqueWorksheetId = uuidv4();
+
+      // Generate content ref
+      const contentRef = storage.bucket().file(`worksheets/grammarVocabulary/${uniqueWorksheetId}.md`);
+
+      // Save generated Markdown content
+      await contentRef.save(content, { contentType: 'text/markdown' });
+
+      // Save metadata to firestore and get doc ref
+      const docRef = await admin.firestore().collection('activities').add({
+        topic, level, length, targetWords, targetGrammar, activity: 'grammarVocab',
+        worksheetUrl: `worksheets/grammarVocabulary/${uniqueWorksheetId}.md`
+      });
+
+      res.status(200).json({ worksheetId: docRef.id });
+    } else {
+      res.status(405).send(`Method ${req.method} Not Allowed`);
+    }
+  });
+});
+
+/**
+ * readingComp rate limiter
+ */
+const readingCompRateLimiter = FirebaseFunctionsRateLimiter.withFirestoreBackend({
+  name: 'reading_comp_rate_limiter',
+  periodSeconds: 86400,
+  maxCalls: 1000
+}, db)
+
+exports.generateReadingComprehensionWorksheet = functions.https.onRequest(async (req, res) => {
+  cors(req, res, async () => {
+    if (req.method === 'POST') {
+
+      //Check if rate limiter exceeded
+      const isLimited = await readingCompRateLimiter.isQuotaExceededOrRecordUsage()
+
+      //If rate limit exceeded
+      if (isLimited) {
+
+        //Send warning email
+        await sendRateLimitEmail('readingComp')
+
+        //Return error
+        res.status(429).send('Too many requests, please try again later')
+        return
+      }
+
+      const openai = new OpenAI();
+
+      // Extract inputs
+      const { textComplexityLevel, textLength, topicGenre, numberOfActivities/*, activityTypes*/, learningObjectives, ageGroup, timeAllocation } = req.body;
+
+      // Validate inputs
+      if (typeof textComplexityLevel !== 'string' || !['beginner', 'intermediate', 'advanced'].includes(textComplexityLevel)) {
+        return res.status(400).send('Invalid Text Complexity Level');
+      }
+      if (typeof textLength !== 'string' || !['short', 'medium', 'long'].includes(textLength)) {
+        return res.status(400).send('Invalid Text Length');
+      }
+      if (typeof topicGenre !== 'string' || topicGenre.length === 0 || topicGenre.length > 100) {
+        return res.status(400).send('Invalid Topic/Genre');
+      }
+      if (typeof numberOfActivities !== 'number' || numberOfActivities < 1 || numberOfActivities > 20) {
+        return res.status(400).send('Invalid Number of Activities');
+      }
+      if (typeof learningObjectives !== 'string' || learningObjectives.length === 0 || learningObjectives.length > 200) {
+        return res.status(400).send('Invalid Learning Objectives');
+      }
+      if (typeof ageGroup !== 'string' || !['kids', 'teens', 'adults'].includes(ageGroup)) {
+        return res.status(400).send('Invalid Age Group');
+      }
+      if (typeof timeAllocation !== 'number' || timeAllocation < 10 || timeAllocation > 120) {
+        return res.status(400).send('Invalid Time Allocation');
+      }
+
+      // Initialize messages for OpenAI
+      const messages = [{ role: "system", content: "You are a CELTA trained ESL lesson material creation assistant. Generate a reading comprehension task with the following details:" }];
+//- Activity Types: ${activityTypes.join(", ")}
+      // Add user details to messages
+      messages.push({
+        role: "user",
+        content: `
+          - Text Complexity Level: ${textComplexityLevel}
+          - Text Length: ${textLength}
+          - Topic/Genre: ${topicGenre}
+          - Number of Activities: ${numberOfActivities}
+          
+          - Learning Objectives: ${learningObjectives}
+          - Age Group: ${ageGroup}
+          - Time Allocation: ${timeAllocation} minutes
+        `
+      });
+
+      // Further content instruction
+      messages.push({
+        role: "system",
+        content: "Create a reading text and activities that are suitable for the specified level and objectives. The activities should range from pre-reading tasks to post-reading tasks, including skimming, scanning, detailed comprehension, inferential and critical thinking tasks, and summarizing. USE MARKDOWN."
+      });
+
+      // Get GPT response
+      const completion = await openai.chat.completions.create({
+        messages: messages,
+        model: "gpt-3.5-turbo"
+      });
+
+      const { content } = completion.choices[0].message;
+
+      // Generate a unique worksheet ID
+      const uniqueWorksheetId = uuidv4();
+
+      // Generate content ref
+      const contentRef = storage.bucket().file(`worksheets/readingComprehension/${uniqueWorksheetId}.md`);
+
+      // Save generated content as markdown
+      await contentRef.save(content, { contentType: 'text/markdown' });
+
+      // Save metadata to firestore and get doc ref
+      const docRef = await admin.firestore().collection('activities').add({
+        textComplexityLevel, textLength, topic: topicGenre, numberOfActivities, /*activityTypes,*/ learningObjectives, ageGroup, timeAllocation, activity: 'readingComprehension',
+        worksheetUrl: `worksheets/readingComprehension/${uniqueWorksheetId}.md`
+      });
+
+      res.status(200).json({ worksheetId: docRef.id });
+    } else {
+      res.status(405).send(`Method ${req.method} Not Allowed`);
+    }
+  });
+});

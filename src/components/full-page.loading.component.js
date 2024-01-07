@@ -24,7 +24,7 @@ const eslTeachingTips = [
   ];
   
 
-const FullPageLoading = () => {
+const FullPageLoading = ({message}) => {
   const [ progress, setProgress ]               = useState(0);
   const [ tip, setTip ]                         = useState('')
   const [ extendedLoading, setExtendedLoading ] = useState(false)
@@ -62,7 +62,7 @@ const FullPageLoading = () => {
           <div className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style={{ width: `${progress}%` }}>{extendedLoading ? "We're still working on it..." : 'Loading...'}</div>
         </div>
         <h2 className="text-lg font-semibold text-center mt-4">
-            {extendedLoading ? "Almost there, just finalizing a few things!" : "Creating your lesson plan..."}
+            {extendedLoading ? "Almost there, just finalizing a few things!" : message}
         </h2>
         <p className="mt-2 text-gray-600 text-center">
             {extendedLoading ? "Thanks for your patience." : "This may take around 20 seconds. Please don't close this page."}
