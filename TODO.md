@@ -47,7 +47,7 @@
         [x] Reject if incorrect
         [x] Impose size limits to prevent massive inputs (Implement on BE & FE) 
         [x] Implement on FE too
-[ ] Implement basic activity generation so can test vs lesson planning as core VP
+[x] Implement basic activity generation so can test vs lesson planning as core VP
     [x] Activity display page
     [x] Activity generation cloud function
         [x] Find sb who
@@ -58,10 +58,10 @@
         [x] Find sb who
         [x] Grammar / Vocabulary Worksheet
         [x] Reading Comprehension
-    [ ] Rate limiting
-        [ ] Find sb who
-        [ ] Grammar/ Vocabulary Worksheet
-        [ ] Reading Comprehension
+    [x] Rate limiting
+        [x] Find sb who + TEST
+        [x] Grammar/ Vocabulary Worksheet + TEST
+        [x] Reading Comprehension + TEST
     [x] Add to sidebar
     [x] Move terms somewhere less intrusive to reduce clutter (Can be part of landing page refactor)
     [x] Refactor FullPageLoading to handle different activities (maybe show instructions instead of teaching tips)
@@ -70,7 +70,13 @@
     [x] Update Landing Page to advertise both VPs
     [x] Add CTA to feedback in /activities - 'is there an activity you would like but don't see, tell us about it'?
 [ ] Add CTA to give feedback to bottom of activity / lesson plan view. also link back to 'activities' for activity and 'my lessons' for lessons. Maybe 'your lessons' should be called 'my lessons'?
-[x] Remove title from layout, standardize like in My Activities everywhere else (<TitleComponent>)
+[x] Remove title from layout, standardize like in My Activities everywhere else (<TitleComponent>)\
+[ ] Test
+    [ ] Chrome
+    [ ] Safari
+    [ ] Firefox
+    [ ] Windows
+    [ ] Mobile
 [ ] Make Public
 
 ### Friends feedback

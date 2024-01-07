@@ -199,9 +199,32 @@ exports.createStudentHandout = functions.https.onRequest(async (req, res) => {
   );
 });
 
+/**
+ * FindSbWho rate limiter
+ */
+const fSbWhoLimiter = FirebaseFunctionsRateLimiter.withFirestoreBackend({
+  name: 'find_sb_who_rate_limiter',
+  periodSeconds: 86400,
+  maxCalls: 1000
+}, db)
 exports.generateFindSomeoneWhoWorksheet = functions.https.onRequest(async (req, res) => {
   cors(req, res, async () => {
     if (req.method === 'POST') {
+
+      //Check if rate limiter exceeded
+      const isLimited = await fSbWhoLimiter.isQuotaExceededOrRecordUsage()
+
+      //If rate limit exceeded
+      if (isLimited) {
+
+        //Send warning email
+        await sendRateLimitEmail('findSbWhoWorksheet')
+
+        //Return error
+        res.status(429).send('Too many requests, please try again later')
+        return
+      }
+
       const openai = new OpenAI();
 
       // Extract inputs
@@ -273,9 +296,33 @@ exports.generateFindSomeoneWhoWorksheet = functions.https.onRequest(async (req, 
   });
 });
 
+/**
+ * gramVocab rate limiter
+ */
+const gramVocabLimiter = FirebaseFunctionsRateLimiter.withFirestoreBackend({
+  name: 'gram_vocab_rate_limiter',
+  periodSeconds: 86400,
+  maxCalls: 1000
+}, db)
+
 exports.generateGrammarVocabularyWorksheet = functions.https.onRequest(async (req, res) => {
   cors(req, res, async () => {
     if (req.method === 'POST') {
+
+      //Check if rate limiter exceeded
+      const isLimited = await gramVocabLimiter.isQuotaExceededOrRecordUsage()
+
+      //If rate limit exceeded
+      if (isLimited) {
+
+        //Send warning email
+        await sendRateLimitEmail('grammarVocabWorksheet')
+
+        //Return error
+        res.status(429).send('Too many requests, please try again later')
+        return
+      }
+
       const openai = new OpenAI();
 
       // Extract inputs
@@ -327,9 +374,33 @@ exports.generateGrammarVocabularyWorksheet = functions.https.onRequest(async (re
   });
 });
 
+/**
+ * readingComp rate limiter
+ */
+const readingCompRateLimiter = FirebaseFunctionsRateLimiter.withFirestoreBackend({
+  name: 'reading_comp_rate_limiter',
+  periodSeconds: 86400,
+  maxCalls: 1000
+}, db)
+
 exports.generateReadingComprehensionWorksheet = functions.https.onRequest(async (req, res) => {
   cors(req, res, async () => {
     if (req.method === 'POST') {
+
+      //Check if rate limiter exceeded
+      const isLimited = await readingCompRateLimiter.isQuotaExceededOrRecordUsage()
+
+      //If rate limit exceeded
+      if (isLimited) {
+
+        //Send warning email
+        await sendRateLimitEmail('readingComp')
+
+        //Return error
+        res.status(429).send('Too many requests, please try again later')
+        return
+      }
+
       const openai = new OpenAI();
 
       // Extract inputs
