@@ -88,9 +88,11 @@
 [ ] ... pictures, visual stories
 [ ] ... Shared library of content with votes
 [ ] ... More specificity for ouput generation
+[ ] ... Improve design
 
 ### Strangers Feedback
-[ ] Radio btn for online teachers (maybe also group class vs 1-on-1), reply to redit u/AdrianAlucardTepes once implemented P1
+[x] Radio btn for online teachers (maybe also group class vs 1-on-1), reply to redit u/AdrianAlucardTepes once implemented P1 IFF
+[ ] CEFR levels P1 IFF
 
 ### Immediate Extra
 [ ] Improve load screen - can handle lesson plan + mats seperately, then display a green lesson plan created! generating materials ... for user experience of PROGRESS. Maybe also implement a TIMEOUT and display error screen if it takes like a minute?
@@ -102,9 +104,11 @@
 [ ] Remove title from layout and create <TitleComponent>, standardize appearance across app
 [ ] Put style tag on html for line heights so lines for students to write on look ok (see activity id rsilJnb1l3DM9jSgBPRo)
 [ ] HTML output raw on find sb who - 1 time, iphone? https://www.easyplanesl.com/activity/1Xpt55Sq9H1ffyn7FP0k
-[ ] fix activities page loader flush with top component no padding P1
-[ ] Add CTA to give feedback to bottom of activity / lesson plan view. also link back to 'activities' for activity and 'my lessons' for lessons. Maybe 'your lessons' should be called 'my lessons'?
-[ ] Add Web Analytics (Vercel) https://vercel.com/aidansheehan/lesson-planner/analytics?environment=all 
+
+[x] fix activities page loader flush with top component no padding P1 IFF
+[ ] Add CTA to give feedback to bottom of activity / lesson plan view. also link back to 'activities' for activity and 'my lessons' for lessons. Maybe 'your lessons' should be called 'my lessons'? P1 IFF
+[ ] Add Web Analytics (Vercel) https://vercel.com/aidansheehan/lesson-planner/analytics?environment=all P1 IFF
+[ ] Timestamp lessons P1 IFF
 
 ### Extra
 [ ] Implement star rating for lesson plans, save ratings to server too

@@ -9,7 +9,7 @@ import { useError } from '@/context/error.context';
  */
 const Plan = () => {
 
-    const [ formData, setFormData ] = useState({ topic: '', level: '', duration: 60, objectives: '', ageGroup: '' })
+    const [ formData, setFormData ] = useState({ topic: '', level: '', duration: 60, objectives: '', ageGroup: '', isOneToOne: false, isOnline: false })
     const [ isLoading, setIsLoading ] = useState(false)
 
     const router = useRouter()
@@ -17,8 +17,13 @@ const Plan = () => {
 
     //Handle form input changes
     const handleChange = (e) => {
-        const { name, value } = e.target
-        setFormData({ ...formData, [name]: value })
+        const { name, value, type } = e.target
+        if (type === 'checkbox') {
+            const { checked } = e.target
+            setFormData({ ...formData, [name]: checked})
+        } else {
+            setFormData({ ...formData, [name]: value })
+        }
     }
 
     //Handle form submission
@@ -179,10 +184,45 @@ const Plan = () => {
                             maxLength={400}
                         />
                         </div>
+
+                        <div className='flex flex-col space-y-4 mt-4 mx-8'>
+
+                            <div className="flex items-center justify-between">
+                                <label htmlFor="isOneToOne" className="text-sm font-medium text-gray-700">
+                                    1-to-1 Class?
+                                </label>
+                                <input
+                                    type="checkbox"
+                                    name="isOneToOne"
+                                    id="isOneToOne"
+                                    checked={formData.isOneToOne}
+                                    onChange={handleChange}
+                                    className="form-checkbox h-5 w-5 text-blue-600 cursor-pointer"
+                                />
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                                <label htmlFor="isOnline" className="text-sm font-medium text-gray-700">
+                                    Online Class?
+                                </label>
+                                <input
+                                    type="checkbox"
+                                    name="isOnline"
+                                    id="isOnline"
+                                    checked={formData.isOnline}
+                                    onChange={handleChange}
+                                    className="form-checkbox h-5 w-5 text-blue-600 cursor-pointer"
+                                />
+                            </div>
+
+                        </div>
+
+
+
                         <div className="text-center">
-                        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Submit Plan
-                        </button>
+                            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                Submit Plan
+                            </button>
                         </div>
                     </form>
 

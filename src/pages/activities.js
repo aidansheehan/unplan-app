@@ -74,7 +74,7 @@ const Activities = () => {
 
             <UserActivitiesComponent />
 
-            <div className="mt-8 text-center px-8">
+            <div className="mt-4 text-center px-8">
                     <h2 className="text-2xl font-bold mb-4 text-blue-800">Looking for something else, Teach?</h2>
                     <p className="text-md text-gray-600 mb-6">Missing the perfect activity for your class? Let us know what you need, and we'll aim to add it to our creation tools!</p>
                     <Link href="/feedback" className="bg-orange-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors duration-300 inline-block">
