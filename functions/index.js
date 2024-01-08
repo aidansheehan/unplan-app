@@ -80,13 +80,14 @@ exports.generateLessonPlan = functions.https.onRequest(async (req, res) => {
       const messages = [{ role: "system", content: 'You are a CELTA trained ESL lesson planning assistant. Create a lesson plan for the user\'s class. USE MARKDOWN' }];
 
       //Extract inputs
-      const { topic, level, duration, objectives, ageGroup } = req.body;
+      const { topic, level, duration, objectives, ageGroup, isOneToOne, isOnline } = req.body;
 
       // Validate inputs
       if (typeof topic !== 'string' || topic.length > 50 ||
             typeof level !== 'string' || level.length > 20 ||
                 typeof objectives !== 'string' || objectives.length > 400 ||
-                  typeof ageGroup !== 'string' || ageGroup.length > 20) {
+                  typeof ageGroup !== 'string' || ageGroup.length > 20 ||
+                   typeof isOneToOne !== 'boolean' || typeof isOnline !== 'boolean') {
           res.status(400).send('Invalid input parameters');
           return;
       }
@@ -101,6 +102,22 @@ exports.generateLessonPlan = functions.https.onRequest(async (req, res) => {
         ${objectives}`
       });
 
+      //If oneToOne class
+      if (isOneToOne) {
+        messages.push({
+          role: "user",
+          content: "The class is a ONE TO ONE class, with a single student."
+        })
+      }
+
+      //If online class
+      if (isOnline) {
+        messages.push({
+          role: "user",
+          content: "The class is an ONLINE class, to be conducted over video chat."
+        })
+      }
+
       const completion = await openai.chat.completions.create({
         messages: messages,
         model: "gpt-3.5-turbo"
@@ -112,7 +129,7 @@ exports.generateLessonPlan = functions.https.onRequest(async (req, res) => {
       await contentRef.save(content, { contentType: 'text/markdown' });
 
       const docRef = await db.collection('lessons').add({
-        topic, level, duration, objectives, ageGroup,
+        topic, level, duration, objectives, ageGroup, isOneToOne, isOnline,
         lessonPlanUrl: `lesson-plans/${uniqueLessonId}.md`
       });
 
