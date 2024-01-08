@@ -185,33 +185,38 @@ const Plan = () => {
                         />
                         </div>
 
-                        <div>
-                            <label htmlFor="isOneToOne" className="block text-sm font-medium text-gray-700">
-                                1 to 1 Class
-                            </label>
-                            <input
-                                type="checkbox"
-                                name="isOneToOne"
-                                id="isOneToOne"
-                                checked={formData.isOneToOne}
-                                onChange={handleChange}
-                                className="mt-1 block"
-                            />
+                        <div className='flex flex-col space-y-4 mt-4 mx-8'>
+
+                            <div className="flex items-center justify-between">
+                                <label htmlFor="isOneToOne" className="text-sm font-medium text-gray-700">
+                                    1-to-1 Class?
+                                </label>
+                                <input
+                                    type="checkbox"
+                                    name="isOneToOne"
+                                    id="isOneToOne"
+                                    checked={formData.isOneToOne}
+                                    onChange={handleChange}
+                                    className="form-checkbox h-5 w-5 text-blue-600 cursor-pointer"
+                                />
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                                <label htmlFor="isOnline" className="text-sm font-medium text-gray-700">
+                                    Online Class?
+                                </label>
+                                <input
+                                    type="checkbox"
+                                    name="isOnline"
+                                    id="isOnline"
+                                    checked={formData.isOnline}
+                                    onChange={handleChange}
+                                    className="form-checkbox h-5 w-5 text-blue-600 cursor-pointer"
+                                />
+                            </div>
+
                         </div>
 
-                        <div>
-                            <label htmlFor="isOnline" className="block text-sm font-medium text-gray-700">
-                                Online Class
-                            </label>
-                            <input
-                                type="checkbox"
-                                name="isOnline"
-                                id="isOnline"
-                                checked={formData.isOnline}
-                                onChange={handleChange}
-                                className="mt-1 block"
-                            />
-                        </div>
 
 
                         <div className="text-center">
