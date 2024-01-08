@@ -39,34 +39,38 @@ const UserActivitiesComponent = () => {
         fetchYourActivities()
     }, [])
 
-    if (isLoading) {
-        return <LoadingSpinner />
-    }
-
-    if (activities.length === 0) {
-        return <p className="mb-8 w-full text-center mt-8">No activities created yet. Start creating!</p>
-    }
-
     return (
 
-        <div className=" py-6" >
+        <div className="mt-4 py-4" >
             <h2 className="w-full text-center text-lg mb-6 font-bold" >Your Activities</h2>
-            <div className="px-4 flex flex-col flex-flow justify-start w-full gap-4 ">
+            {
+                isLoading ? (
+                    <LoadingSpinner />
+                ) : (
+                    activities.length === 0 ? (
+                        <p className="mb-8 w-full text-center mt-8">No activities created yet. Start creating!</p>
+                    ) : (
+                        <div className="px-4 flex flex-col flex-flow justify-start w-full gap-4 ">
 
-                {
-                activities.map(activity => {
+                            {
+                                activities.map(activity => {
 
-                    if (activity.activity === 'grammarVocab') {
-                        return <GrammarVocabCard activity={activity} key={activity.id} />
-                    } else if (activity.activity === 'findSbWho') {
-                        return <FindSomeoneWhoCard activity={activity} key={activity.id} />
-                    } else if (activity.activity === 'readingComprehension') {
-                        return <ReadingComprehensionCard activity={activity} key={activity.id} />
-                    }
-                })
-                }
+                                    if (activity.activity === 'grammarVocab') {
+                                        return <GrammarVocabCard activity={activity} key={activity.id} />
+                                    } else if (activity.activity === 'findSbWho') {
+                                        return <FindSomeoneWhoCard activity={activity} key={activity.id} />
+                                    } else if (activity.activity === 'readingComprehension') {
+                                        return <ReadingComprehensionCard activity={activity} key={activity.id} />
+                                    }
+                                })
+                            }
 
-            </div>
+                        </div>
+                    )
+
+                )
+            }
+
         </div>
 
     )

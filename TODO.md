@@ -105,7 +105,7 @@
 [ ] Put style tag on html for line heights so lines for students to write on look ok (see activity id rsilJnb1l3DM9jSgBPRo)
 [ ] HTML output raw on find sb who - 1 time, iphone? https://www.easyplanesl.com/activity/1Xpt55Sq9H1ffyn7FP0k
 
-[ ] fix activities page loader flush with top component no padding P1 IFF
+[x] fix activities page loader flush with top component no padding P1 IFF
 [ ] Add CTA to give feedback to bottom of activity / lesson plan view. also link back to 'activities' for activity and 'my lessons' for lessons. Maybe 'your lessons' should be called 'my lessons'? P1 IFF
 [ ] Add Web Analytics (Vercel) https://vercel.com/aidansheehan/lesson-planner/analytics?environment=all P1 IFF
 [ ] Timestamp lessons P1 IFF
