@@ -69,15 +69,14 @@
     [x] Add 'My Activities' under activity bit stored in local storage
     [x] Update Landing Page to advertise both VPs
     [x] Add CTA to feedback in /activities - 'is there an activity you would like but don't see, tell us about it'?
-[ ] Add CTA to give feedback to bottom of activity / lesson plan view. also link back to 'activities' for activity and 'my lessons' for lessons. Maybe 'your lessons' should be called 'my lessons'?
 [x] Remove title from layout, standardize like in My Activities everywhere else (<TitleComponent>)\
-[ ] Test
-    [ ] Chrome
-    [ ] Safari
-    [ ] Firefox
-    [ ] Windows
-    [ ] Mobile
-[ ] Make Public
+[x] Test
+    [x] Chrome
+    [x] Safari
+    [x] Firefox
+    [x] Windows
+    [x] Mobile
+[x] Make Public
 
 ### Friends feedback
 [x] Remove kindy
@@ -90,6 +89,9 @@
 [ ] ... Shared library of content with votes
 [ ] ... More specificity for ouput generation
 
+### Strangers Feedback
+[ ] Radio btn for online teachers (maybe also group class vs 1-on-1), reply to redit u/AdrianAlucardTepes once implemented P1
+
 ### Immediate Extra
 [ ] Improve load screen - can handle lesson plan + mats seperately, then display a green lesson plan created! generating materials ... for user experience of PROGRESS. Maybe also implement a TIMEOUT and display error screen if it takes like a minute?
 [ ] checkbox 'generate handout activities' so users can decide if they want them or not? + 'Generate materials for this lesson' on other page to improve load times & decrease API costs
@@ -98,6 +100,11 @@
 [ ] Investigate using an iframe for better text-content-presentation-component display (closer to what will be printed) - can you make it a4 size? OR should you leave the /n in table as they seem to work well with the gram / vocab worksheet
 [ ] Refactor shitty my activities logic and components, generic with lesson lib logic
 [ ] Remove title from layout and create <TitleComponent>, standardize appearance across app
+[ ] Put style tag on html for line heights so lines for students to write on look ok (see activity id rsilJnb1l3DM9jSgBPRo)
+[ ] HTML output raw on find sb who - 1 time, iphone? https://www.easyplanesl.com/activity/1Xpt55Sq9H1ffyn7FP0k
+[ ] fix activities page loader flush with top component no padding P1
+[ ] Add CTA to give feedback to bottom of activity / lesson plan view. also link back to 'activities' for activity and 'my lessons' for lessons. Maybe 'your lessons' should be called 'my lessons'?
+[ ] Add Web Analytics (Vercel) https://vercel.com/aidansheehan/lesson-planner/analytics?environment=all 
 
 ### Extra
 [ ] Implement star rating for lesson plans, save ratings to server too
