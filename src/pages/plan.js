@@ -140,7 +140,7 @@ const Plan = () => {
                         <div >
                             <label htmlFor='level' className="block text-sm font-medium text-gray-700">Student Level</label>
 
-                            <div className='flex flex-wrap items-end gap-2 mt-1' >
+                            <div className='flex flex-col-reverse md:flex-row md:flex-wrap gap-2 mt-1' >
                                 <select
                                     name="level"
                                     id="level"
@@ -171,14 +171,14 @@ const Plan = () => {
                                 <div className="flex">
                                     <button
                                         type="button"
-                                        className={`px-4 py-2 rounded-l-md ${!useCEFR ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100'}`}
+                                        className={`px-4 py-2 rounded-l-md w-1/2 md:w-auto ${!useCEFR ? 'bg-blue-500 text-white font-semibold' : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100'}`}
                                         onClick={toggleCEFR}
                                     >
                                         Basic
                                     </button>
                                     <button
                                         type="button"
-                                        className={`px-4 py-2 rounded-r-md ${useCEFR ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100'}`}
+                                        className={`px-4 py-2 rounded-r-md w-1/2 md:w-auto ${useCEFR ? 'bg-blue-500 text-white font-semibold' : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100'}`}
                                         onClick={toggleCEFR}
                                     >
                                         CEFR
@@ -215,7 +215,7 @@ const Plan = () => {
                                 id="duration"
                                 value={formData.duration}
                                 onChange={handleChange}
-                                className="p-2 border border-gray-300 rounded-md shadow-sm"
+                                className="p-2 border border-gray-300 rounded-md shadow-sm portrait:w-full md:w-auto"
                                 placeholder="e.g., 60"
                                 min="5"
                                 step="5"
@@ -223,15 +223,15 @@ const Plan = () => {
                                 />
 
                                 <button type="button" onClick={() => setFormData({...formData, duration: 60})}
-                                        className="p-2 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100">
+                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 60 ? 'bg-blue-500 text-white font-semibold' : 'border border-gray-300 hover:bg-gray-100' }`}>
                                 60 min
                                 </button>
                                 <button type="button" onClick={() => setFormData({...formData, duration: 90})}
-                                        className="p-2 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100">
+                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 90 ? 'bg-blue-500 text-white font-semibold' : 'border border-gray-300 hover:bg-gray-100' }`}>
                                 90 min
                                 </button>
                                 <button type="button" onClick={() => setFormData({...formData, duration: 120})}
-                                        className="p-2 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100">
+                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 120 ? 'bg-blue-500 text-white font-semibold' : 'border border-gray-300 hover:bg-gray-100' }`}>
                                 120 min
                                 </button>
                             </div>
