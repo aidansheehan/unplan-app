@@ -118,6 +118,14 @@ const Plan = () => {
                             <option value="beginner">Beginner</option>
                             <option value="intermediate">Intermediate</option>
                             <option value="advanced">Advanced</option>
+                            <optgroup label="CEFR Levels">
+                                <option value="CEFR A1">A1 (Beginner)</option>
+                                <option value="CEFR A2">A2 (Elementary)</option>
+                                <option value="CEFR B1">B1 (Intermediate)</option>
+                                <option value="CEFR B2">B2 (Upper Intermediate)</option>
+                                <option value="CEFR C1">C1 (Advanced)</option>
+                                <option value="CEFR C2">C2 (Mastery)</option>
+                            </optgroup>
                         </select>
                         </div>
 
