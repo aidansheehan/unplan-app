@@ -92,7 +92,7 @@
 
 ### Strangers Feedback
 [x] Radio btn for online teachers (maybe also group class vs 1-on-1), reply to redit u/AdrianAlucardTepes once implemented P1 IFF
-[ ] CEFR levels P1 IFF
+[x] CEFR levels P1 IFF
 
 ### Immediate Extra
 [ ] Improve load screen - can handle lesson plan + mats seperately, then display a green lesson plan created! generating materials ... for user experience of PROGRESS. Maybe also implement a TIMEOUT and display error screen if it takes like a minute?
