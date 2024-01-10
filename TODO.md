@@ -1,4 +1,4 @@
-### TODO MVP
+# TODO MVP
 
 [x] Ensure lesson plan displayed nicely and PRINTS well
 [x] Generate mats
@@ -78,7 +78,24 @@
     [x] Mobile
 [x] Make Public
 
-### Friends feedback
+## BRANCHES
+
+### PUBILCITY (maybe all as 1 branch)
+[ ] P1: Implement SEO practices following guides to improve search engine rankings
+[ ] P1: Implement meta tags required for facebook without warnings
+[ ] P1: Create a facebook page, add an initial post and basic content, then you can post there as you grow?
+[ ] P2: Add CTA to give feedback to bottom of activity / lesson plan view. also link back to 'activities' for activity and 'my lessons' for lessons. Maybe 'your lessons' should be called 'my lessons'?
+
+### CORE PRODUCT (seperate branches)
+[ ] Identify and implement new DB structure to allow proposed growth ideas
+    [ ] Timestamp lessons
+
+[ ] Handle image generation 
+[ ] Add EDIT btn with WYSIWYG editor P1?
+[ ] Seperate lesson plan & handouts generation (checkbox 'generate handout activities' so users can decide if they want them or not? + 'Generate materials for this lesson' on other page to improve load times & decrease API costs)4
+[ ] Plans & Activities not level / age appropriate particularly at the bottom end, too vague - NEED TO PROVIDE EXAMPLES OF GODO CONTENT AND FINE-TUNE GPT MODEL FOR THIS, can also start with split on beginner / int / advanced different prompts, could experiment with feeding like 'plan a free practice' then feed free practice and metadata, 'plan a controlled practice' - plan the lesson in an order that makes sense, feeding it it's generated content each time
+
+## Feedback
 [x] Remove kindy
     [x] From form
     [x] From library
@@ -89,14 +106,11 @@
 [ ] ... Shared library of content with votes
 [ ] ... More specificity for ouput generation
 [ ] ... Improve design
-
-### Strangers Feedback
 [x] Radio btn for online teachers (maybe also group class vs 1-on-1), reply to redit u/AdrianAlucardTepes once implemented P1 IFF
 [x] CEFR levels P1 IFF
 
-### Immediate Extra
+## TODO
 [ ] Improve load screen - can handle lesson plan + mats seperately, then display a green lesson plan created! generating materials ... for user experience of PROGRESS. Maybe also implement a TIMEOUT and display error screen if it takes like a minute?
-[ ] checkbox 'generate handout activities' so users can decide if they want them or not? + 'Generate materials for this lesson' on other page to improve load times & decrease API costs
 [ ] Investigate improve markdown file load times?
 [ ] Use CORS to prevent requests from other origins
 [ ] Investigate using an iframe for better text-content-presentation-component display (closer to what will be printed) - can you make it a4 size? OR should you leave the /n in table as they seem to work well with the gram / vocab worksheet
@@ -106,11 +120,10 @@
 [ ] HTML output raw on find sb who - 1 time, iphone? https://www.easyplanesl.com/activity/1Xpt55Sq9H1ffyn7FP0k
 
 [x] fix activities page loader flush with top component no padding P1 IFF
-[ ] Add CTA to give feedback to bottom of activity / lesson plan view. also link back to 'activities' for activity and 'my lessons' for lessons. Maybe 'your lessons' should be called 'my lessons'? P1 IFF
-[ ] Add Web Analytics (Vercel) https://vercel.com/aidansheehan/lesson-planner/analytics?environment=all P1 IFF
-[ ] Timestamp lessons P1 IFF
+[x] Add Web Analytics (Vercel) https://vercel.com/aidansheehan/lesson-planner/analytics?environment=all P1 IFF
 
-### Extra
+
+## BACKLOG
 [ ] Implement star rating for lesson plans, save ratings to server too
 [ ] Implement a dialog to request a second lesson plan - user can write their probs with lesson plan 1, generate a second, then choose which of the two plans to proceed with (for mats generation)
 [ ] Revisit newsletter already subscribbed code 400 hack
