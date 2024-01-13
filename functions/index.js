@@ -130,7 +130,7 @@ exports.generateLessonPlan = functions.https.onRequest(async (req, res) => {
     
           const completion = await openai.chat.completions.create({
             messages: messages,
-            model: "gpt-3.5-turbo"
+            model: "gpt-4-1106-preview"
           });
     
           const { content } = completion.choices[0].message;
