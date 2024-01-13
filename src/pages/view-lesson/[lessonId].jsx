@@ -33,7 +33,10 @@ const ViewLesson = ({lessonPlanUrl, handoutUrl, error}) => {
                 <TextContentPresentationComponent title='Lesson Plan' mdContentUrl={lessonPlanUrl} />
 
                 {/* Lesson Handouts */}
-                <TextContentPresentationComponent title='Handouts' mdContentUrl={handoutUrl} />
+                {
+                    handoutUrl && <TextContentPresentationComponent title='Handouts' mdContentUrl={handoutUrl} />
+                }
+                
             </div>
 
         </Layout>
@@ -56,16 +59,15 @@ export async function getServerSideProps(context) {
             throw new Error('Lesson not found')
         }
 
-        //Get lessonData
-        const lessonData = lessonDoc.data()
+        const lessonData = lessonDoc.data() //Get lessonData
 
-        //Destructure lessonData
-        const { lessonPlanUrl, handoutUrl } = lessonData
+        const { contentRef }                                = lessonData    //Destructure lessonData
+        const { handout: handoutUrl, plan: lessonPlanUrl }  = contentRef    //Destructure contentRef
 
         return {
             props: {
                 lessonPlanUrl,
-                handoutUrl
+                handoutUrl: handoutUrl || null
             }
         }
     } catch (error) {
