@@ -5,6 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 const { FirebaseFunctionsRateLimiter } = require("firebase-functions-rate-limiter")
 const nodemailer = require("nodemailer")
 const cors = require("cors")({ origin: true });
+const { FieldValue } = require('@google-cloud/firestore')
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -76,9 +77,6 @@ exports.generateLessonPlan = functions.https.onRequest(async (req, res) => {
         return
       }
 
-      const openai = new OpenAI();
-      const messages = [{ role: "system", content: 'You are a CELTA trained ESL lesson planning assistant. Create a lesson plan for the user\'s class. USE MARKDOWN' }];
-
       //Extract inputs
       const { topic, level, duration, objectives, ageGroup, isOneToOne, isOnline } = req.body;
 
@@ -92,48 +90,74 @@ exports.generateLessonPlan = functions.https.onRequest(async (req, res) => {
           return;
       }
 
-      messages.push({
-        role: "user",
-        content: `Topic: ${topic}
-        Age Group: ${ageGroup}
-        Level: ${level}
-        Duration: ${duration} minutes
-        Objectives:
-        ${objectives}`
-      });
-
-      //If oneToOne class
-      if (isOneToOne) {
-        messages.push({
-          role: "user",
-          content: "The class is a ONE TO ONE class, with a single student."
-        })
-      }
-
-      //If online class
-      if (isOnline) {
-        messages.push({
-          role: "user",
-          content: "The class is an ONLINE class, to be conducted over video chat."
-        })
-      }
-
-      const completion = await openai.chat.completions.create({
-        messages: messages,
-        model: "gpt-3.5-turbo"
-      });
-
-      const { content } = completion.choices[0].message;
-      const uniqueLessonId = uuidv4();
-      const contentRef = storage.bucket().file(`lesson-plans/${uniqueLessonId}.md`);
-      await contentRef.save(content, { contentType: 'text/markdown' });
-
+      //Create Firestore document
       const docRef = await db.collection('lessons').add({
         topic, level, duration, objectives, ageGroup, isOneToOne, isOnline,
-        lessonPlanUrl: `lesson-plans/${uniqueLessonId}.md`
-      });
+        contentRef: {}, //Initially empty
+        status: 'pending',
+        createdAt: FieldValue.serverTimestamp()
+      })
 
-      res.status(200).json({ lessonPlanId: docRef.id, lessonPlan: content });
+      try {
+          const openai = new OpenAI();
+          const messages = [{ role: "system", content: 'You are a CELTA trained ESL lesson planning assistant. Create a lesson plan for the user\'s class. USE MARKDOWN' }];
+    
+          messages.push({
+            role: "user",
+            content: `Topic: ${topic}
+            Age Group: ${ageGroup}
+            Level: ${level}
+            Duration: ${duration} minutes
+            Objectives:
+            ${objectives}`
+          });
+    
+          //If oneToOne class
+          if (isOneToOne) {
+            messages.push({
+              role: "user",
+              content: "The class is a ONE TO ONE class, with a single student."
+            })
+          }
+    
+          //If online class
+          if (isOnline) {
+            messages.push({
+              role: "user",
+              content: "The class is an ONLINE class, to be conducted over video chat."
+            })
+          }
+    
+          const completion = await openai.chat.completions.create({
+            messages: messages,
+            model: "gpt-3.5-turbo"
+          });
+    
+          const { content } = completion.choices[0].message;
+
+          //Save to Firebase Storage
+          const lessonPlanPath = `lessons/${docRef.id}/plan.md`
+          const lessonPlanRef = storage.bucket().file(lessonPlanPath)
+          await lessonPlanRef.save(content, { contentType: 'text/markdown' })
+
+          //Update the firestore document
+          await db.collection('lessons').doc(docRef.id).update({
+            'contentRef.plan': lessonPlanPath,
+            'status': 'complete'
+          })
+
+          res.status(200).json({ lessonId: docRef.id, lessonPlan: content });
+      } catch (error) {
+          console.error('Error while generating lesson plan:', error)
+
+          //Update Firestore document in case of failure
+          await db.collection('lessons').doc(docRef.id).update({
+            'status': 'failed'
+          })
+
+          res.status(500).send('Internal Server Error')
+      }
+
     } else {
       res.status(405).send(`Method ${req.method} Not Allowed`);
     }
@@ -182,27 +206,36 @@ exports.createStudentHandout = functions.https.onRequest(async (req, res) => {
             return;
           }
 
+      //Initialize OpenAI
       const openai = new OpenAI();
 
+      //Construct messages
       const messages = [
         { role: "system", content: `Create a student handout for this lesson. THE PROVIDED PLAN IS FOR THE TEACHER. CREATE THE STUDENT ACTIVITIES HANDOUT. USE MARKDOWN. USE SIMPLE, GRADED ENGLISH APPROPRIATE FOR ${level} students` },
         { role: "user", content: `Here is the lesson plan: ${lessonPlan}` },
         // Include the example output as provided in your original code
       ];
 
+      //Get OpenAI response
       const completion = await openai.chat.completions.create({
         messages: messages,
         model: "gpt-3.5-turbo"
       });
 
-      const { content } = completion.choices[0].message;
-      const storageRef = admin.storage().bucket();
-      const handoutRef = storageRef.file(`lesson-handouts/${lessonPlanId}.md`);
+      const { content } = completion.choices[0].message;  //Destructure OpenAI Response
 
+      const handoutPath = `lessons/${lessonPlanId}/handout.md`  //New storage path
+
+      //Save to Firebase Storage
+      const storageRef = admin.storage().bucket();
+      const handoutRef = storageRef.file(handoutPath)
       await handoutRef.save(content, { contentType: 'text/markdown' });
 
+      //Update Firebase document
       const lessonDocRef = admin.firestore().doc(`lessons/${lessonPlanId}`);
-      await lessonDocRef.update({ handoutUrl: `lesson-handouts/${lessonPlanId}.md` });
+      await lessonDocRef.update({
+        'contentRef.handout': handoutPath //Storing relative path
+      })
 
       res.status(200).json({ lessonId: lessonPlanId, lessonHandout: content });
     // } else {

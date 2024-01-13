@@ -76,12 +76,11 @@ const Plan = () => {
             const lessonData = await lessonResponse.json()
 
             //Generate lesson materials
-
             try {
                 const handoutResponse = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}createStudentHandout`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ level: formData.level, lessonPlan: lessonData.lessonPlan, lessonPlanId: lessonData.lessonPlanId })
+                    body: JSON.stringify({ level: formData.level, lessonPlan: lessonData.lessonPlan, lessonPlanId: lessonData.lessonId })
                 })
     
                 if (!handoutResponse.ok) {
