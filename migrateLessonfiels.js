@@ -1,6 +1,6 @@
 const { initializeApp } = require('firebase/app')
 const { ref, uploadBytes, getDownloadURL, getStorage } = require('firebase/storage')
-const { doc, getDoc, updateDoc, getFirestore } = require('firebase/firestore')
+const { doc, getDoc, updateDoc, getFirestore, collection, getDocs } = require('firebase/firestore')
 const axios = require('axios')
 const fs = require('fs')
 const path = require('path')
@@ -21,9 +21,6 @@ const app = initializeApp(config)
 const storage = getStorage(app)
 const db = getFirestore(app)
 
-//Define lessonId
-const lessonId = '2nGFkYbfNsDQLOvLGK8v'
-
 async function migrateLessonPlanData(lessonId) {
 
     const lessonRef = doc(db, 'lessons', lessonId)
@@ -36,6 +33,12 @@ async function migrateLessonPlanData(lessonId) {
     
     // const lessonData = doc.data()
     const lessonData = docSnapshot.data()
+
+    // Check if the document is already in the new format
+    if (!lessonData.lessonPlanUrl || !lessonData.handoutUrl) {
+        console.log(`Document ${lessonId} is already in the new format.`)
+        return;
+    }
 
     const lessonPlanPath = lessonData.lessonPlanUrl
     const handoutPath = lessonData.handoutUrl
@@ -78,4 +81,15 @@ async function migrateLessonPlanData(lessonId) {
     }
 }
 
-migrateLessonPlanData(lessonId)
+async function migrateAllLessonPlans() {
+    const lessonsRef = collection(db, 'lessons')
+    const querySnapshot = await getDocs(lessonsRef)
+
+    for (const docSnapshot of querySnapshot.docs) {
+        const lessonId = docSnapshot.id
+
+        await migrateLessonPlanData(lessonId)
+    }
+}
+
+migrateAllLessonPlans()
