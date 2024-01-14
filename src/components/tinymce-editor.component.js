@@ -29,15 +29,19 @@ const TinyMceEditor = ({value, setValue}) => {
               "anchor",
               "searchreplace",
               "visualblocks",
-              "code",
               "fullscreen",
               "insertdatetime",
               "media",
               "table",
-              "code",
               "help",
               "wordcount",
             ],
+            promotion: false,
+            elementpath: false,
+            newdocument: false,
+            menu: {
+                file: { title: 'File', items: 'restoredraft | preview | export print' }
+            },
             toolbar:
               "undo redo | blocks | " +
               "bold italic forecolor | alignleft aligncenter " +
