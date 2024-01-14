@@ -37,3 +37,7 @@ next-env.d.ts
 
 # Debug log
 ui-debug.log
+
+# Tiny mce
+/public/assets/libs/tinymce
+/public/tinymce

@@ -5,8 +5,17 @@ import TextContentPresentationComponent from '@/components/text-content-presenta
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFrownOpen } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
+// import TinyMceEditor from '@/components/tinymce-editor.component'
+import dynamic from 'next/dynamic'
+import { useEffect, useState } from 'react'
+import LessonPlanComponent from '@/components/lesson-plan.component'
+
+const TinyMceEditor = dynamic(() => import('../../components/tinymce-editor.component'), { ssr: false })
 
 const ViewLesson = ({lessonPlanUrl, handoutUrl, error}) => {
+
+    // const [ lessonPlan, setLessonPlan ] = useState('')
+    // const [ handoutState, setHandoutState ] = useState('')
 
     if (error) {
         return (
@@ -30,7 +39,8 @@ const ViewLesson = ({lessonPlanUrl, handoutUrl, error}) => {
 
             <div className='w-full h-full p-4' >
                 {/* Lesson Plan */}
-                <TextContentPresentationComponent title='Lesson Plan' mdContentUrl={lessonPlanUrl} />
+                {/* <TextContentPresentationComponent title='Lesson Plan' mdContentUrl={lessonPlanUrl} /> */}
+                <LessonPlanComponent mdContentUrl={lessonPlanUrl} />
 
                 {/* Lesson Handouts */}
                 {
