@@ -79,6 +79,24 @@
 [x] Make Public
 
 ## BRANCHES
+editable-content
+    [x] Add tinymce & setup, self host
+    [x] Remove unhelpful toolbar options
+    [ ] save
+        [ ] Restructure / HTML files?
+            [ ] Convert md to html in db (copy)
+            [ ] Save as HTML, save two (plan.html, plan-initial.html)
+            [x] Retrieve as HTML
+        [x] Add save button to editor and check working
+        [ ] Save as html in db, save two 'plan.html' and 'plan-initial.html', then update 'plan.html' as and when
+        [x] hook up with in editor save btn and test
+    [ ] Plan page refactor (use linguahouse as guide)
+    [ ] Update terms of service (Your own content is your own)
+    [ ] Handouts
+        [ ] Move handout generation to plan page, with warning / instrution to add content like images etc
+        [ ] Use tinymce for hanodut, implement save functionality
+        [ ] Make sure you STRIP HTML and pass in lesson plan to GPT as string for better results
+    [ ] 
 
 ### PUBILCITY (maybe all as 1 branch)
 [ ] P1: Implement SEO practices following guides to improve search engine rankings

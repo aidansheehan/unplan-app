@@ -2,7 +2,7 @@
 import { useRef } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 
-const TinyMceEditor = ({value, setValue}) => {
+const TinyMceEditor = ({value, setValue, saveFn}) => {
     const editorRef = useRef(null)
     const log = () => {
         if (editorRef.current) {
@@ -18,6 +18,22 @@ const TinyMceEditor = ({value, setValue}) => {
           init={{
             height: 500,
             menubar: true,
+            setup: (editor) => {
+              editor.ui.registry.addMenuItem('save', {
+              icon: 'save',
+              text: 'Save',
+              cmd: 'mceSave',
+              context: 'file',
+              disabled: true,
+              onAction: saveFn,
+              onPostRender: () => {
+                var self = this
+                editor.on('nodeChange', () => {
+                  self.disabled(editor.getParam('save_enablewhendirty', true) && !editor.isDirty())
+                })
+              }
+            })
+            },
             plugins: [
               "advlist",
               "autolink",
@@ -35,12 +51,15 @@ const TinyMceEditor = ({value, setValue}) => {
               "table",
               "help",
               "wordcount",
+              "save"
             ],
+            toolbar: 'save',
             promotion: false,
             elementpath: false,
             newdocument: false,
+            save_onsavecallback: saveFn,
             menu: {
-                file: { title: 'File', items: 'restoredraft | preview | export print' }
+                file: { title: 'File', items: 'restoredraft | save | preview | export print' }
             },
             toolbar:
               "undo redo | blocks | " +
