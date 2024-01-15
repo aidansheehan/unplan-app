@@ -84,13 +84,16 @@ editable-content
     [x] Remove unhelpful toolbar options
     [ ] save
         [ ] Restructure / HTML files?
-            [ ] Convert md to html in db (copy)
-            [ ] Save as HTML, save two (plan.html, plan-initial.html)
+            [ ] Convert md to html in db (copy, double up as below)
+            [ ] Save as HTML, save two (plan.html, plan-initial.html) on creation
             [x] Retrieve as HTML
         [x] Add save button to editor and check working
-        [ ] Save as html in db, save two 'plan.html' and 'plan-initial.html', then update 'plan.html' as and when
         [x] hook up with in editor save btn and test
+        [x] Autosave
     [ ] Plan page refactor (use linguahouse as guide)
+        [ ] Metadata section at top, small text
+        [ ] Plan, handout just nice components, expect vertical scroll down page with horizontal line breaks
+        [ ] Media (audio & pictures) - Leave a 'Coming Soon...' with CTA mailing list
     [ ] Update terms of service (Your own content is your own)
     [ ] Handouts
         [ ] Move handout generation to plan page, with warning / instrution to add content like images etc
