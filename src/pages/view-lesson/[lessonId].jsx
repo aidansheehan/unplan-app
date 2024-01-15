@@ -8,9 +8,11 @@ import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import ContentEditorComponent from '@/components/content-editor.component'
 
-const TinyMceEditor = dynamic(() => import('../../components/tinymce-editor.component'), { ssr: false })
 
-const ViewLesson = ({lessonPlanUrl, handoutUrl, error}) => {
+const ViewLesson = ({lessonData, lessonId, error}) => {
+
+    const { contentRef }                                = lessonData    //Destructure lessonData
+    const { handout: handoutUrl, plan: lessonPlanUrl }  = contentRef    //Destructure contentRef
 
     if (error) {
         return (
@@ -35,7 +37,7 @@ const ViewLesson = ({lessonPlanUrl, handoutUrl, error}) => {
             <div className='w-full h-full p-4' >
                 {/* Lesson Plan */}
                 {/* <TextContentPresentationComponent title='Lesson Plan' mdContentUrl={lessonPlanUrl} /> */}
-                <ContentEditorComponent title='Lesson Plan' contentUrl={lessonPlanUrl} />
+                <ContentEditorComponent title='Lesson Plan' contentUrl={lessonPlanUrl} id={lessonId} />
 
                 {/* Lesson Handouts */}
                 {/* {
@@ -66,13 +68,15 @@ export async function getServerSideProps(context) {
 
         const lessonData = lessonDoc.data() //Get lessonData
 
-        const { contentRef }                                = lessonData    //Destructure lessonData
-        const { handout: handoutUrl, plan: lessonPlanUrl }  = contentRef    //Destructure contentRef
+        //Convert Timestamp to serializable format (ISO string)
+        if (lessonData.createdAt && lessonData.createdAt.toDate) {
+            lessonData.createdAt = lessonData.createdAt.toDate().toISOString()
+        }
 
         return {
             props: {
-                lessonPlanUrl,
-                handoutUrl: handoutUrl || null
+                lessonData,
+                lessonId
             }
         }
     } catch (error) {

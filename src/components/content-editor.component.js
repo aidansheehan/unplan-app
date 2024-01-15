@@ -1,15 +1,17 @@
 import { useEffect, useRef, useState } from "react"
 import TinyMceEditor from "./tinymce-editor.component"
+import _ from 'lodash'
 
 /**
  * Component to fetch, display and edit content
  */
-const ContentEditorComponent = ({contentUrl, title}) => {
+const ContentEditorComponent = ({contentUrl, title, id}) => {
 
     const [ content, setContent ] = useState('')
     const [ isLoading, setIsLoading ] = useState(true)
 
-    const contentRef = useRef('')
+    const contentRef = useRef('')   //Editor content ref
+    const editorRef = useRef(null)  //Editor component ref
 
     //Function to save new content
     const saveContent = async () => {
@@ -35,6 +37,12 @@ const ContentEditorComponent = ({contentUrl, title}) => {
 
             if (response.ok) {
                 console.log('Content saved successfully')
+                if (editorRef.current) {
+
+                    //Set dirty state false to avoid autosave warning
+                    editorRef.current.setDirty(false)
+                }
+
             } else {
                 console.error('Failed to save content')
                 console.log('response: ', response)
@@ -43,6 +51,10 @@ const ContentEditorComponent = ({contentUrl, title}) => {
             console.error('Error saving content:', error)
         }
     }
+
+    //Construct autosave id
+    const autosaveId = `${_.snakeCase(title)}/${id}/`
+
     useEffect(() => {
         contentRef.current = content
     }, [content])
@@ -76,7 +88,7 @@ const ContentEditorComponent = ({contentUrl, title}) => {
                 isLoading ? (
                     <p>Loading...</p>
                 ) : (
-                    <TinyMceEditor value={content} setValue={setContent} saveFn={saveContent} />
+                    <TinyMceEditor value={content} setValue={setContent} saveFn={saveContent} autosaveId={autosaveId} ref={editorRef} />
                 )
             }
         </div>
