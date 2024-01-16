@@ -1,12 +1,12 @@
 import { db } from '../../../firebaseConfig'
 import { doc, getDoc } from 'firebase/firestore'
 import Layout from '@/components/layout'
-import TextContentPresentationComponent from '@/components/text-content-presentation/text-content-presentation.component'
+// import TextContentPresentationComponent from '@/components/text-content-presentation/text-content-presentation.component'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFrownOpen } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
-import dynamic from 'next/dynamic'
 import ContentEditorComponent from '@/components/content-editor.component'
+import LessonMetadataComponent from '@/components/lesson-metadata.component'
 
 
 const ViewLesson = ({lessonData, lessonId, error}) => {
@@ -32,9 +32,11 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
     }
 
     return (
-        <Layout title='Your Lesson' >
+        <Layout >
 
-            <div className='w-full h-full p-4' >
+            <div className='p-8 w-full flex-grow flex flex-col' >
+
+                <LessonMetadataComponent lessonData={lessonData} />
                 {/* Lesson Plan */}
                 {/* <TextContentPresentationComponent title='Lesson Plan' mdContentUrl={lessonPlanUrl} /> */}
                 <ContentEditorComponent title='Lesson Plan' contentUrl={lessonPlanUrl} id={lessonId} />

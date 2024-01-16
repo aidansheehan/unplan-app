@@ -20,7 +20,8 @@ const LessonPlanComponent = ({mdContentUrl}) => {
                 const data = await response.json()
 
                 //Format content as HTML
-                const contentAsHtml = marked(data.content)
+                // const contentAsHtml = marked(data.content)
+                const contentAsHtml = data.content
 
                 //Set HTML content state
                 setLessonPlanHtml(contentAsHtml)
@@ -39,7 +40,7 @@ const LessonPlanComponent = ({mdContentUrl}) => {
         <>
             {
                 isLoading ? (
-                    <Skeleton count={5} className='mb-2' />
+                    <p>Loading...</p>
                 ) : (
                     <TinyMceEditor value={lessonPlanHtml} setValue={setLessonPlanHtml} />
                 )
