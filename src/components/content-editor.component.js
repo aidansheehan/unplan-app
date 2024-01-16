@@ -83,7 +83,6 @@ const ContentEditorComponent = ({contentUrl, title, id}) => {
 
     return (
         <div>
-            <h2>Lesson Plan</h2>
             {
                 isLoading ? (
                     <p>Loading...</p>

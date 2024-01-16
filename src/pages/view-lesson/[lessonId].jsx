@@ -7,6 +7,7 @@ import { faFrownOpen } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 import ContentEditorComponent from '@/components/content-editor.component'
 import LessonMetadataComponent from '@/components/lesson-metadata.component'
+import LessonSectionTitle from '@/components/lesson-section-title.component'
 
 
 const ViewLesson = ({lessonData, lessonId, error}) => {
@@ -39,6 +40,7 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                 <LessonMetadataComponent lessonData={lessonData} />
                 {/* Lesson Plan */}
                 {/* <TextContentPresentationComponent title='Lesson Plan' mdContentUrl={lessonPlanUrl} /> */}
+                <LessonSectionTitle title={'Lesson Plan'} />
                 <ContentEditorComponent title='Lesson Plan' contentUrl={lessonPlanUrl} id={lessonId} />
 
                 {/* Lesson Handouts */}

@@ -90,16 +90,23 @@ editable-content
         [x] Add save button to editor and check working
         [x] hook up with in editor save btn and test
         [x] Autosave
+        [ ] Public lessons 'lock' editor so can't update, also prevent updates in cloud function
     [ ] Plan page refactor (use linguahouse as guide)
-        [ ] Metadata section at top, small text
-        [ ] Plan, handout just nice components, expect vertical scroll down page with horizontal line breaks
+        [x] Metadata section at top, small text
+        [x] Plan, handout just nice simple components use page scroll to view, horizontal line breaks to split out content
         [ ] Media (audio & pictures) - Leave a 'Coming Soon...' with CTA mailing list
     [ ] Update terms of service (Your own content is your own)
     [ ] Handouts
         [ ] Move handout generation to plan page, with warning / instrution to add content like images etc
-        [ ] Use tinymce for hanodut, implement save functionality
+        [ ] Use tinymce for handout, implement save functionality
         [ ] Make sure you STRIP HTML and pass in lesson plan to GPT as string for better results
     [ ] 
+
+image-handling
+    Can you just use an on-page public API, eg unsplash?
+    You could replace any image in worksheet with a button 'Choose image...' which brings up a modal allowing users to search images. You could pre-fill the search box with the alt tag.
+    You could dynamically resize all images to a helpful (smallish) size - teacher can resize as they like
+    You could block 'print' until all images have been inserted (or at least be like 'You haven't added images. Print anyway...', maybe less error prone)
 
 ### PUBILCITY (maybe all as 1 branch)
 [ ] P1: Implement SEO practices following guides to improve search engine rankings
