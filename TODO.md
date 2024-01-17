@@ -94,11 +94,11 @@ editable-content
     [ ] Plan page refactor (use linguahouse as guide)
         [x] Metadata section at top, small text
         [x] Plan, handout just nice simple components use page scroll to view, horizontal line breaks to split out content
-        [ ] Media (audio & pictures) - Leave a 'Coming Soon...' with CTA mailing list
+        [x] Media (audio & pictures) - Leave a 'Coming Soon...' with CTA mailing list
     [ ] Update terms of service (Your own content is your own)
     [ ] Handouts
         [ ] Move handout generation to plan page, with warning / instrution to add content like images etc
-        [ ] Use tinymce for handout, implement save functionality
+        [x] Use tinymce for handout, implement save functionality
         [ ] Make sure you STRIP HTML and pass in lesson plan to GPT as string for better results
     [ ] 
 
@@ -107,6 +107,7 @@ image-handling
     You could replace any image in worksheet with a button 'Choose image...' which brings up a modal allowing users to search images. You could pre-fill the search box with the alt tag.
     You could dynamically resize all images to a helpful (smallish) size - teacher can resize as they like
     You could block 'print' until all images have been inserted (or at least be like 'You haven't added images. Print anyway...', maybe less error prone)
+    Or, You could simplify and just add it as a seperate component for now
 
 ### PUBILCITY (maybe all as 1 branch)
 [ ] P1: Implement SEO practices following guides to improve search engine rankings

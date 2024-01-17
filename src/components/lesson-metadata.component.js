@@ -10,7 +10,7 @@ import _ from 'lodash'
 const LessonMetadataComponent = ({ lessonData }) => {
     
     //Destructure lessonData
-    const { duration, topic, ageGroup, level, objectives, isOnline, isOneToOne, createdAt, editedAt } = lessonData
+    const { duration, topic, ageGroup, level, objectives, isOnline, isOneToOne } = lessonData
 
     // TODO maybe display dates at bottom of page?
     // const creationDate = formatDate(createdAt)
@@ -51,7 +51,7 @@ const LessonMetadataComponent = ({ lessonData }) => {
             </div>
 
 
-          <div className="grid grid-cols-[auto_1fr] gap-y-2 gap-x-4 items-start justify-start mt-2 mb-6 ">
+          <div className="grid grid-cols-[auto_1fr] gap-y-2 gap-x-4 items-start justify-start mt-2 mb-2 ">
 
             <div class="text-sm font-bold text-gray-600">Level:</div>
             <div class="text-sm text-gray-600">{level}</div>

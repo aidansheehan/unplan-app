@@ -40,8 +40,39 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                 <LessonMetadataComponent lessonData={lessonData} />
                 {/* Lesson Plan */}
                 {/* <TextContentPresentationComponent title='Lesson Plan' mdContentUrl={lessonPlanUrl} /> */}
-                <LessonSectionTitle title={'Lesson Plan'} />
+                <LessonSectionTitle title='Lesson Plan' />
                 <ContentEditorComponent title='Lesson Plan' contentUrl={lessonPlanUrl} id={lessonId} />
+
+                {/* Handout */}
+                <LessonSectionTitle title='Student Handout' />
+                {
+                    handoutUrl ? (
+                        <ContentEditorComponent title='Student Handout' contentUrl={handoutUrl} id={lessonId} />
+                    ) : (
+                        <div >
+                            {/* TODO generate handout button */}
+                            <button>Click Me!</button>
+                        </div>
+                    )
+                }
+
+                <LessonSectionTitle title='Media' isComingSoon />
+                <div className="bg-blue-50 p-6 rounded-lg shadow-md text-sm">
+                    <p className='text-gray-700 mb-4 font-semibold'>
+                        Get ready to bring your lessons to life with multimedia!
+                    </p>
+                    <p className="text-gray-700 mb-4">
+                        Soon, you'll be able to create audio files for listening activities and enrich your lessons with engaging images.
+                    </p>
+                    <div className='mt-2 w-full flex justify-center'>
+                        <Link href="/signup" className="bg-orange-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-600 transition-colors duration-300 w-fit">
+                            Sign Up for Updates
+                        </Link>
+                    </div>
+
+                </div>
+
+
 
                 {/* Lesson Handouts */}
                 {/* {
