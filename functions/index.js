@@ -203,7 +203,7 @@ exports.createStudentHandout = functions.https.onRequest(async (req, res) => {
       }
 
       //Extract inputs
-      const { level, lessonPlan, lessonId } = req.body;
+      const { level, lessonPlan, lessonId, ageGroup } = req.body;
 
       // Validate inputs
       if (typeof level !== 'string' || level.length > 20 || 
@@ -217,10 +217,23 @@ exports.createStudentHandout = functions.https.onRequest(async (req, res) => {
 
       //Construct messages
       const messages = [
-        { role: "system", content: `Create a student handout for this lesson. THE PROVIDED PLAN IS FOR THE TEACHER. CREATE THE STUDENT ACTIVITIES HANDOUT. USE MARKDOWN. USE SIMPLE, GRADED ENGLISH APPROPRIATE FOR ${level} students` },
-        { role: "user", content: `Here is the lesson plan: ${lessonPlan}` },
-        // Include the example output as provided in your original code
-      ];
+        {
+          role: "system",
+          content: `You are a CELTA trained ESL worksheet helper. Identify any parts of the users lesson plan you can provide VISUAL HTML content for and create it for them.`
+        },
+        {
+          role: "user",
+          content: `Here is my lesson plan: ${lessonPlan}. Help me, make a handout for the students for this class!`
+        },
+        {
+          role: "system",
+          content: `Create a STUDENT handout for the provided lesson plan. Provide activities as mentioned in the plan. Use SIMPLE, graded english appropriate for ${level} learners - do not use any vocabulary or grammar that will confuse them. Provide activities appropraite for ${ageGroup} students. Build context slowly. Keep your content aligned with the activities mentioned in the lesson plan.`
+        },
+        {
+          role: "system",
+          content: 'Your output is RAW HTML. It will be inserted into an existing HTML document, do not provide boilerplate, or comments to assign html. Your response should start with `<div>`. Leave space for student answers. Activities should require student involvement, for example in a matching activity the pictures and words should be incorrectly ordered so the STUDENT CAN FIX THAT. MINIMISE YOUR LANGUAGE USE. Give only simple instructions. Any images need to have ids representing their order eg "#image-1", "#image-2" etc and have DESCRIPTIVE `alt` tags that can be used as DALE prompts.'
+        }
+      ]
 
       //Get OpenAI response
       const completion = await openai.chat.completions.create({
@@ -230,12 +243,12 @@ exports.createStudentHandout = functions.https.onRequest(async (req, res) => {
 
       const { content } = completion.choices[0].message;  //Destructure OpenAI Response
 
-      const handoutPath = `lessons/${lessonId}/handout.md`  //New storage path
+      const handoutPath = `lessons/${lessonId}/handout.html`  //New storage path
 
       //Save to Firebase Storage
       const storageRef = admin.storage().bucket();
       const handoutRef = storageRef.file(handoutPath)
-      await handoutRef.save(content, { contentType: 'text/markdown' });
+      await handoutRef.save(content, { contentType: 'text/html' });
 
       //Update Firebase document
       const lessonDocRef = admin.firestore().doc(`lessons/${lessonId}`);

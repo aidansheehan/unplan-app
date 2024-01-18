@@ -54,7 +54,7 @@ const LessonMetadataComponent = ({ lessonData }) => {
           <div className="grid grid-cols-[auto_1fr] gap-y-2 gap-x-4 items-start justify-start mt-2 mb-2 ">
 
             <div class="text-sm font-bold text-gray-600">Level:</div>
-            <div class="text-sm text-gray-600">{_.capitalize(level)}</div>
+            <div class="text-sm text-gray-600">{level.charAt(0).toUpperCase() + level.slice(1)}</div>
             
             <div class="text-sm font-bold text-gray-600">Age Group:</div>
             <div class="text-sm text-gray-600">{_.capitalize(ageGroup)}</div>
