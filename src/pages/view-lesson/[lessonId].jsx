@@ -70,7 +70,7 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
         const fetchLessonPlan = async () => {
             try {
                 //TODO use real firebase
-                const response = await fetch(`http://127.0.0.1:5001/lesson-planner-3eff4/us-central1/getContent?urlPath=${encodeURIComponent(lessonPlanUrl)}`)
+                const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}getContent?urlPath=${encodeURIComponent(lessonPlanUrl)}`)
                 const data = await response.json()
 
                 //Set lesson plan state
@@ -96,7 +96,7 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
 
             try {
                 //TODO use real firebase
-                const response = await fetch(`http://127.0.0.1:5001/lesson-planner-3eff4/us-central1/getContent?urlPath=${encodeURIComponent(handoutUrl)}`)
+                const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}getContent?urlPath=${encodeURIComponent(handoutUrl)}`)
                 const data = await response.json()
 
                 //Set handoutContent
