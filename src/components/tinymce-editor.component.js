@@ -1,18 +1,62 @@
-import { forwardRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
+import _ from 'lodash'
 
-const TinyMceEditor = forwardRef(({value, setValue, saveFn, autosaveId}, ref) => {
+const TinyMceEditor = ({value, setValue, contentUrl, title, id}) => {
 
-    const log = () => {
-        if (ref.current) {
-            console.log(ref.current.getContent())
-        }
-    }
+    const contentRef = useRef('')   //Editor content ref
+    const editorRef = useRef(null)  //Editor component ref
+
+    //Function to save new content
+    const saveContent = async () => {
+        
+          if (!contentUrl) {
+              console.error('File path not found for ', title)
+              return;
+          }
+  
+          try {
+  
+              //TODO use real firebase
+              const response = await fetch('http://127.0.0.1:5001/lesson-planner-3eff4/us-central1/updateContent', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                      filePath: contentUrl,
+                      content: contentRef.current
+                  })
+              })
+  
+              if (response.ok) {
+                  console.log('Content saved successfully')
+                  if (editorRef.current) {
+  
+                      //Set dirty state false to avoid autosave warning
+                      editorRef.current.setDirty(false)
+                  }
+  
+              } else {
+                  console.error('Failed to save content')
+                  console.log('response: ', response)
+              }
+          } catch (error) {
+              console.error('Error saving content:', error)
+          }
+     }
+    
+     useEffect(() => {
+      contentRef.current = value
+     }, [value])
+
+      //Construct autosave id
+      const autosaveId = `${_.snakeCase(title)}/${id}/`
 
     return (
         <Editor
           tinymceScriptSrc={"/assets/libs/tinymce/tinymce.min.js"}
-          onInit={(evt, editor) => (ref.current = editor)}
+          onInit={(evt, editor) => (editorRef.current = editor)}
           value={value}
           init={{
             height: 500,
@@ -27,7 +71,7 @@ const TinyMceEditor = forwardRef(({value, setValue, saveFn, autosaveId}, ref) =>
               cmd: 'mceSave',
               context: 'file',
               disabled: true,
-              onAction: saveFn,
+              onAction: saveContent,
               onPostRender: () => {
                 var self = this
                 editor.on('nodeChange', () => {
@@ -59,7 +103,7 @@ const TinyMceEditor = forwardRef(({value, setValue, saveFn, autosaveId}, ref) =>
             promotion: false,
             elementpath: false,
             newdocument: false,
-            save_onsavecallback: saveFn,
+            save_onsavecallback: saveContent,
             menu: {
                 file: { title: 'File', items: 'restoredraft | save | preview | export print' }
             },
@@ -78,6 +122,6 @@ const TinyMceEditor = forwardRef(({value, setValue, saveFn, autosaveId}, ref) =>
         />
       );
 
-})
+}
 
 export default TinyMceEditor

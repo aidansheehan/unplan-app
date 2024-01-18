@@ -8,12 +8,123 @@ import Link from 'next/link'
 import ContentEditorComponent from '@/components/content-editor.component'
 import LessonMetadataComponent from '@/components/lesson-metadata.component'
 import LessonSectionTitle from '@/components/lesson-section-title.component'
+import { useEffect, useState } from 'react'
+import { stripHtml } from 'string-strip-html'
+import { useError } from '@/context/error.context'
+import TinyMceEditor from '@/components/tinymce-editor.component'
 
 
 const ViewLesson = ({lessonData, lessonId, error}) => {
 
-    const { contentRef }                                = lessonData    //Destructure lessonData
+    const { contentRef, level }                         = lessonData    //Destructure lessonData
     const { handout: handoutUrl, plan: lessonPlanUrl }  = contentRef    //Destructure contentRef
+
+    const { handleError } = useError()
+
+    const [ planLoading, setPlanLoading ] = useState(true)
+    const [ handoutLoading, setHandoutLoading ] = useState(true)
+
+    const [ lessonPlanContent, setLessonPlanContent ]   = useState('')
+    const [ handoutContent, setHandoutContent ]         = useState('')
+
+    //Function to generate a handout for the class
+    const generateHandout = async () => {
+
+        //If lesson plan loaded and lesson plan content exists
+        if (lessonPlanContent && !planLoading) {
+
+            setHandoutLoading(true) //Set handout loading state true
+
+            //Strip lesson plan of html
+            const strippedLessonPlan = stripHtml(lessonPlanContent).result
+
+            try {
+                //Get handout response
+                const handoutResponse = await fetch(`http://127.0.0.1:5001/lesson-planner-3eff4/us-central1/createStudentHandout`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ level, lessonId, lessonPlan: strippedLessonPlan })
+                })
+
+                //Handle error response
+                if (!handoutResponse.ok) {
+                    const errorText = await handoutResponse.json()
+                    throw new Error(`Failed to generate lesson materials: ${errorText}`)
+                }
+
+                const handoutData = await handoutResponse.json()    //Parse data to JSON
+                setHandoutContent(handoutData.lessonHandout)        //Set handout content
+            } catch (error) {
+                console.error('Error calling createStudentHandout: ', error.message)
+                handleError(error)
+            } finally {
+                setHandoutLoading(false)
+            }
+        }
+
+    }
+
+    /** Load Lesson Plan */
+    useEffect(() => {
+
+        const fetchLessonPlan = async () => {
+            try {
+                //TODO use real firebase
+                const response = await fetch(`http://127.0.0.1:5001/lesson-planner-3eff4/us-central1/getContent?urlPath=${encodeURIComponent(lessonPlanUrl)}`)
+                const data = await response.json()
+
+                //Set lesson plan state
+                setLessonPlanContent(data.content)
+
+            } catch (error) {
+                console.error(`Error fetching lesson plan: ${error}`)
+                setLessonPlanContent(`<p>Failed to load content.</p>`)
+            } finally {
+                setPlanLoading(false)
+            }
+        }
+
+        fetchLessonPlan()
+
+    }, [ lessonPlanUrl ])
+
+    /** Load Handout */
+    useEffect(() => {
+
+        //Function to fetch handout using API route
+        const fetchHandout = async () => {
+
+            try {
+                //TODO use real firebase
+                const response = await fetch(`http://127.0.0.1:5001/lesson-planner-3eff4/us-central1/getContent?urlPath=${encodeURIComponent(handoutUrl)}`)
+                const data = await response.json()
+
+                //Set handoutContent
+                setHandoutContent(data.content)
+            } catch (error) {
+                console.error(`Error fetching handout: ${error}`)
+                setHandoutContent(`<p>Failed to load content.</p>`)
+            } finally {
+                setHandoutLoading(false)
+            }
+        }
+
+        //If handoutUrl
+        if (handoutUrl) {
+
+            //Set handout loading state true
+            setHandoutLoading(true)
+
+            fetchHandout()
+
+
+        } else {
+
+            //Set loading state false
+            setHandoutLoading(false)
+        }
+
+    }, [ handoutUrl ])
 
     if (error) {
         return (
@@ -41,18 +152,31 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                 {/* Lesson Plan */}
                 {/* <TextContentPresentationComponent title='Lesson Plan' mdContentUrl={lessonPlanUrl} /> */}
                 <LessonSectionTitle title='Lesson Plan' />
-                <ContentEditorComponent title='Lesson Plan' contentUrl={lessonPlanUrl} id={lessonId} />
+                {/* <ContentEditorComponent title='Lesson Plan' contentUrl={lessonPlanUrl} id={lessonId} /> */}
+                {
+                    lessonPlanContent ? (
+                        <TinyMceEditor title='Lesson Plan' contentUrl={lessonPlanUrl} value={lessonPlanContent} setValue={setLessonPlanContent} id={lessonId}  />
+                    ) : (
+                        <p>Loading...</p>
+                    )
+                }
 
                 {/* Handout */}
                 <LessonSectionTitle title='Student Handout' />
                 {
-                    handoutUrl ? (
-                        <ContentEditorComponent title='Student Handout' contentUrl={handoutUrl} id={lessonId} />
+                    handoutLoading ? (
+                        <p>Loading...</p>
                     ) : (
-                        <div >
-                            {/* TODO generate handout button */}
-                            <button>Click Me!</button>
-                        </div>
+                        handoutContent ? (
+                            //TODO should take actual content as prop to prevent double loading
+                            <TinyMceEditor value={handoutContent} setValue={setHandoutContent} contentUrl={handoutUrl} id={lessonId} title='Student Handout' />
+                        ) : (
+                            <div >
+                                <button onClick={generateHandout} className="block md:w-auto bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-600 transition-colors duration-300" >
+                                    Generate Handout
+                                </button>
+                            </div>
+                        )
                     )
                 }
 

@@ -85,21 +85,23 @@ editable-content
     [ ] save
         [ ] Restructure / HTML files?
             [ ] Convert md to html in db (copy, double up as below)
-            [ ] Save as HTML, save two (plan.html, plan-initial.html) on creation
+            [ ] Save as HTML
+            [ ] save two (plan.html, plan-initial.html) on creation
             [x] Retrieve as HTML
         [x] Add save button to editor and check working
         [x] hook up with in editor save btn and test
         [x] Autosave
         [ ] Public lessons 'lock' editor so can't update, also prevent updates in cloud function
-    [ ] Plan page refactor (use linguahouse as guide)
+    [x] Plan page refactor (use linguahouse as guide)
         [x] Metadata section at top, small text
         [x] Plan, handout just nice simple components use page scroll to view, horizontal line breaks to split out content
         [x] Media (audio & pictures) - Leave a 'Coming Soon...' with CTA mailing list
     [ ] Update terms of service (Your own content is your own)
     [ ] Handouts
-        [ ] Move handout generation to plan page, with warning / instrution to add content like images etc
+        [x] Move handout generation to plan page
+            [ ] Add warning / instruction to add content like images etc
         [x] Use tinymce for handout, implement save functionality
-        [ ] Make sure you STRIP HTML and pass in lesson plan to GPT as string for better results
+        [x] Make sure you STRIP HTML and pass in lesson plan to GPT as string for better results
     [ ] 
 
 image-handling

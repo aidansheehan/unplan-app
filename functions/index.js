@@ -6,6 +6,7 @@ const { FirebaseFunctionsRateLimiter } = require("firebase-functions-rate-limite
 const nodemailer = require("nodemailer")
 const cors = require("cors")({ origin: true });
 const { FieldValue } = require('@google-cloud/firestore');
+const { marked } = require('marked')
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -128,17 +129,22 @@ exports.generateLessonPlan = functions.https.onRequest(async (req, res) => {
             })
           }
     
+          //Get openAI completion
           const completion = await openai.chat.completions.create({
             messages: messages,
             model: "gpt-4-1106-preview"
           });
     
+          //Destructure completion response
           const { content } = completion.choices[0].message;
 
+          //Convert markdown output to HTML
+          const htmlContent = marked(content)
+
           //Save to Firebase Storage
-          const lessonPlanPath = `lessons/${docRef.id}/plan.md`
+          const lessonPlanPath = `lessons/${docRef.id}/plan.html`
           const lessonPlanRef = storage.bucket().file(lessonPlanPath)
-          await lessonPlanRef.save(content, { contentType: 'text/markdown' })
+          await lessonPlanRef.save(htmlContent, { contentType: 'text/html' })
 
           //Update the firestore document
           await db.collection('lessons').doc(docRef.id).update({
@@ -197,7 +203,7 @@ exports.createStudentHandout = functions.https.onRequest(async (req, res) => {
       }
 
       //Extract inputs
-      const { level, lessonPlan, lessonPlanId } = req.body;
+      const { level, lessonPlan, lessonId } = req.body;
 
       // Validate inputs
       if (typeof level !== 'string' || level.length > 20 || 
@@ -224,7 +230,7 @@ exports.createStudentHandout = functions.https.onRequest(async (req, res) => {
 
       const { content } = completion.choices[0].message;  //Destructure OpenAI Response
 
-      const handoutPath = `lessons/${lessonPlanId}/handout.md`  //New storage path
+      const handoutPath = `lessons/${lessonId}/handout.md`  //New storage path
 
       //Save to Firebase Storage
       const storageRef = admin.storage().bucket();
@@ -232,12 +238,12 @@ exports.createStudentHandout = functions.https.onRequest(async (req, res) => {
       await handoutRef.save(content, { contentType: 'text/markdown' });
 
       //Update Firebase document
-      const lessonDocRef = admin.firestore().doc(`lessons/${lessonPlanId}`);
+      const lessonDocRef = admin.firestore().doc(`lessons/${lessonId}`);
       await lessonDocRef.update({
         'contentRef.handout': handoutPath //Storing relative path
       })
 
-      res.status(200).json({ lessonId: lessonPlanId, lessonHandout: content });
+      res.status(200).json({ lessonId, lessonHandout: content });
     // } else {
     //   res.status(405).send(`Method ${req.method} Not Allowed`);
     }catch (error) {

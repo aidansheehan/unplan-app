@@ -65,7 +65,7 @@ const Plan = () => {
 
         try {
             //Generate lesson plan
-            const lessonResponse = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}generateLessonPlan`, {
+            const lessonResponse = await fetch(/*`${process.env.NEXT_PUBLIC_FIREBASE_URL}generateLessonPlan`*/'http://127.0.0.1:5001/lesson-planner-3eff4/us-central1/generateLessonPlan', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
@@ -75,33 +75,13 @@ const Plan = () => {
 
             const lessonData = await lessonResponse.json()
 
-            //Generate lesson materials
-            try {
-                const handoutResponse = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}createStudentHandout`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ level: formData.level, lessonPlan: lessonData.lessonPlan, lessonPlanId: lessonData.lessonId })
-                })
-    
-                if (!handoutResponse.ok) {
-                    const errorText = await handoutResponse.text();
-                    throw new Error(`Failed to generate lesson materials: ${errorText}`);
-                  }
-                
-                const handoutData = await handoutResponse.json()
-    
-                //Store lesson ID in local storage
-                const storedLessonIds = JSON.parse(localStorage.getItem('lessonIds')) || []
-                storedLessonIds.push(handoutData.lessonId)
-                localStorage.setItem('lessonIds', JSON.stringify(storedLessonIds))
-    
-                //Redirect to view page with lesson ID
-                router.push(`/view-lesson/${handoutData.lessonId}`)
-            } catch (err) {
-                console.error("Error calling createStudentHandout:", err.message);
-                setIsLoading(false)
-                handleError(error)
-            }
+            //Store lessonID in local storage
+            const storedLessonIds = JSON.parse(localStorage.getItem('lessonIds')) || []
+            storedLessonIds.push(lessonData.lessonId)
+            localStorage.setItem('lessonIds', JSON.stringify(storedLessonIds))
+
+            //Redirect to view page with lesson ID
+            router.push(`/view-lesson/${lessonData.lessonId}`)
 
             
         } catch (error) {
