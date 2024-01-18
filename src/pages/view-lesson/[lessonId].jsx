@@ -172,7 +172,7 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                             <TinyMceEditor value={handoutContent} setValue={setHandoutContent} contentUrl={handoutUrl} id={lessonId} title='Student Handout' />
                         ) : (
                             <div >
-                                <button onClick={generateHandout} className="block md:w-auto bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-600 transition-colors duration-300" >
+                                <button onClick={generateHandout} className="block md:w-auto bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-600 transition-colors duration-300 m-auto" >
                                     Generate Handout
                                 </button>
                             </div>
