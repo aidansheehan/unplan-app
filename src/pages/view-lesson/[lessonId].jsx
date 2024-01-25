@@ -5,7 +5,6 @@ import Layout from '@/components/layout'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFrownOpen } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
-import ContentEditorComponent from '@/components/content-editor.component'
 import LessonMetadataComponent from '@/components/lesson-metadata.component'
 import LessonSectionTitle from '@/components/lesson-section-title.component'
 import { useEffect, useState } from 'react'
@@ -149,10 +148,7 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
             <div className='p-8 w-full flex-grow flex flex-col' >
 
                 <LessonMetadataComponent lessonData={lessonData} />
-                {/* Lesson Plan */}
-                {/* <TextContentPresentationComponent title='Lesson Plan' mdContentUrl={lessonPlanUrl} /> */}
                 <LessonSectionTitle title='Lesson Plan' />
-                {/* <ContentEditorComponent title='Lesson Plan' contentUrl={lessonPlanUrl} id={lessonId} /> */}
                 {
                     lessonPlanContent ? (
                         <TinyMceEditor title='Lesson Plan' contentUrl={lessonPlanUrl} value={lessonPlanContent} setValue={setLessonPlanContent} id={lessonId}  />

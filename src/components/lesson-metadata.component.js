@@ -24,7 +24,7 @@ const LessonMetadataComponent = ({ lessonData }) => {
                 <div className="flex items-center space-x-2 w-full">
 
                     <div className="w-full flex flex-col items-start" >
-                        <h2 className="text-2xl font-bold text-gray-800 mb-4 font-bree">{topic}</h2>
+                        <h2 className="text-2xl font-bold text-gray-800 mb-4 font-bree">{_.startCase(topic)}</h2>
                         <hr className="border-t-[1px] border-gray-300 rounded-md shadow-none w-[98%]"/>
 
                         <div className="flex flex-flow gap-2 mt-2" >
