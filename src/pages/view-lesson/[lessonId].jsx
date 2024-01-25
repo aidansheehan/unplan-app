@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react'
 import { stripHtml } from 'string-strip-html'
 import { useError } from '@/context/error.context'
 import TinyMceEditor from '@/components/tinymce-editor.component'
+import InlineLoadingComponent from '@/components/inline-loading.component'
 
 
 const ViewLesson = ({lessonData, lessonId, error}) => {
@@ -22,6 +23,7 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
 
     const [ planLoading, setPlanLoading ] = useState(true)
     const [ handoutLoading, setHandoutLoading ] = useState(true)
+    const [ handoutGenerating, setHandoutGenerating ] = useState(false)
 
     const [ lessonPlanContent, setLessonPlanContent ]   = useState('')
     const [ handoutContent, setHandoutContent ]         = useState('')
@@ -33,6 +35,7 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
         if (lessonPlanContent && !planLoading) {
 
             setHandoutLoading(true) //Set handout loading state true
+            setHandoutGenerating(true)
 
             //Strip lesson plan of html
             const strippedLessonPlan = stripHtml(lessonPlanContent).result
@@ -57,6 +60,7 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                 console.error('Error calling createStudentHandout: ', error.message)
                 handleError(error)
             } finally {
+                setHandoutGenerating(false)
                 setHandoutLoading(false)
             }
         }
@@ -161,7 +165,9 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                 <LessonSectionTitle title='Student Handout' />
                 {
                     handoutLoading ? (
-                        <p>Loading...</p>
+                        handoutGenerating ? (
+                            <InlineLoadingComponent />
+                        ) : (<p>Loading...</p>)
                     ) : (
                         handoutContent ? (
                             //TODO should take actual content as prop to prevent double loading
