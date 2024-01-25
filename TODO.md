@@ -79,7 +79,7 @@
 [x] Make Public
 
 ## BRANCHES
-editable-content
+### editable-content
     [x] Add tinymce & setup, self host
     [x] Remove unhelpful toolbar options
     [ ] save
@@ -96,17 +96,16 @@ editable-content
         [x] Metadata section at top, small text
         [x] Plan, handout just nice simple components use page scroll to view, horizontal line breaks to split out content
         [x] Media (audio & pictures) - Leave a 'Coming Soon...' with CTA mailing list
-    [ ] Update terms of service (Your own content is your own)
-    [ ] Handouts
+    [x] Handouts
         [x] Move handout generation to plan page
-            [ ] Add warning / instruction to add content like images etc
         [x] Use tinymce for handout, implement save functionality
         [x] Make sure you STRIP HTML and pass in lesson plan to GPT as string for better results
-    [ ] 
 
 ### Clean up Editable Content
     [ ] Block edits to public lessons on backend in cloud fn
     [ ] Add 'use GPT-4' tickbox, set user expectations ~20s for GPT-3.5, ~2 mins for GPT-4.
+    [ ] Save initial draft to storage too so can compare, add legal disclamier you own content you create.
+    [ ] Add warning / instruction to add content like images etc
 
 image-handling
     Can you just use an on-page public API, eg unsplash?
