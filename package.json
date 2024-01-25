@@ -12,15 +12,20 @@
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@tinymce/tinymce-react": "^4.3.2",
     "@vercel/analytics": "^1.1.1",
+    "copy-webpack-plugin": "^12.0.1",
     "firebase": "^10.7.1",
+    "lodash": "^4.17.21",
     "marked": "^11.1.0",
     "next": "14.0.4",
     "nodemailer": "^6.9.8",
     "react": "^18",
     "react-dom": "^18",
     "react-loading-skeleton": "^3.3.1",
-    "react-tag-input": "^6.8.1"
+    "react-tag-input": "^6.8.1",
+    "string-strip-html": "^13.4.5",
+    "tinymce": "^6.8.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",

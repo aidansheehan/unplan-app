@@ -1,12 +1,134 @@
 import { db } from '../../../firebaseConfig'
 import { doc, getDoc } from 'firebase/firestore'
 import Layout from '@/components/layout'
-import TextContentPresentationComponent from '@/components/text-content-presentation/text-content-presentation.component'
+// import TextContentPresentationComponent from '@/components/text-content-presentation/text-content-presentation.component'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFrownOpen } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
+import LessonMetadataComponent from '@/components/lesson-metadata.component'
+import LessonSectionTitle from '@/components/lesson-section-title.component'
+import { useEffect, useState } from 'react'
+import { stripHtml } from 'string-strip-html'
+import { useError } from '@/context/error.context'
+import TinyMceEditor from '@/components/tinymce-editor.component'
+import InlineLoadingComponent from '@/components/inline-loading.component'
+import HtmlContentPresentationComponent from '@/components/html-content-presentation/html-content-presentation.component'
 
-const ViewLesson = ({lessonPlanUrl, handoutUrl, error}) => {
+
+const ViewLesson = ({lessonData, lessonId, error}) => {
+
+    const { contentRef, level, public: isLocked }       = lessonData    //Destructure lessonData
+    const { handout: handoutUrl, plan: lessonPlanUrl }  = contentRef    //Destructure contentRef
+
+    const { handleError } = useError()
+
+    const [ planLoading, setPlanLoading ] = useState(true)
+    const [ handoutLoading, setHandoutLoading ] = useState(true)
+    const [ handoutGenerating, setHandoutGenerating ] = useState(false)
+
+    const [ lessonPlanContent, setLessonPlanContent ]   = useState('')
+    const [ handoutContent, setHandoutContent ]         = useState('')
+
+    //Function to generate a handout for the class
+    const generateHandout = async () => {
+
+        //If lesson plan loaded and lesson plan content exists
+        if (lessonPlanContent && !planLoading) {
+
+            setHandoutLoading(true) //Set handout loading state true
+            setHandoutGenerating(true)
+
+            //Strip lesson plan of html
+            const strippedLessonPlan = stripHtml(lessonPlanContent).result
+
+            try {
+                //Get handout response
+                const handoutResponse = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}createStudentHandout`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ level, lessonId, lessonPlan: strippedLessonPlan })
+                })
+
+                //Handle error response
+                if (!handoutResponse.ok) {
+                    const errorText = await handoutResponse.json()
+                    throw new Error(`Failed to generate lesson materials: ${errorText}`)
+                }
+
+                const handoutData = await handoutResponse.json()    //Parse data to JSON
+                setHandoutContent(handoutData.lessonHandout)        //Set handout content
+            } catch (error) {
+                console.error('Error calling createStudentHandout: ', error.message)
+                handleError(error)
+            } finally {
+                setHandoutGenerating(false)
+                setHandoutLoading(false)
+            }
+        }
+
+    }
+
+    /** Load Lesson Plan */
+    useEffect(() => {
+
+        const fetchLessonPlan = async () => {
+            try {
+                //TODO use real firebase
+                const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}getContent?urlPath=${encodeURIComponent(lessonPlanUrl)}`)
+                const data = await response.json()
+
+                //Set lesson plan state
+                setLessonPlanContent(data.content)
+
+            } catch (error) {
+                console.error(`Error fetching lesson plan: ${error}`)
+                setLessonPlanContent(`<p>Failed to load content.</p>`)
+            } finally {
+                setPlanLoading(false)
+            }
+        }
+
+        fetchLessonPlan()
+
+    }, [ lessonPlanUrl ])
+
+    /** Load Handout */
+    useEffect(() => {
+
+        //Function to fetch handout using API route
+        const fetchHandout = async () => {
+
+            try {
+                //TODO use real firebase
+                const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}getContent?urlPath=${encodeURIComponent(handoutUrl)}`)
+                const data = await response.json()
+
+                //Set handoutContent
+                setHandoutContent(data.content)
+            } catch (error) {
+                console.error(`Error fetching handout: ${error}`)
+                setHandoutContent(`<p>Failed to load content.</p>`)
+            } finally {
+                setHandoutLoading(false)
+            }
+        }
+
+        //If handoutUrl
+        if (handoutUrl) {
+
+            //Set handout loading state true
+            setHandoutLoading(true)
+
+            fetchHandout()
+
+
+        } else {
+
+            //Set loading state false
+            setHandoutLoading(false)
+        }
+
+    }, [ handoutUrl ])
 
     if (error) {
         return (
@@ -26,16 +148,66 @@ const ViewLesson = ({lessonPlanUrl, handoutUrl, error}) => {
     }
 
     return (
-        <Layout title='Your Lesson' >
+        <Layout >
 
-            <div className='w-full h-full p-4' >
-                {/* Lesson Plan */}
-                <TextContentPresentationComponent title='Lesson Plan' mdContentUrl={lessonPlanUrl} />
+            <div className='p-8 w-full flex-grow flex flex-col' >
 
-                {/* Lesson Handouts */}
+                <LessonMetadataComponent lessonData={lessonData} />
+                <LessonSectionTitle title='Lesson Plan' />
                 {
-                    handoutUrl && <TextContentPresentationComponent title='Handouts' mdContentUrl={handoutUrl} />
+                    lessonPlanContent ? (
+                        isLocked ? (
+                            <HtmlContentPresentationComponent htmlContent={lessonPlanContent} title={lessonData.topic} />
+                        ) : (
+                            <TinyMceEditor title='Lesson Plan' contentUrl={lessonPlanUrl} value={lessonPlanContent} setValue={setLessonPlanContent} id={lessonId}  />
+                        )
+                        
+                    ) : (
+                        <p>Loading...</p>
+                    )
                 }
+
+                {/* Handout */}
+                <LessonSectionTitle title='Student Handout' />
+                {
+                    handoutLoading ? (
+                        handoutGenerating ? (
+                            <InlineLoadingComponent />
+                        ) : (<p>Loading...</p>)
+                    ) : (
+                        handoutContent ? (
+                            //TODO should take actual content as prop to prevent double loading
+                            isLocked ? (
+                                <HtmlContentPresentationComponent htmlContent={handoutContent} title={`Handout - ${lessonData.topic}`} />
+                            ) : (
+                                <TinyMceEditor value={handoutContent} setValue={setHandoutContent} contentUrl={handoutUrl} id={lessonId} title='Student Handout' />
+                            )
+                            
+                        ) : (
+                            <div >
+                                <button onClick={generateHandout} className="block md:w-auto bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-600 transition-colors duration-300 m-auto" >
+                                    Generate Handout
+                                </button>
+                            </div>
+                        )
+                    )
+                }
+
+                <LessonSectionTitle title='Media' isComingSoon />
+                <div className="bg-blue-50 p-6 rounded-lg shadow-md text-sm">
+                    <p className='text-gray-700 mb-4 font-semibold'>
+                        Get ready to bring your lessons to life with multimedia!
+                    </p>
+                    <p className="text-gray-700 mb-4">
+                        Soon, you'll be able to create audio files for listening activities and enrich your lessons with engaging images.
+                    </p>
+                    <div className='mt-2 w-full flex justify-center'>
+                        <Link href="/signup" className="bg-orange-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-600 transition-colors duration-300 w-fit">
+                            Sign Up for Updates
+                        </Link>
+                    </div>
+
+                </div>
                 
             </div>
 
@@ -61,13 +233,15 @@ export async function getServerSideProps(context) {
 
         const lessonData = lessonDoc.data() //Get lessonData
 
-        const { contentRef }                                = lessonData    //Destructure lessonData
-        const { handout: handoutUrl, plan: lessonPlanUrl }  = contentRef    //Destructure contentRef
+        //Convert Timestamp to serializable format (ISO string)
+        if (lessonData.createdAt && lessonData.createdAt.toDate) {
+            lessonData.createdAt = lessonData.createdAt.toDate().toISOString()
+        }
 
         return {
             props: {
-                lessonPlanUrl,
-                handoutUrl: handoutUrl || null
+                lessonData,
+                lessonId
             }
         }
     } catch (error) {

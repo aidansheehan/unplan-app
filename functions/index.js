@@ -5,7 +5,8 @@ const { v4: uuidv4 } = require('uuid');
 const { FirebaseFunctionsRateLimiter } = require("firebase-functions-rate-limiter")
 const nodemailer = require("nodemailer")
 const cors = require("cors")({ origin: true });
-const { FieldValue } = require('@google-cloud/firestore')
+const { FieldValue } = require('@google-cloud/firestore');
+const { marked } = require('marked')
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -128,17 +129,22 @@ exports.generateLessonPlan = functions.https.onRequest(async (req, res) => {
             })
           }
     
+          //Get openAI completion
           const completion = await openai.chat.completions.create({
             messages: messages,
             model: "gpt-4-1106-preview"
           });
     
+          //Destructure completion response
           const { content } = completion.choices[0].message;
 
+          //Convert markdown output to HTML
+          const htmlContent = marked(content)
+
           //Save to Firebase Storage
-          const lessonPlanPath = `lessons/${docRef.id}/plan.md`
+          const lessonPlanPath = `lessons/${docRef.id}/plan.html`
           const lessonPlanRef = storage.bucket().file(lessonPlanPath)
-          await lessonPlanRef.save(content, { contentType: 'text/markdown' })
+          await lessonPlanRef.save(htmlContent, { contentType: 'text/html' })
 
           //Update the firestore document
           await db.collection('lessons').doc(docRef.id).update({
@@ -197,7 +203,7 @@ exports.createStudentHandout = functions.https.onRequest(async (req, res) => {
       }
 
       //Extract inputs
-      const { level, lessonPlan, lessonPlanId } = req.body;
+      const { level, lessonPlan, lessonId, ageGroup } = req.body;
 
       // Validate inputs
       if (typeof level !== 'string' || level.length > 20 || 
@@ -211,10 +217,23 @@ exports.createStudentHandout = functions.https.onRequest(async (req, res) => {
 
       //Construct messages
       const messages = [
-        { role: "system", content: `Create a student handout for this lesson. THE PROVIDED PLAN IS FOR THE TEACHER. CREATE THE STUDENT ACTIVITIES HANDOUT. USE MARKDOWN. USE SIMPLE, GRADED ENGLISH APPROPRIATE FOR ${level} students` },
-        { role: "user", content: `Here is the lesson plan: ${lessonPlan}` },
-        // Include the example output as provided in your original code
-      ];
+        {
+          role: "system",
+          content: `You are a CELTA trained ESL worksheet helper. Identify any parts of the users lesson plan you can provide VISUAL HTML content for and create it for them.`
+        },
+        {
+          role: "user",
+          content: `Here is my lesson plan: ${lessonPlan}. Help me, make a handout for the students for this class!`
+        },
+        {
+          role: "system",
+          content: `Create a STUDENT handout for the provided lesson plan. Provide activities as mentioned in the plan. Use SIMPLE, graded english appropriate for ${level} learners - do not use any vocabulary or grammar that will confuse them. Provide activities appropraite for ${ageGroup} students. Build context slowly. Keep your content aligned with the activities mentioned in the lesson plan.`
+        },
+        {
+          role: "system",
+          content: 'Your output is RAW HTML. It will be inserted into an existing HTML document, do not provide boilerplate, or comments to assign html. Your response should start with `<div>`. Leave space for student answers. Activities should require student involvement, for example in a matching activity the pictures and words should be incorrectly ordered so the STUDENT CAN FIX THAT. MINIMISE YOUR LANGUAGE USE. Give only simple instructions. Any images need to have ids representing their order eg "#image-1", "#image-2" etc and have DESCRIPTIVE `alt` tags that can be used as DALE prompts.'
+        }
+      ]
 
       //Get OpenAI response
       const completion = await openai.chat.completions.create({
@@ -224,20 +243,20 @@ exports.createStudentHandout = functions.https.onRequest(async (req, res) => {
 
       const { content } = completion.choices[0].message;  //Destructure OpenAI Response
 
-      const handoutPath = `lessons/${lessonPlanId}/handout.md`  //New storage path
+      const handoutPath = `lessons/${lessonId}/handout.html`  //New storage path
 
       //Save to Firebase Storage
       const storageRef = admin.storage().bucket();
       const handoutRef = storageRef.file(handoutPath)
-      await handoutRef.save(content, { contentType: 'text/markdown' });
+      await handoutRef.save(content, { contentType: 'text/html' });
 
       //Update Firebase document
-      const lessonDocRef = admin.firestore().doc(`lessons/${lessonPlanId}`);
+      const lessonDocRef = admin.firestore().doc(`lessons/${lessonId}`);
       await lessonDocRef.update({
         'contentRef.handout': handoutPath //Storing relative path
       })
 
-      res.status(200).json({ lessonId: lessonPlanId, lessonHandout: content });
+      res.status(200).json({ lessonId, lessonHandout: content });
     // } else {
     //   res.status(405).send(`Method ${req.method} Not Allowed`);
     }catch (error) {
@@ -532,3 +551,46 @@ exports.generateReadingComprehensionWorksheet = functions.https.onRequest(async 
     }
   });
 });
+
+exports.updateContent = functions.https.onRequest(async (req, res) => {
+  cors(req, res, async () => {
+    if (req.method === 'POST') {
+
+      const { filePath, content } = req.body
+
+      try {
+        const fileRef = storage.bucket().file(filePath)
+        await fileRef.save(content, { contentType: 'text/html' })
+        res.status(200).json({ message: 'Content saved successfully' })
+      } catch (error) {
+        res.status(500).json({ error: 'Error saving content' })
+      }
+    } else {
+      res.setHeader('Allow', ['POST'])
+      res.status(405).send(`Method ${req.method} Not Allowed`)
+    }
+  })
+})
+
+exports.getContent = functions.https.onRequest(async (req, res) => {
+  cors(req, res, async () => {
+    if (req.method === 'GET') {
+      const { urlPath } = req.query
+
+      try {
+        const bucket = storage.bucket()
+        const fileRef = bucket.file(urlPath)
+        const [fileContent] = await fileRef.download()
+        const contentText = fileContent.toString('utf-8')
+
+        res.status(200).json({ content: contentText })
+      } catch (error) {
+        console.error('Error fetching content: ', error)
+        res.status(500).json({ error: 'Failed to fetch content' })
+      }
+    } else {
+      res.setHeader('Allow', ['GET'])
+      res.status(405).send(`Method ${req.method} Not Allowed`)
+    }
+  })
+})

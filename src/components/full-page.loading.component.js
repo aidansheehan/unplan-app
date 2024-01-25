@@ -47,7 +47,7 @@ const FullPageLoading = ({message}) => {
           }
           return newProgress;
         });
-      }, 1000); // The bar will fill up in 20 seconds
+      }, 3000); // The bar will fill up in 60 seconds
 
     return () => {
       clearInterval(progressInterval);
@@ -65,7 +65,7 @@ const FullPageLoading = ({message}) => {
             {extendedLoading ? "Almost there, just finalizing a few things!" : message}
         </h2>
         <p className="mt-2 text-gray-600 text-center">
-            {extendedLoading ? "Thanks for your patience." : "This may take around 20 seconds. Please don't close this page."}
+            {extendedLoading ? "Thanks for your patience." : "At the moment, some users are experiencing delays of up to 2 minutes. We're working hard to fix this issue! Please don't close the page."}
         </p>
         <div className="mt-4 p-4 bg-blue-100 rounded-md shadow-lg">
           <p className="text-sm text-gray-700 italic">{tip}</p>
