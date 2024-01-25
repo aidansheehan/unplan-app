@@ -84,7 +84,7 @@
     [x] Remove unhelpful toolbar options
     [ ] save
         [ ] Restructure / HTML files?
-            [ ] Convert md to html in db (copy, double up as below)
+            [x] Convert md to html in db (copy, double up as below)
             [x] Save as HTML
             [ ] save two (plan.html, plan-initial.html) on creation
             [x] Retrieve as HTML
