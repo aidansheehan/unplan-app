@@ -1,0 +1,113 @@
+.markdownContent {
+    h1 {
+      font-size: 1.75rem; /* Larger size for main headings */
+      margin-bottom: 0.6em;
+      font-weight: bold;
+    }
+    
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5em;
+      font-weight: semibold;
+      color: #2d3748; /* Slightly different color */
+    }
+    
+    h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5em;
+      font-weight: medium;
+    }
+    
+    h4 {
+      font-size: 1.125rem;
+      font-weight: medium;
+      color: #4a5568; /* Different color for lower-level headings */
+    }
+    
+    h5 {
+      font-size: 1rem;
+      font-weight: medium;
+    }
+    
+    h6 {
+      font-size: 0.875rem;
+      font-weight: medium;
+      color: #718096; /* Even more subtle color */
+    }
+    
+    p {
+      margin-bottom: 1em;
+    }
+    
+    ul, ol {
+      padding-left: 20px;
+      margin-bottom: 1em;
+    }
+    
+    ul {
+      list-style-type: disc; /* Default style for unordered lists */
+    }
+    
+    ol {
+      list-style-type: decimal; /* Default style for ordered lists */
+    }
+    
+    ul ul, ol ol, ul ol, ol ul {
+      margin-top: 0.5em;
+      margin-bottom: 0;
+      padding-left: 20px; /* Indent for nested lists */
+    }
+    
+    ul ul {
+      list-style-type: circle; /* Different style for nested unordered lists */
+    }
+    
+    ul ol {
+      list-style-type: lower-alpha; /* Different style for unordered list inside ordered list */
+    }
+    
+    ol ul {
+      list-style-type: square; /* Different style for ordered list inside unordered list */
+    }
+    
+    li {
+      margin-bottom: 0.5em; /* Space between list items */
+    }
+    
+    /* Style for all tables */
+    table {
+      width: 100%; /* Full width */
+      border-collapse: collapse; /* Collapses borders between table cells */
+      table-layout: fixed; /* Fixed table layout for equal spacing */
+      word-wrap: break-word; /* Ensures text wraps in cells */
+    }
+  
+    /* Style for table headers and cells */
+    th, td {
+      border: 1px solid #ddd; /* Light grey border */
+      padding: 8px; /* Add space around content */
+      text-align: left; /* Align text to the left */
+      vertical-align: top; /* Align content to the top of the cell */
+    }
+  
+    /* Ensure that content in cells can wrap and that there is space for user input */
+    th, td {
+      min-width: 120px; /* Minimum width for columns */
+      max-width: 1fr; /* Allows the column to take up the fraction of the table width */
+    }
+  
+    /* Style for cells where users will need to write in */
+    td {
+      height: 50px; /* Fixed height for input cells */
+    }
+  
+    /* Additional styling for printing */
+    @media print {
+      th, td {
+        padding: 15px; /* Increase padding for better readability in print */
+        height: auto; /* Auto height for flexibility in print */
+      }
+    }
+  
+    
+  }

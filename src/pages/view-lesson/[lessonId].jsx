@@ -12,11 +12,12 @@ import { stripHtml } from 'string-strip-html'
 import { useError } from '@/context/error.context'
 import TinyMceEditor from '@/components/tinymce-editor.component'
 import InlineLoadingComponent from '@/components/inline-loading.component'
+import HtmlContentPresentationComponent from '@/components/html-content-presentation/html-content-presentation.component'
 
 
 const ViewLesson = ({lessonData, lessonId, error}) => {
 
-    const { contentRef, level }                         = lessonData    //Destructure lessonData
+    const { contentRef, level, public: isLocked }       = lessonData    //Destructure lessonData
     const { handout: handoutUrl, plan: lessonPlanUrl }  = contentRef    //Destructure contentRef
 
     const { handleError } = useError()
@@ -155,7 +156,12 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                 <LessonSectionTitle title='Lesson Plan' />
                 {
                     lessonPlanContent ? (
-                        <TinyMceEditor title='Lesson Plan' contentUrl={lessonPlanUrl} value={lessonPlanContent} setValue={setLessonPlanContent} id={lessonId}  />
+                        isLocked ? (
+                            <HtmlContentPresentationComponent htmlContent={lessonPlanContent} title={lessonData.topic} />
+                        ) : (
+                            <TinyMceEditor title='Lesson Plan' contentUrl={lessonPlanUrl} value={lessonPlanContent} setValue={setLessonPlanContent} id={lessonId}  />
+                        )
+                        
                     ) : (
                         <p>Loading...</p>
                     )
@@ -171,7 +177,12 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                     ) : (
                         handoutContent ? (
                             //TODO should take actual content as prop to prevent double loading
-                            <TinyMceEditor value={handoutContent} setValue={setHandoutContent} contentUrl={handoutUrl} id={lessonId} title='Student Handout' />
+                            isLocked ? (
+                                <HtmlContentPresentationComponent htmlContent={handoutContent} title={`Handout - ${lessonData.topic}`} />
+                            ) : (
+                                <TinyMceEditor value={handoutContent} setValue={setHandoutContent} contentUrl={handoutUrl} id={lessonId} title='Student Handout' />
+                            )
+                            
                         ) : (
                             <div >
                                 <button onClick={generateHandout} className="block md:w-auto bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-600 transition-colors duration-300 m-auto" >
@@ -197,13 +208,6 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                     </div>
 
                 </div>
-
-
-
-                {/* Lesson Handouts */}
-                {/* {
-                    handoutUrl && <TextContentPresentationComponent title='Handouts' mdContentUrl={handoutUrl} />
-                } */}
                 
             </div>
 

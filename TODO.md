@@ -85,13 +85,13 @@ editable-content
     [ ] save
         [ ] Restructure / HTML files?
             [ ] Convert md to html in db (copy, double up as below)
-            [ ] Save as HTML
+            [x] Save as HTML
             [ ] save two (plan.html, plan-initial.html) on creation
             [x] Retrieve as HTML
         [x] Add save button to editor and check working
         [x] hook up with in editor save btn and test
         [x] Autosave
-        [ ] Public lessons 'lock' editor so can't update, also prevent updates in cloud function
+        [x] Public lessons 'lock' editor so can't update
     [x] Plan page refactor (use linguahouse as guide)
         [x] Metadata section at top, small text
         [x] Plan, handout just nice simple components use page scroll to view, horizontal line breaks to split out content
@@ -103,6 +103,10 @@ editable-content
         [x] Use tinymce for handout, implement save functionality
         [x] Make sure you STRIP HTML and pass in lesson plan to GPT as string for better results
     [ ] 
+
+### Clean up Editable Content
+    [ ] Block edits to public lessons on backend in cloud fn
+    [ ] Add 'use GPT-4' tickbox, set user expectations ~20s for GPT-3.5, ~2 mins for GPT-4.
 
 image-handling
     Can you just use an on-page public API, eg unsplash?
