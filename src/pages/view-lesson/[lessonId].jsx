@@ -43,7 +43,7 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
 
             try {
                 //Get handout response
-                const handoutResponse = await fetch(`http://127.0.0.1:5001/lesson-planner-3eff4/us-central1/createStudentHandout`, {
+                const handoutResponse = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}createStudentHandout`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ level, lessonId, lessonPlan: strippedLessonPlan })

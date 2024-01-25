@@ -18,7 +18,7 @@ const TinyMceEditor = ({value, setValue, contentUrl, title, id}) => {
           try {
   
               //TODO use real firebase
-              const response = await fetch('http://127.0.0.1:5001/lesson-planner-3eff4/us-central1/updateContent', {
+              const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}updateContent`, {
                   method: 'POST',
                   headers: {
                       'Content-Type': 'application/json'

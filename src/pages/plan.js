@@ -65,7 +65,7 @@ const Plan = () => {
 
         try {
             //Generate lesson plan
-            const lessonResponse = await fetch(/*`${process.env.NEXT_PUBLIC_FIREBASE_URL}generateLessonPlan`*/'http://127.0.0.1:5001/lesson-planner-3eff4/us-central1/generateLessonPlan', {
+            const lessonResponse = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}generateLessonPlan`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
