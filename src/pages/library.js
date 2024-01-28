@@ -14,7 +14,7 @@ const Library = () => {
 
     //Function to fetch library lessons
     const fetchlibraryLessons = async () => {
-        const res = await fetch('/api/get-lessons?public=true')
+        const res = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}getLessons?public=true`)
         if (!res.ok) {
             handleError(res.status)
             throw new Error(`Failed to fetch public lessons, status: ${res.status}`)

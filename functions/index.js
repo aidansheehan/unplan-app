@@ -12,6 +12,14 @@ admin.initializeApp();
 const db = admin.firestore();
 const storage = admin.storage();
 
+//Connect to emulator db if functions emulated
+if (process.env.FUNCTIONS_EMULATOR) {
+  admin.firestore().settings({
+    host: 'localhost:8080',
+    ssl: false
+  })
+}
+
 //Create a transporter using Brevo SMTP
 const transporter = nodemailer.createTransport({
   host: 'smtp-relay.brevo.com',
@@ -52,6 +60,42 @@ const sendRateLimitEmail = async (processName) => {
 }
 
 /**
+ * Function to create a lesson plan in DB
+ */
+exports.createLessonPlan = functions.https.onRequest(async (req, res) => {
+  cors(req, res, async () => {
+    if (req.method === 'POST') {
+
+      //TODO rate limit??
+
+      //Extract inputs
+      const { topic, level, duration, objectives, ageGroup, isOneToOne, isOnline } = req.body;
+
+      // Validate inputs
+      if (typeof topic !== 'string' || topic.length > 50 ||
+            typeof level !== 'string' || level.length > 20 ||
+                typeof objectives !== 'string' || objectives.length > 400 ||
+                  typeof ageGroup !== 'string' || ageGroup.length > 20 ||
+                   typeof isOneToOne !== 'boolean' || typeof isOnline !== 'boolean') {
+          res.status(400).send('Invalid input parameters');
+          return;
+      }
+
+      //Create firestore document
+      const docRef = await db.collection('lessons').add({
+        topic, level, duration, objectives, ageGroup, isOneToOne, isOnline,
+        contentRef: {},
+        status: 'pending',
+        createdAt: FieldValue.serverTimestamp()
+      })
+
+      res.status(200).json({ lessonId: docRef.id })
+
+    }
+  })
+})
+
+/**
  * Generate lesson plan rate limiter
  */
 const gLPLimiter = FirebaseFunctionsRateLimiter.withFirestoreBackend({
@@ -60,6 +104,9 @@ const gLPLimiter = FirebaseFunctionsRateLimiter.withFirestoreBackend({
   maxCalls: 1000,
 }, db)
 
+/**
+ * Function to generate a lesson plan
+ */
 exports.generateLessonPlan = functions.https.onRequest(async (req, res) => {
   cors(req, res, async () => {
     if (req.method === 'POST') {
@@ -591,6 +638,56 @@ exports.getContent = functions.https.onRequest(async (req, res) => {
     } else {
       res.setHeader('Allow', ['GET'])
       res.status(405).send(`Method ${req.method} Not Allowed`)
+    }
+  })
+})
+
+exports.getLessons = functions.https.onRequest(async (req, res) => {
+  cors(req, res, async () => {
+    if (req.method === 'GET') {
+
+      try {
+        if (req.query.public === 'true') {
+          const publicLessonsQuery = db.collection('lessons').where('public', '==', true)
+          const publicLessonsSnapshot = await publicLessonsQuery.get()
+          const publicLessons = publicLessonsSnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          }))
+          res.status(200).json(publicLessons)
+          return
+        }
+
+        if (!req.query.ids || !req.query.ids.length) {
+          res.status(200).json([])
+          return;
+        }
+
+        const ids = req.query.ids.split(',').filter(id => id.trim() !== '')
+        if (ids.length === 0) {
+          res.status(200).json([])
+          return
+        }
+
+        const lessonsPromises = ids.map(id => db.collection('lessons').doc(id).get())
+        const lessonsSnapshots = await Promise.all(lessonsPromises)
+        
+        const lessons = lessonsSnapshots
+          .filter(snapshot => snapshot.exists)
+          .map(snapshot => ({
+            id: snapshot.id,
+            ...snapshot.data()
+          }))
+
+          res.status(200).json(lessons)
+          return
+      } catch (error) {
+        console.error(error)
+        res.status(500).json({ error: error.message })
+      }
+
+    } else {
+      res.status(405).send(`Method ${req.method} Not Allowed.`)
     }
   })
 })

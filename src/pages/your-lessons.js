@@ -13,7 +13,7 @@ const YourLessons = () => {
     const fetchYourLessons = async () => {
         const storedLessonIds = JSON.parse(localStorage.getItem('lessonIds')) || []
         const lessonIdsQuery = storedLessonIds.join(',')
-        const res = await fetch(`/api/get-lessons?ids=${lessonIdsQuery}`)
+        const res = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}getLessons?ids=${lessonIdsQuery}`)
         if (!res.ok) {
             handleError(res.status)
             throw new Error(`Failed to fetch lessons, status: ${res.status}`)

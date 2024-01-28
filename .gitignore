@@ -41,3 +41,6 @@ ui-debug.log
 # Tiny mce
 /public/assets/libs/tinymce
 /public/tinymce
+
+# Firebase debug log
+firebase-debug.log
