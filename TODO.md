@@ -106,6 +106,7 @@
     [ ] Add 'use GPT-4' tickbox, set user expectations ~20s for GPT-3.5, ~2 mins for GPT-4.
     [ ] Save initial draft to storage too so can compare, add legal disclamier you own content you create.
     [ ] Add warning / instruction to add content like images etc
+    [ ] Fix no option to save on mobile
 
 image-handling
     Can you just use an on-page public API, eg unsplash?
