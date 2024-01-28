@@ -115,12 +115,16 @@
 
 ### loading-ux
     [ ] Properly sandboxed emulator dev environment
-        [ ] Lesson plans
-        [ ] activities
+        [x] Lesson plans
+        [x] activities
         [ ] Single dev script
     [ ] lesson plan generation to lesson plan page
     [ ] use websocket from browser to generate completion, save to firebase DB after completion finished OR investigate google pub-sub
         [ ] Prevent abuse ie keep reloading keep re-generating. 
+    [ ] fix 2 min loader on activities -> 20 secs
+
+### modular-backend
+    [ ] Modular functions for each service for maintainability + readability
 
 ### PUBILCITY (maybe all as 1 branch)
 [ ] P1: Implement SEO practices following guides to improve search engine rankings

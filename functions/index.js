@@ -6,7 +6,7 @@ const { FirebaseFunctionsRateLimiter } = require("firebase-functions-rate-limite
 const nodemailer = require("nodemailer")
 const cors = require("cors")({ origin: true });
 const { FieldValue } = require('@google-cloud/firestore');
-const { marked } = require('marked')
+const { marked } = require('marked');
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -687,6 +687,90 @@ exports.getLessons = functions.https.onRequest(async (req, res) => {
       }
 
     } else {
+      res.status(405).send(`Method ${req.method} Not Allowed.`)
+    }
+  })
+})
+
+exports.getActivities = functions.https.onRequest(async (req, res) => {
+  cors(req, res, async () => {
+    if (req.method === 'GET') {
+
+      try {
+        if (!req.query.ids && req.query.ids.length) {
+          //Return nothing
+          res.status(200).json([])
+        }
+
+        const ids = req.query.ids.split(',').filter(id => id.trim() !== '')
+
+        if (ids.length === 0) {
+            res.status(200).json([])
+            return
+        }
+
+        const activitiesPromises = ids.map(id => db.collection('activities').doc(id).get())
+        const activitiesSnapshots = await Promise.all(activitiesPromises)
+
+        const activities = activitiesSnapshots
+          .filter(snapshot => snapshot.exists)
+          .map(snapshot => ({
+              id: snapshot.id,
+              ...snapshot.data()
+          }))
+
+          res.status(200).json(activities)
+
+      } catch (error) {
+        console.error(error)
+        res.status(500).json({ error: error.message })
+      }
+    } else {
+      res.status(405).send(`Method ${req.method} Not Allowed.`)
+    }
+  })
+})
+
+exports.fetchMarkdownContent = functions.https.onRequest(async (req, res) => {
+  cors (req, res, async() => {
+    if (req.method === 'GET') {
+
+      const { urlPath } = req.query
+      
+      try {
+        const file = storage.bucket().file(urlPath)
+
+        //Check if file exists
+        const exists = (await file.exists())[0]
+        if(!exists) {
+          res.status(404).json({ error: 'File not found' })
+          return;
+        }
+
+        //Fetch the file contents
+        const stream = file.createReadStream()
+        let data = ''
+
+        stream.on('data', (chunk) => {
+          data += chunk;
+        })
+
+        stream.on('error', (error) => {
+          console.error(`Error fetching markdown content:`, error)
+          res.status(500).json({ error: 'Failed to fetch content' })
+        })
+
+        stream.on('end', () => {
+          res.status(200).json({ content: data })
+        })
+
+      } catch (error) {
+        console.error('Error fetching markdown content:', error)
+        res.status(500).json({ error: 'Failed to fetch content' })
+      }
+
+    } else {
+      res.setHeader('Allow', ['GET'])
       res.status(405).send(`Method ${req.method} Not Allowed.`)
     }
   })
