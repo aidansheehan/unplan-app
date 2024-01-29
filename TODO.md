@@ -79,6 +79,11 @@
 [x] Make Public
 
 ## BRANCHES
+### GA-4
+    [x] Implement GA4
+    [ ] Remove vercel analytics
+    [ ] Ensure not triggered on preview deploys & localhost
+
 ### editable-content
     [x] Add tinymce & setup, self host
     [x] Remove unhelpful toolbar options
