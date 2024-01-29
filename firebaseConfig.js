@@ -29,8 +29,13 @@ const db = getFirestore(app)
 //Connect to Firestore Emulator in development environment
 if (process.env.NODE_ENV === 'development') {
   if (typeof window === 'undefined' || !window['_init']) {
-    connectFirestoreEmulator(db, 'localhost', 8080)     //Connect to firestore emulator
+
     connectStorageEmulator(storage, 'localhost', 9199)  //Connect to storage emulator
+
+    if (!db._settingsFrozen) {
+      connectFirestoreEmulator(db, 'localhost', 8080)     //Connect to firestore emulator
+    }
+
     if (typeof window !== 'undefined') window['_init'] = true
   }
 }

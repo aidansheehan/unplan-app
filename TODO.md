@@ -114,10 +114,9 @@
     Or, You could simplify and just add it as a seperate component for now
 
 ### loading-ux
-    [ ] Properly sandboxed emulator dev environment
+    [x] Properly sandboxed emulator dev environment
         [x] Lesson plans
         [x] activities
-        [ ] Single dev script
     [ ] lesson plan generation to lesson plan page
     [ ] use websocket from browser to generate completion, save to firebase DB after completion finished OR investigate google pub-sub
         [ ] Prevent abuse ie keep reloading keep re-generating. 
