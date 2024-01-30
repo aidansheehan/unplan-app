@@ -65,6 +65,7 @@ const TinyMceEditor = ({value, setValue, contentUrl, title, id, disabled}) => {
           tinymceScriptSrc={"/assets/libs/tinymce/tinymce.min.js"}
           onInit={(evt, editor) => (editorRef.current = editor)}
           value={value}
+          disabled={disabled}
           init={{
             height: 500,
             menubar: true,
