@@ -1,13 +1,12 @@
 import { initializeApp, getApps, getApp } from 'firebase/app'
 import { getAnalytics } from 'firebase/analytics'
-import { getStorage } from 'firebase/storage'
-import { getFirestore } from 'firebase/firestore'
+import { connectStorageEmulator, getStorage } from 'firebase/storage'
+import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 import 'firebase/storage'
 
 /**
  * App firebase configuration
  */
-//TODO DON'T COMMIT ME PLEASE ENV VARS
 const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
     authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -18,7 +17,7 @@ const firebaseConfig = {
     measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
   };
 
-//Initialize firebase
+//Initialize firebase only if it hasn't been initialized yet
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig)
 
 // Initialize Cloud Storage and get a reference to the service
@@ -26,6 +25,20 @@ const storage = getStorage(app)
 
 // Initialize Cloud Firestore
 const db = getFirestore(app)
+
+//Connect to Firestore Emulator in development environment
+if (process.env.NODE_ENV === 'development') {
+  if (typeof window === 'undefined' || !window['_init']) {
+
+    connectStorageEmulator(storage, 'localhost', 9199)  //Connect to storage emulator
+
+    if (!db._settingsFrozen) {
+      connectFirestoreEmulator(db, 'localhost', 8080)     //Connect to firestore emulator
+    }
+
+    if (typeof window !== 'undefined') window['_init'] = true
+  }
+}
 
 // // Initialize analytics
 // // const analytics = getAnalytics(app)

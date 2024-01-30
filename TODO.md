@@ -87,11 +87,10 @@
 ### editable-content
     [x] Add tinymce & setup, self host
     [x] Remove unhelpful toolbar options
-    [ ] save
-        [ ] Restructure / HTML files?
+    [x] save
+        [x] Restructure / HTML files?
             [x] Convert md to html in db (copy, double up as below)
             [x] Save as HTML
-            [ ] save two (plan.html, plan-initial.html) on creation
             [x] Retrieve as HTML
         [x] Add save button to editor and check working
         [x] hook up with in editor save btn and test
@@ -108,17 +107,35 @@
 
 ### Clean up Editable Content
     [ ] Block edits to public lessons on backend in cloud fn
-    [ ] Add 'use GPT-4' tickbox, set user expectations ~20s for GPT-3.5, ~2 mins for GPT-4.
-    [ ] Save initial draft to storage too so can compare, add legal disclamier you own content you create.
+    [ ] Save initial draft to storage too so can compare (plan.html, plan-initial.html), add legal disclamier you own content you create.
     [ ] Add warning / instruction to add content like images etc
     [ ] Fix no option to save on mobile
 
-image-handling
+### image-handling
     Can you just use an on-page public API, eg unsplash?
     You could replace any image in worksheet with a button 'Choose image...' which brings up a modal allowing users to search images. You could pre-fill the search box with the alt tag.
     You could dynamically resize all images to a helpful (smallish) size - teacher can resize as they like
     You could block 'print' until all images have been inserted (or at least be like 'You haven't added images. Print anyway...', maybe less error prone)
     Or, You could simplify and just add it as a seperate component for now
+
+### loading-ux
+    [x] Properly sandboxed emulator dev environment
+        [x] Lesson plans
+        [x] activities
+    [ ] lesson plan generation to lesson plan page
+        [x] Plan page simply create document then re-direct
+        [x] write lesson plan on firestore doc update
+        [x] frontend needs to listen for changes (ws?) and update accordingly (show loading state then lesson plan)
+        [ ] Handle error ('failed' state) with re-generate button?
+        [x] apply rate limiter to adding docs to the firestore instance since can't now on generateLessonPlan
+        [x] ensure not triggering openai responses on update docs! (only create)
+    [x] use websocket from browser to generate completion, save to firebase DB after completion finished OR investigate google pub-sub
+        [x] Prevent abuse ie keep reloading keep re-generating. 
+    [x] Reduce writes by sending each time threshold number of chunks reached
+    [x] fix 2 min loader on activities -> 20 secs (revert full page loader to original)
+
+### modular-backend
+    [ ] Modular functions for each service for maintainability + readability
 
 ### PUBILCITY (maybe all as 1 branch)
 [ ] P1: Implement SEO practices following guides to improve search engine rankings

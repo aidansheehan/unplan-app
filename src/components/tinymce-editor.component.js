@@ -2,15 +2,18 @@ import { useEffect, useRef } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import _ from 'lodash'
 
-const TinyMceEditor = ({value, setValue, contentUrl, title, id}) => {
+const TinyMceEditor = ({value, setValue, contentUrl, title, id, disabled}) => {
 
-    const contentRef = useRef('')   //Editor content ref
-    const editorRef = useRef(null)  //Editor component ref
+    const contentRef    = useRef('')          //Editor content ref
+    const editorRef     = useRef(null)        //Editor component ref
+    const contentUrlRef = useRef(contentUrl)  //contentUrl ref
 
     //Function to save new content
     const saveContent = async () => {
+
+      const currentContentUrl = contentUrlRef.current //Access the latest contentUrl value from the ref
         
-          if (!contentUrl) {
+          if (!currentContentUrl) {
               console.error('File path not found for ', title)
               return;
           }
@@ -24,7 +27,7 @@ const TinyMceEditor = ({value, setValue, contentUrl, title, id}) => {
                       'Content-Type': 'application/json'
                   },
                   body: JSON.stringify({
-                      filePath: contentUrl,
+                      filePath: currentContentUrl,
                       content: contentRef.current
                   })
               })
@@ -50,6 +53,10 @@ const TinyMceEditor = ({value, setValue, contentUrl, title, id}) => {
       contentRef.current = value
      }, [value])
 
+     useEffect(() => {
+      contentUrlRef.current = contentUrl
+    }, [contentUrl])
+
       //Construct autosave id
       const autosaveId = `${_.snakeCase(title)}/${id}/`
 
@@ -58,9 +65,11 @@ const TinyMceEditor = ({value, setValue, contentUrl, title, id}) => {
           tinymceScriptSrc={"/assets/libs/tinymce/tinymce.min.js"}
           onInit={(evt, editor) => (editorRef.current = editor)}
           value={value}
+          disabled={disabled}
           init={{
             height: 500,
             menubar: true,
+            disabled: true,
             setup: (editor) => {
               editor.on('StoreDraft', () => {
                 console.log('Content autosaved at', new Date().toISOString())
@@ -70,7 +79,7 @@ const TinyMceEditor = ({value, setValue, contentUrl, title, id}) => {
               text: 'Save',
               cmd: 'mceSave',
               context: 'file',
-              disabled: true,
+              // disabled: true,
               onAction: saveContent,
               onPostRender: () => {
                 var self = this

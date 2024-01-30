@@ -100,7 +100,7 @@ const TextContentPresentationComponent = ({mdContentUrl, title}) => {
         // Fetch markdown content using the API route
         const fetchMarkdownContent = async () => {
             try {
-            const response = await fetch(`/api/fetch-markdown-content?urlPath=${encodeURIComponent(mdContentUrl)}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}fetchMarkdownContent?urlPath=${encodeURIComponent(mdContentUrl)}`);
             const data = await response.json();
 
             //Format content as HTML
