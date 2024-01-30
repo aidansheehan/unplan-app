@@ -12,6 +12,7 @@ import { useError } from '@/context/error.context'
 import TinyMceEditor from '@/components/tinymce-editor.component'
 import InlineLoadingComponent from '@/components/inline-loading.component'
 import HtmlContentPresentationComponent from '@/components/html-content-presentation/html-content-presentation.component'
+import LoadingSpinner from '@/components/loading-spinner'
 
 
 const ViewLesson = ({lessonData, lessonId, error}) => {
@@ -29,7 +30,7 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
     const [ handoutContent, setHandoutContent ]         = useState('')
 
     const [ lessonStatus, setLessonStatus ] = useState(lessonData.status || 'pending')
-    const [ lessonPlanUrl, setLessonPlanUrl ] = useState(contentRef.lessonPlanUrl || '')
+    const [ lessonPlanUrl, setLessonPlanUrl ] = useState(contentRef.plan || '')
 
     //Function to generate a handout for the class
     const generateHandout = async () => {
@@ -71,26 +72,33 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
     }
 
     useEffect(() => {
-        //Reference to the lesson document
-        const lessonDocRef = doc(db, 'lessons', lessonId)
 
-        //Listen for real-time updates
-        const unsubscribe = onSnapshot(lessonDocRef, (doc) => {
-            if (doc.exists()) {
-                const updatedData = doc.data()
-                setLessonStatus(updatedData.status)
-                if (updatedData.status === 'complete') {
-                    setLessonPlanUrl(updatedData.contentRef.plan || '')
+        //If lesson plan still being generated
+        if (lessonStatus === 'pending') {
+            //Reference to the lesson document
+            const lessonDocRef = doc(db, 'lessons', lessonId)
+
+            //Listen for real-time updates
+            const unsubscribe = onSnapshot(lessonDocRef, (doc) => {
+                if (doc.exists()) {
+                    const updatedData = doc.data()
+                    setLessonStatus(updatedData.status)
+                    setLessonPlanContent(updatedData.temporaryLessonPlan)
+                    if (updatedData.status === 'complete') {
+                        setLessonPlanUrl(updatedData.contentRef.plan || '')
+                        unsubscribe()
+                    }
+                } else {
+                    //TODO Handle case where document does not exist
                 }
-            } else {
-                //TODO Handle case where document does not exist
-            }
-        })
+            })
 
-        //Clean up the listener
-        return () => {
-            unsubscribe()
+            //Clean up the listener
+            return () => {
+                unsubscribe()
+            }
         }
+
     }, [lessonId])
 
     /** Load Lesson Plan */
@@ -113,11 +121,11 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
             }
         }
 
-        if (lessonPlanUrl) {
+        if (lessonPlanUrl && !lessonPlanContent) {
             fetchLessonPlan()
         }
 
-    }, [ lessonPlanUrl ])
+    }, [])
 
     /** Load Handout */
     useEffect(() => {
@@ -186,15 +194,13 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                         isLocked ? (
                             <HtmlContentPresentationComponent htmlContent={lessonPlanContent} title={lessonData.topic} />
                         ) : (
-                            <TinyMceEditor title='Lesson Plan' contentUrl={lessonPlanUrl} value={lessonPlanContent} setValue={setLessonPlanContent} id={lessonId}  />
+                            <TinyMceEditor title='Lesson Plan' contentUrl={lessonPlanUrl} value={lessonPlanContent} setValue={setLessonPlanContent} id={lessonId} disabled={lessonStatus === 'pending'} />
                         )
                         
-                    ) : lessonStatus === 'complete' ? (
-                        <p>Loading...</p>
-                    ) : lessonStatus === 'pending' ? (
-                        <p>Pending...</p>
-                    ) : lessonStatus === 'failed' && (
+                    ) : lessonStatus === 'failed' ? (
                         <p>Failed.</p>
+                    ) : (
+                        <LoadingSpinner />
                     )
                 }
 

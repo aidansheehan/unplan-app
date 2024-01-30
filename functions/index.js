@@ -107,7 +107,7 @@ const gLPLimiter = FirebaseFunctionsRateLimiter.withFirestoreBackend({
 /**
  * Function to generate a lesson plan
  */
-exports.generateLessonPlan = functions.firestore
+exports.generateLessonPlan = functions.runWith({ timeoutSeconds: 300 }).firestore
   .document('lessons/{docId}')
   .onCreate(async (snap, context) => {
 
@@ -152,13 +152,30 @@ exports.generateLessonPlan = functions.firestore
       }
 
       //Get openAI completion
-      const completion = await openai.chat.completions.create({
+      const stream = await openai.chat.completions.create({
             messages: messages,
-            model: "gpt-4-1106-preview"
+            model: "gpt-4-1106-preview",
+            stream: true
       });
 
-      //Destructure completion response
-      const { content } = completion.choices[0].message;
+      //Initialize lesson plan content
+      let content = ''
+
+      for await (const chunk of stream) {
+
+        const chunkContent = chunk.choices[0]?.delta.content  //New chunk content
+
+        //If chunkContent not undefined (sent at end of completion)
+        if (chunkContent !== undefined) {
+
+          //Add chunk content
+          content += chunkContent
+
+          //Update firestore with current content
+          await db.collection('lessons').doc(docId)
+            .update({ temporaryLessonPlan: marked(content) })
+        }
+      }
 
       //Convert markdown output to HTML
       const htmlContent = marked(content)
@@ -173,6 +190,10 @@ exports.generateLessonPlan = functions.firestore
         'contentRef.plan': lessonPlanPath,
         'status': 'complete'
       })
+
+      //Delete temporary lesson plan from Firestore and update status
+      await db.collection('lessons').doc(docId)
+        .update({ temporaryLessonPlan: FieldValue.delete() })
 
 
     } catch (error) {
