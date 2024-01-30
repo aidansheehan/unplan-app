@@ -118,9 +118,14 @@
         [x] Lesson plans
         [x] activities
     [ ] lesson plan generation to lesson plan page
+        [x] Plan page simply create document then re-direct
+        [x] write lesson plan on firestore doc update
+        [ ] frontend needs to listen for changes (ws?) and update accordingly (show loading state then lesson plan)
+        [ ] apply rate limiter to adding docs to the firestore instance since can't now on generateLessonPlan
+        [ ] ensure not triggering openai responses on update docs! (only create)
     [ ] use websocket from browser to generate completion, save to firebase DB after completion finished OR investigate google pub-sub
         [ ] Prevent abuse ie keep reloading keep re-generating. 
-    [ ] fix 2 min loader on activities -> 20 secs
+    [ ] fix 2 min loader on activities -> 20 secs (revert full page loader to original)
 
 ### modular-backend
     [ ] Modular functions for each service for maintainability + readability

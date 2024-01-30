@@ -107,115 +107,86 @@ const gLPLimiter = FirebaseFunctionsRateLimiter.withFirestoreBackend({
 /**
  * Function to generate a lesson plan
  */
-exports.generateLessonPlan = functions.https.onRequest(async (req, res) => {
-  cors(req, res, async () => {
-    if (req.method === 'POST') {
+exports.generateLessonPlan = functions.firestore
+  .document('lessons/{docId}')
+  .onCreate(async (snap, context) => {
 
-      //Check if rate limiter exceeded
-      const isLimited = await gLPLimiter.isQuotaExceededOrRecordUsage()
+    const docId       = context.params.docId  //Get the docId
+    const newDocument = snap.data()           //Get the newly created document
 
-      //If rate limit exceeded
-      if (isLimited) {
-        
-        //Send warning email
-        await sendRateLimitEmail('generateLessonPlan')
+    //Destructure newDocument
+    const { topic, level, duration, objectives, ageGroup, isOneToOne, isOnline } = newDocument
 
-        //Return error
-        res.status(429).send('Too many requests, please try again later')
-        return
+    try {
+
+      const openai = new OpenAI() //Init openAI
+
+      //Init messages
+      const messages = [{ role: "system", content: 'You are a CELTA trained ESL lesson planning assistant. Create a lesson plan for the user\'s class. USE MARKDOWN' }]
+
+      //Push user data
+      messages.push({
+        role: "user",
+        content: `Topic: ${topic}
+        Age Group: ${ageGroup}
+        Level: ${level}
+        Duration: ${duration} minutes
+        Objectives:
+        ${objectives}`
+      });
+
+      //Add oneToOne message
+      if (isOneToOne) {
+        messages.push({
+          role: 'user',
+          content: 'The class is a ONE TO ONE class, with a single student'
+        })
       }
 
-      //Extract inputs
-      const { topic, level, duration, objectives, ageGroup, isOneToOne, isOnline } = req.body;
-
-      // Validate inputs
-      if (typeof topic !== 'string' || topic.length > 50 ||
-            typeof level !== 'string' || level.length > 20 ||
-                typeof objectives !== 'string' || objectives.length > 400 ||
-                  typeof ageGroup !== 'string' || ageGroup.length > 20 ||
-                   typeof isOneToOne !== 'boolean' || typeof isOnline !== 'boolean') {
-          res.status(400).send('Invalid input parameters');
-          return;
+      //Online class
+      if (isOnline) {
+        messages.push({
+          role: 'user',
+          content: 'The class is an ONLINE class, to be conducted over video chat.'
+        })
       }
 
-      //Create Firestore document
-      const docRef = await db.collection('lessons').add({
-        topic, level, duration, objectives, ageGroup, isOneToOne, isOnline,
-        contentRef: {}, //Initially empty
-        status: 'pending',
-        createdAt: FieldValue.serverTimestamp()
-      })
-
-      try {
-          const openai = new OpenAI();
-          const messages = [{ role: "system", content: 'You are a CELTA trained ESL lesson planning assistant. Create a lesson plan for the user\'s class. USE MARKDOWN' }];
-    
-          messages.push({
-            role: "user",
-            content: `Topic: ${topic}
-            Age Group: ${ageGroup}
-            Level: ${level}
-            Duration: ${duration} minutes
-            Objectives:
-            ${objectives}`
-          });
-    
-          //If oneToOne class
-          if (isOneToOne) {
-            messages.push({
-              role: "user",
-              content: "The class is a ONE TO ONE class, with a single student."
-            })
-          }
-    
-          //If online class
-          if (isOnline) {
-            messages.push({
-              role: "user",
-              content: "The class is an ONLINE class, to be conducted over video chat."
-            })
-          }
-    
-          //Get openAI completion
-          const completion = await openai.chat.completions.create({
+      //Get openAI completion
+      const completion = await openai.chat.completions.create({
             messages: messages,
             model: "gpt-4-1106-preview"
-          });
-    
-          //Destructure completion response
-          const { content } = completion.choices[0].message;
+      });
 
-          //Convert markdown output to HTML
-          const htmlContent = marked(content)
+      //Destructure completion response
+      const { content } = completion.choices[0].message;
 
-          //Save to Firebase Storage
-          const lessonPlanPath = `lessons/${docRef.id}/plan.html`
-          const lessonPlanRef = storage.bucket().file(lessonPlanPath)
-          await lessonPlanRef.save(htmlContent, { contentType: 'text/html' })
+      //Convert markdown output to HTML
+      const htmlContent = marked(content)
 
-          //Update the firestore document
-          await db.collection('lessons').doc(docRef.id).update({
-            'contentRef.plan': lessonPlanPath,
-            'status': 'complete'
-          })
+      //Save to firebase storage
+      const lessonPlanPath = `lessons/${docId}/plan.html`
+      const lessonPlanRef   = storage.bucket().file(lessonPlanPath)
+      await lessonPlanRef.save(htmlContent, { contentType: 'text/html' })
 
-          res.status(200).json({ lessonId: docRef.id, lessonPlan: content });
-      } catch (error) {
-          console.error('Error while generating lesson plan:', error)
+      //Update the firestore document
+      await db.collection('lessons').doc(docId).update({
+        'contentRef.plan': lessonPlanPath,
+        'status': 'complete'
+      })
 
-          //Update Firestore document in case of failure
-          await db.collection('lessons').doc(docRef.id).update({
-            'status': 'failed'
-          })
 
-          res.status(500).send('Internal Server Error')
-      }
+    } catch (error) {
+      console.error('Error while generating lesson plan: ', error)
 
-    } else {
-      res.status(405).send(`Method ${req.method} Not Allowed`);
+      //Update firestore document in case of failure
+      await db.collection('lessons').doc(docId).update({
+        'status': 'failed'
+      })
     }
-  });
-});
+
+
+  })
+
 
 /**
  * createStudentHandout rate limiter
@@ -266,7 +237,7 @@ exports.createStudentHandout = functions.https.onRequest(async (req, res) => {
       const messages = [
         {
           role: "system",
-          content: `You are a CELTA trained ESL worksheet helper. Identify any parts of the users lesson plan you can provide VISUAL HTML content for and create it for them.`
+          content: `You are a CELTA trained ESL worksheet helper. Identify any parts of the users lesson plan you can provide VISUAL HTML content for and create it for them. The content is for PRINTING. DO NOT include interactive features.`
         },
         {
           role: "user",

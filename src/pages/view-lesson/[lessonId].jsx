@@ -1,7 +1,6 @@
 import { db } from '../../../firebaseConfig'
 import { doc, getDoc } from 'firebase/firestore'
 import Layout from '@/components/layout'
-// import TextContentPresentationComponent from '@/components/text-content-presentation/text-content-presentation.component'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFrownOpen } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
@@ -88,7 +87,9 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
             }
         }
 
-        fetchLessonPlan()
+        if (lessonPlanUrl) {
+            fetchLessonPlan()
+        }
 
     }, [ lessonPlanUrl ])
 
@@ -185,7 +186,7 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                             
                         ) : (
                             <div >
-                                <button onClick={generateHandout} className="block md:w-auto bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-600 transition-colors duration-300 m-auto" >
+                                <button disabled={!lessonPlanContent} onClick={generateHandout} className="block md:w-auto bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-600 transition-colors duration-300 m-auto" >
                                     Generate Handout
                                 </button>
                             </div>

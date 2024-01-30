@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Layout from '@/components/layout';
 import { useRouter } from 'next/router';
-import FullPageLoading from '@/components/full-page.loading.component';
 import { useError } from '@/context/error.context';
+import LoadingSpinner from '@/components/loading-spinner';
 
 /**
  * Page to plan a lesson
@@ -64,24 +64,26 @@ const Plan = () => {
         setIsLoading(true)  //Set loading state true
 
         try {
-            //Generate lesson plan
-            const lessonResponse = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}generateLessonPlan`, {
+
+            //Create the lesson plan
+            const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}createLessonPlan`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             })
 
-            if (!lessonResponse.ok) throw new Error('Failed to generate lesson plan')
+            if (!response.ok) throw new Error('Failed to generate lesson plan')
 
-            const lessonData = await lessonResponse.json()
+            const data          = await response.json() //Response to JSON
+            const { lessonId }  = data                  //Destructure response
 
             //Store lessonID in local storage
             const storedLessonIds = JSON.parse(localStorage.getItem('lessonIds')) || []
-            storedLessonIds.push(lessonData.lessonId)
+            storedLessonIds.push(lessonId)
             localStorage.setItem('lessonIds', JSON.stringify(storedLessonIds))
 
             //Redirect to view page with lesson ID
-            router.push(`/view-lesson/${lessonData.lessonId}`)
+            router.push(`/view-lesson/${lessonId}`)
 
             
         } catch (error) {
@@ -94,12 +96,10 @@ const Plan = () => {
     }
 
     return (
-    <Layout title={isLoading ? '' : 'Create Your Lesson Plan'}>
-        {
-            isLoading ? (
-                <FullPageLoading message='Creating Your Lesson Plan...' />
-            ) : (
-                <div className='w-full h-full p-4'>
+    <Layout title='Create Your Lesson Plan'>
+
+        <div className='w-full h-full p-4 flex-grow'>
+            
                     <form onSubmit={handleSubmit} className="max-w-xl mx-auto space-y-4">
                         <div>
                         <label htmlFor="topic" className="block text-sm font-medium text-gray-700">Topic</label>
@@ -113,6 +113,7 @@ const Plan = () => {
                             placeholder="e.g., Irregular Verbs, Food Vocabulary, Past Tense"
                             required
                             maxLength={50}
+                            disabled={isLoading}
                         />
                         </div>
 
@@ -125,7 +126,7 @@ const Plan = () => {
                                     id="level"
                                     value={formData.level}
                                     onChange={handleChange}
-                                    // className="block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm"
+                                    disabled={isLoading}
                                     className='p-2 border border-gray-300 rounded-md shadow-sm flex-grow'
                                     required
                                     >
@@ -151,6 +152,7 @@ const Plan = () => {
                                     <button
                                         type="button"
                                         className={`px-4 py-2 rounded-l-md w-1/2 md:w-auto ${!useCEFR ? 'bg-blue-500 text-white font-semibold' : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100'}`}
+                                        disabled={isLoading}
                                         onClick={toggleCEFR}
                                     >
                                         Basic
@@ -158,6 +160,7 @@ const Plan = () => {
                                     <button
                                         type="button"
                                         className={`px-4 py-2 rounded-r-md w-1/2 md:w-auto ${useCEFR ? 'bg-blue-500 text-white font-semibold' : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100'}`}
+                                        disabled={isLoading}
                                         onClick={toggleCEFR}
                                     >
                                         CEFR
@@ -174,6 +177,7 @@ const Plan = () => {
                                 value={formData.ageGroup}
                                 onChange={handleChange}
                                 className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+                                disabled={isLoading}
                                 required
                             >
                                 <option value="">Select an Age Group</option>
@@ -198,18 +202,19 @@ const Plan = () => {
                                 placeholder="e.g., 60"
                                 min="5"
                                 step="5"
+                                disabled={isLoading}
                                 required
                                 />
 
-                                <button type="button" onClick={() => setFormData({...formData, duration: 60})}
+                                <button type="button" disabled={isLoading} onClick={() => setFormData({...formData, duration: 60})}
                                         className={`p-2 rounded-md shadow-sm ${formData.duration == 60 ? 'bg-blue-500 text-white font-semibold' : 'border border-gray-300 hover:bg-gray-100' }`}>
                                 60 min
                                 </button>
-                                <button type="button" onClick={() => setFormData({...formData, duration: 90})}
+                                <button type="button" disabled={isLoading} onClick={() => setFormData({...formData, duration: 90})}
                                         className={`p-2 rounded-md shadow-sm ${formData.duration == 90 ? 'bg-blue-500 text-white font-semibold' : 'border border-gray-300 hover:bg-gray-100' }`}>
                                 90 min
                                 </button>
-                                <button type="button" onClick={() => setFormData({...formData, duration: 120})}
+                                <button type="button" disabled={isLoading} onClick={() => setFormData({...formData, duration: 120})}
                                         className={`p-2 rounded-md shadow-sm ${formData.duration == 120 ? 'bg-blue-500 text-white font-semibold' : 'border border-gray-300 hover:bg-gray-100' }`}>
                                 120 min
                                 </button>
@@ -226,6 +231,7 @@ const Plan = () => {
                             className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
                             placeholder="e.g., Students can understand the use of present perfect tense, Students can order food in a restaurant"
                             required
+                            disabled={isLoading}
                             maxLength={400}
                         />
                         </div>
@@ -242,6 +248,7 @@ const Plan = () => {
                                     id="isOneToOne"
                                     checked={formData.isOneToOne}
                                     onChange={handleChange}
+                                    disabled={isLoading}
                                     className="form-checkbox h-5 w-5 text-blue-600 cursor-pointer"
                                 />
                             </div>
@@ -256,6 +263,7 @@ const Plan = () => {
                                     id="isOnline"
                                     checked={formData.isOnline}
                                     onChange={handleChange}
+                                    disabled={isLoading}
                                     className="form-checkbox h-5 w-5 text-blue-600 cursor-pointer"
                                 />
                             </div>
@@ -265,16 +273,20 @@ const Plan = () => {
 
 
                         <div className="text-center">
-                            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                Submit Plan
-                            </button>
+                            {
+                                isLoading ? (
+                                    <LoadingSpinner />
+                                ) : (
+                                    <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                        Submit Plan
+                                    </button>
+                                )
+                            }
+
                         </div>
                     </form>
 
-                </div>
-
-            )
-        }
+        </div>
 
     </Layout>
     )
