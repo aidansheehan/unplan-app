@@ -1,5 +1,5 @@
 import { db } from '../../../firebaseConfig'
-import { doc, getDoc } from 'firebase/firestore'
+import { doc, getDoc, onSnapshot } from 'firebase/firestore'
 import Layout from '@/components/layout'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFrownOpen } from '@fortawesome/free-solid-svg-icons'
@@ -16,8 +16,8 @@ import HtmlContentPresentationComponent from '@/components/html-content-presenta
 
 const ViewLesson = ({lessonData, lessonId, error}) => {
 
-    const { contentRef, level, public: isLocked }       = lessonData    //Destructure lessonData
-    const { handout: handoutUrl, plan: lessonPlanUrl }  = contentRef    //Destructure contentRef
+    const { contentRef, level, public: isLocked }       = lessonData   //Destructure lessonData
+    const { handout: handoutUrl }                       = contentRef   //Destructure contentRef
 
     const { handleError } = useError()
 
@@ -27,6 +27,9 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
 
     const [ lessonPlanContent, setLessonPlanContent ]   = useState('')
     const [ handoutContent, setHandoutContent ]         = useState('')
+
+    const [ lessonStatus, setLessonStatus ] = useState(lessonData.status || 'pending')
+    const [ lessonPlanUrl, setLessonPlanUrl ] = useState(contentRef.lessonPlanUrl || '')
 
     //Function to generate a handout for the class
     const generateHandout = async () => {
@@ -66,6 +69,29 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
         }
 
     }
+
+    useEffect(() => {
+        //Reference to the lesson document
+        const lessonDocRef = doc(db, 'lessons', lessonId)
+
+        //Listen for real-time updates
+        const unsubscribe = onSnapshot(lessonDocRef, (doc) => {
+            if (doc.exists()) {
+                const updatedData = doc.data()
+                setLessonStatus(updatedData.status)
+                if (updatedData.status === 'complete') {
+                    setLessonPlanUrl(updatedData.contentRef.plan || '')
+                }
+            } else {
+                //TODO Handle case where document does not exist
+            }
+        })
+
+        //Clean up the listener
+        return () => {
+            unsubscribe()
+        }
+    }, [lessonId])
 
     /** Load Lesson Plan */
     useEffect(() => {
@@ -163,8 +189,12 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                             <TinyMceEditor title='Lesson Plan' contentUrl={lessonPlanUrl} value={lessonPlanContent} setValue={setLessonPlanContent} id={lessonId}  />
                         )
                         
-                    ) : (
+                    ) : lessonStatus === 'complete' ? (
                         <p>Loading...</p>
+                    ) : lessonStatus === 'pending' ? (
+                        <p>Pending...</p>
+                    ) : lessonStatus === 'failed' && (
+                        <p>Failed.</p>
                     )
                 }
 
