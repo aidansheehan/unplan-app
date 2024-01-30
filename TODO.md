@@ -122,11 +122,13 @@
         [x] write lesson plan on firestore doc update
         [x] frontend needs to listen for changes (ws?) and update accordingly (show loading state then lesson plan)
         [ ] Handle error ('failed' state) with re-generate button?
-        [ ] apply rate limiter to adding docs to the firestore instance since can't now on generateLessonPlan
+        [x] apply rate limiter to adding docs to the firestore instance since can't now on generateLessonPlan
         [x] ensure not triggering openai responses on update docs! (only create)
-    [ ] use websocket from browser to generate completion, save to firebase DB after completion finished OR investigate google pub-sub
-        [ ] Prevent abuse ie keep reloading keep re-generating. 
+    [x] use websocket from browser to generate completion, save to firebase DB after completion finished OR investigate google pub-sub
+        [x] Prevent abuse ie keep reloading keep re-generating. 
+    [x] Reduce writes by sending each time threshold number of chunks reached
     [ ] fix 2 min loader on activities -> 20 secs (revert full page loader to original)
+    [ ] Test thoroughly
 
 ### modular-backend
     [ ] Modular functions for each service for maintainability + readability

@@ -60,13 +60,35 @@ const sendRateLimitEmail = async (processName) => {
 }
 
 /**
+ * Generate lesson plan rate limiter
+ */
+const gLPLimiter = FirebaseFunctionsRateLimiter.withFirestoreBackend({
+  name: 'generate_lesson_plan_rate_limiter',
+  periodSeconds: 86400,
+  maxCalls: 1000,
+}, db)
+
+
+/**
  * Function to create a lesson plan in DB
  */
 exports.createLessonPlan = functions.https.onRequest(async (req, res) => {
   cors(req, res, async () => {
     if (req.method === 'POST') {
 
-      //TODO rate limit??
+      //Check if rate limiter exceeded
+      const isLimited = await gLPLimiter.isQuotaExceededOrRecordUsage()
+
+      //If rate limit exceeded
+      if (isLimited) {
+
+        //Send warning email
+        await sendRateLimitEmail('createLessonPlan')
+
+        //Return error
+        res.status(429).send('Too many requests, please try again later')
+        return;
+      }
 
       //Extract inputs
       const { topic, level, duration, objectives, ageGroup, isOneToOne, isOnline } = req.body;
@@ -94,15 +116,6 @@ exports.createLessonPlan = functions.https.onRequest(async (req, res) => {
     }
   })
 })
-
-/**
- * Generate lesson plan rate limiter
- */
-const gLPLimiter = FirebaseFunctionsRateLimiter.withFirestoreBackend({
-  name: 'generate_lesson_plan_rate_limiter',
-  periodSeconds: 86400,
-  maxCalls: 1000,
-}, db)
 
 /**
  * Function to generate a lesson plan
@@ -158,8 +171,8 @@ exports.generateLessonPlan = functions.runWith({ timeoutSeconds: 300 }).firestor
             stream: true
       });
 
-      //Initialize lesson plan content
-      let content = ''
+      let content         = ''    //Initialize lesson plan content
+      let chunkCounter    = 0     //Initialize chunkCounter
 
       for await (const chunk of stream) {
 
@@ -168,13 +181,25 @@ exports.generateLessonPlan = functions.runWith({ timeoutSeconds: 300 }).firestor
         //If chunkContent not undefined (sent at end of completion)
         if (chunkContent !== undefined) {
 
-          //Add chunk content
-          content += chunkContent
+          content += chunkContent         //Add chunk content to lesson plan
+          chunkCounter++                  //Increment chunk counter
 
-          //Update firestore with current content
-          await db.collection('lessons').doc(docId)
-            .update({ temporaryLessonPlan: marked(content) })
+          // If 10 chunks
+          if (chunkCounter >= 5) {
+              //Update firestore with current content
+              await db.collection('lessons').doc(docId)
+                .update({ temporaryLessonPlan: marked(content) });
+            
+              chunkCounter = 0; //Reset counter after update
+          }
+
         }
+      }
+
+      //Update any remaining content after the loop
+      if (chunkCounter > 0) {
+        await db.collection('lessons').doc(docId)
+          .update({ temporaryLessonPlan: marked(content) })
       }
 
       //Convert markdown output to HTML
