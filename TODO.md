@@ -127,8 +127,7 @@
     [x] use websocket from browser to generate completion, save to firebase DB after completion finished OR investigate google pub-sub
         [x] Prevent abuse ie keep reloading keep re-generating. 
     [x] Reduce writes by sending each time threshold number of chunks reached
-    [ ] fix 2 min loader on activities -> 20 secs (revert full page loader to original)
-    [ ] Test thoroughly
+    [x] fix 2 min loader on activities -> 20 secs (revert full page loader to original)
 
 ### modular-backend
     [ ] Modular functions for each service for maintainability + readability
