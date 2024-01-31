@@ -17,7 +17,7 @@ export default function App({ Component, pageProps }) {
       </ErrorProvider>
       <Analytics />
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID} />
-      <GoogleTagManager gaId={process.env.NEXT_PUBLIC_GTM_CONTAINER_ID} />
+      <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_CONTAINER_ID} />
     </>
   )
 }
