@@ -184,8 +184,8 @@ exports.generateLessonPlan = functions.runWith({ timeoutSeconds: 300 }).firestor
           content += chunkContent         //Add chunk content to lesson plan
           chunkCounter++                  //Increment chunk counter
 
-          // If 10 chunks
-          if (chunkCounter >= 5) {
+          // If chunkLimit reached
+          if (chunkCounter >= 1) {
               //Update firestore with current content
               await db.collection('lessons').doc(docId)
                 .update({ temporaryLessonPlan: marked(content) });
