@@ -5,7 +5,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import { ErrorProvider } from '@/context/error.context'
 import { Analytics } from '@vercel/analytics/react'
-import { GoogleAnalytics } from '@next/third-parties/google'
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 
 config.autoAddCss = false
 
@@ -17,6 +17,7 @@ export default function App({ Component, pageProps }) {
       </ErrorProvider>
       <Analytics />
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID} />
+      <GoogleTagManager gaId={process.env.NEXT_PUBLIC_GTM_CONTAINER_ID} />
     </>
   )
 }
