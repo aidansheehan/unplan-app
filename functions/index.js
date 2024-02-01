@@ -410,16 +410,19 @@ exports.generateFindSomeoneWhoWorksheet = functions.https.onRequest(async (req, 
       //Generate a unique worksheet ID
       const uniqueWorksheetId = uuidv4();
 
+      //Construct worksheet path
+      const worksheetPath = `worksheets/findSomeoneWho/${uniqueWorksheetId}.html`
+
       //Generate content ref
-      const contentRef = storage.bucket().file(`worksheets/findSomeoneWho/${uniqueWorksheetId}.md`);
+      const contentRef = storage.bucket().file(worksheetPath);
 
       //Save generated and formatted HTML table as markdown
-      await contentRef.save(content, { contentType: 'text/markdown' });
+      await contentRef.save(content, { contentType: 'text/html' });
 
       //Save metadata to firestore and get doc ref
       const docRef = await admin.firestore().collection('activities').add({
         topic, level, ageGroup, numberOfItems, activity: 'findSbWho',
-        worksheetUrl: `worksheets/findSomeoneWho/${uniqueWorksheetId}.md`
+        worksheetUrl: worksheetPath
       });
 
       res.status(200).json({ worksheetId: docRef.id });
@@ -485,19 +488,24 @@ exports.generateGrammarVocabularyWorksheet = functions.https.onRequest(async (re
 
       const { content } = completion.choices[0].message;
 
+      const htmlContent = marked(content)
+
       // Generate a unique worksheet ID
       const uniqueWorksheetId = uuidv4();
 
+      //Construct worksheet path
+      const worksheetPath = `worksheets/grammarVocabulary/${uniqueWorksheetId}.html`
+
       // Generate content ref
-      const contentRef = storage.bucket().file(`worksheets/grammarVocabulary/${uniqueWorksheetId}.md`);
+      const contentRef = storage.bucket().file(worksheetPath);
 
       // Save generated Markdown content
-      await contentRef.save(content, { contentType: 'text/markdown' });
+      await contentRef.save(htmlContent, { contentType: 'text/html' });
 
       // Save metadata to firestore and get doc ref
       const docRef = await admin.firestore().collection('activities').add({
         topic, level, length, targetWords, targetGrammar, activity: 'grammarVocab',
-        worksheetUrl: `worksheets/grammarVocabulary/${uniqueWorksheetId}.md`
+        worksheetUrl: worksheetPath
       });
 
       res.status(200).json({ worksheetId: docRef.id });
@@ -592,21 +600,25 @@ exports.generateReadingComprehensionWorksheet = functions.https.onRequest(async 
         model: "gpt-3.5-turbo"
       });
 
-      const { content } = completion.choices[0].message;
+      const { content } = completion.choices[0].message   //Destructure GPT content
+      const htmlContent = marked(content)                 //Content as html
 
       // Generate a unique worksheet ID
       const uniqueWorksheetId = uuidv4();
 
+      //Construct worksheet path
+      const worksheetPath = `worksheets/readingComprehension/${uniqueWorksheetId}.html`
+
       // Generate content ref
-      const contentRef = storage.bucket().file(`worksheets/readingComprehension/${uniqueWorksheetId}.md`);
+      const contentRef = storage.bucket().file(worksheetPath);
 
       // Save generated content as markdown
-      await contentRef.save(content, { contentType: 'text/markdown' });
+      await contentRef.save(htmlContent, { contentType: 'text/html' });
 
       // Save metadata to firestore and get doc ref
       const docRef = await admin.firestore().collection('activities').add({
         textComplexityLevel, textLength, topic: topicGenre, numberOfActivities, /*activityTypes,*/ learningObjectives, ageGroup, timeAllocation, activity: 'readingComprehension',
-        worksheetUrl: `worksheets/readingComprehension/${uniqueWorksheetId}.md`
+        worksheetUrl: worksheetPath
       });
 
       res.status(200).json({ worksheetId: docRef.id });
