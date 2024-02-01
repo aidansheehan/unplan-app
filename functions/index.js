@@ -407,6 +407,8 @@ exports.generateFindSomeoneWhoWorksheet = functions.https.onRequest(async (req, 
 
       const { content } = completion.choices[0].message;
 
+      const htmlContent = marked(content)
+
       //Generate a unique worksheet ID
       const uniqueWorksheetId = uuidv4();
 
@@ -417,7 +419,7 @@ exports.generateFindSomeoneWhoWorksheet = functions.https.onRequest(async (req, 
       const contentRef = storage.bucket().file(worksheetPath);
 
       //Save generated and formatted HTML table as markdown
-      await contentRef.save(content, { contentType: 'text/html' });
+      await contentRef.save(htmlContent, { contentType: 'text/html' });
 
       //Save metadata to firestore and get doc ref
       const docRef = await admin.firestore().collection('activities').add({
