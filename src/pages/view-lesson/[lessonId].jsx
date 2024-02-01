@@ -134,7 +134,7 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
         const fetchHandout = async () => {
 
             try {
-                //TODO use real firebase
+
                 const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}getContent?urlPath=${encodeURIComponent(handoutUrl)}`)
                 const data = await response.json()
 

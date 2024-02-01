@@ -7,11 +7,43 @@ import Link from "next/link"
 import { db } from "../../../firebaseConfig"
 import ACTIVITY_INFO from "@/constants/activity-info.constant"
 import ActivityInstructionsComponent from "@/components/activity-instructions.component"
+import { useEffect, useState } from "react"
+import LoadingSpinner from "@/components/loading-spinner"
+import TinyMceEditor from "@/components/tinymce-editor.component"
 
 /**
  * Page to view & print a generated activity
  */
-const ViewActivity = ({worksheetUrl, activity, topic, error}) => {
+const ViewActivity = ({worksheetUrl, activity, topic, activityId, error}) => {
+
+    const [ worksheetLoading, setWorksheetLoading ] = useState(true)
+    const [ worksheetContent, setWorksheetContent ] = useState('')
+
+    /** Load Activity Content */
+    useEffect(() => {
+
+        //Function to fetch worksheet
+        const fetchWorksheet = async () => {
+
+            try {
+
+                const response  = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}getContent?urlPath=${encodeURIComponent(worksheetUrl)}`)
+                const data      = await response.json()
+
+                //Set worksheetContent
+                setWorksheetContent(data.content)
+
+            } catch (error) {
+                console.error(`Error fetching activity content: ${error}`)
+                setWorksheetContent(`<p>Failed to load content.</p>`)
+            } finally {
+                setWorksheetLoading(false)
+            }
+        }
+
+        fetchWorksheet()    //Fetch the worksheet
+
+    }, [ worksheetUrl ])
 
     //Handle error
     if (error) {
@@ -32,13 +64,21 @@ const ViewActivity = ({worksheetUrl, activity, topic, error}) => {
     }
 
     return (
-        <Layout title='Your Activity' >
+        <Layout title={`${ACTIVITY_INFO[activity].title} - ${topic}`} >
 
             <ActivityInstructionsComponent instructionText={ACTIVITY_INFO[activity].instructions} />
 
-            <div className='w-full flex-grow p-4' >
-                <TextContentPresentationComponent title={`${ACTIVITY_INFO[activity].title} - ${topic}`} mdContentUrl={worksheetUrl} />
-            </div>
+            {
+                worksheetLoading ? (
+                    <LoadingSpinner />
+                ) : (
+                    <div className="w-full flex-grow p-4" >
+                        <TinyMceEditor title='TEST TITLE' contentUrl={worksheetUrl} value={worksheetContent} setValue={setWorksheetContent} id={activityId} />
+                    </div>
+                    
+                )
+            }
+
         </Layout>
     )
 }
@@ -63,13 +103,14 @@ export async function getServerSideProps(context) {
         const activityData = activityDoc.data()
 
         //Destructure activityData
-        const { worksheetUrl, activity, topic  } = activityData
+        const { worksheetUrl, activity, topic } = activityData
 
         return {
             props: {
                 worksheetUrl,
                 activity,
-                topic
+                topic,
+                activityId
             }
         }
     } catch (error) {
