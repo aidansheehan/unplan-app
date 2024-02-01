@@ -24,7 +24,7 @@ const UserActivitiesComponent = () => {
             if (activityIds && activityIds.length) {
                 setIsLoading(true)
                 const activityIdsQuery = activityIds.join(',')
-                const res = await fetch(`/api/get-activities?ids=${activityIdsQuery}`)
+                const res = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}getActivities?ids=${activityIdsQuery}`)
                 if (!res.ok) {
                     handleError
                 }

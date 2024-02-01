@@ -6,11 +6,19 @@ const { FirebaseFunctionsRateLimiter } = require("firebase-functions-rate-limite
 const nodemailer = require("nodemailer")
 const cors = require("cors")({ origin: true });
 const { FieldValue } = require('@google-cloud/firestore');
-const { marked } = require('marked')
+const { marked } = require('marked');
 
 admin.initializeApp();
 const db = admin.firestore();
 const storage = admin.storage();
+
+//Connect to emulator db if functions emulated
+if (process.env.FUNCTIONS_EMULATOR) {
+  admin.firestore().settings({
+    host: 'localhost:8080',
+    ssl: false
+  })
+}
 
 //Create a transporter using Brevo SMTP
 const transporter = nodemailer.createTransport({
@@ -60,7 +68,11 @@ const gLPLimiter = FirebaseFunctionsRateLimiter.withFirestoreBackend({
   maxCalls: 1000,
 }, db)
 
-exports.generateLessonPlan = functions.https.onRequest(async (req, res) => {
+
+/**
+ * Function to create a lesson plan in DB
+ */
+exports.createLessonPlan = functions.https.onRequest(async (req, res) => {
   cors(req, res, async () => {
     if (req.method === 'POST') {
 
@@ -69,13 +81,13 @@ exports.generateLessonPlan = functions.https.onRequest(async (req, res) => {
 
       //If rate limit exceeded
       if (isLimited) {
-        
+
         //Send warning email
-        await sendRateLimitEmail('generateLessonPlan')
+        await sendRateLimitEmail('createLessonPlan')
 
         //Return error
         res.status(429).send('Too many requests, please try again later')
-        return
+        return;
       }
 
       //Extract inputs
@@ -91,84 +103,136 @@ exports.generateLessonPlan = functions.https.onRequest(async (req, res) => {
           return;
       }
 
-      //Create Firestore document
+      //Create firestore document
       const docRef = await db.collection('lessons').add({
         topic, level, duration, objectives, ageGroup, isOneToOne, isOnline,
-        contentRef: {}, //Initially empty
+        contentRef: {},
         status: 'pending',
         createdAt: FieldValue.serverTimestamp()
       })
 
-      try {
-          const openai = new OpenAI();
-          const messages = [{ role: "system", content: 'You are a CELTA trained ESL lesson planning assistant. Create a lesson plan for the user\'s class. USE MARKDOWN' }];
-    
-          messages.push({
-            role: "user",
-            content: `Topic: ${topic}
-            Age Group: ${ageGroup}
-            Level: ${level}
-            Duration: ${duration} minutes
-            Objectives:
-            ${objectives}`
-          });
-    
-          //If oneToOne class
-          if (isOneToOne) {
-            messages.push({
-              role: "user",
-              content: "The class is a ONE TO ONE class, with a single student."
-            })
-          }
-    
-          //If online class
-          if (isOnline) {
-            messages.push({
-              role: "user",
-              content: "The class is an ONLINE class, to be conducted over video chat."
-            })
-          }
-    
-          //Get openAI completion
-          const completion = await openai.chat.completions.create({
-            messages: messages,
-            model: "gpt-4-1106-preview"
-          });
-    
-          //Destructure completion response
-          const { content } = completion.choices[0].message;
+      res.status(200).json({ lessonId: docRef.id })
 
-          //Convert markdown output to HTML
-          const htmlContent = marked(content)
+    }
+  })
+})
 
-          //Save to Firebase Storage
-          const lessonPlanPath = `lessons/${docRef.id}/plan.html`
-          const lessonPlanRef = storage.bucket().file(lessonPlanPath)
-          await lessonPlanRef.save(htmlContent, { contentType: 'text/html' })
+/**
+ * Function to generate a lesson plan
+ */
+exports.generateLessonPlan = functions.runWith({ timeoutSeconds: 300 }).firestore
+  .document('lessons/{docId}')
+  .onCreate(async (snap, context) => {
 
-          //Update the firestore document
-          await db.collection('lessons').doc(docRef.id).update({
-            'contentRef.plan': lessonPlanPath,
-            'status': 'complete'
-          })
+    const docId       = context.params.docId  //Get the docId
+    const newDocument = snap.data()           //Get the newly created document
 
-          res.status(200).json({ lessonId: docRef.id, lessonPlan: content });
-      } catch (error) {
-          console.error('Error while generating lesson plan:', error)
+    //Destructure newDocument
+    const { topic, level, duration, objectives, ageGroup, isOneToOne, isOnline } = newDocument
 
-          //Update Firestore document in case of failure
-          await db.collection('lessons').doc(docRef.id).update({
-            'status': 'failed'
-          })
+    try {
 
-          res.status(500).send('Internal Server Error')
+      const openai = new OpenAI() //Init openAI
+
+      //Init messages
+      const messages = [{ role: "system", content: 'You are a CELTA trained ESL lesson planning assistant. Create a lesson plan for the user\'s class. USE MARKDOWN' }]
+
+      //Push user data
+      messages.push({
+        role: "user",
+        content: `Topic: ${topic}
+        Age Group: ${ageGroup}
+        Level: ${level}
+        Duration: ${duration} minutes
+        Objectives:
+        ${objectives}`
+      });
+
+      //Add oneToOne message
+      if (isOneToOne) {
+        messages.push({
+          role: 'user',
+          content: 'The class is a ONE TO ONE class, with a single student'
+        })
       }
 
-    } else {
-      res.status(405).send(`Method ${req.method} Not Allowed`);
+      //Online class
+      if (isOnline) {
+        messages.push({
+          role: 'user',
+          content: 'The class is an ONLINE class, to be conducted over video chat.'
+        })
+      }
+
+      //Get openAI completion
+      const stream = await openai.chat.completions.create({
+            messages: messages,
+            model: "gpt-4-1106-preview",
+            stream: true
+      });
+
+      let content         = ''    //Initialize lesson plan content
+      let chunkCounter    = 0     //Initialize chunkCounter
+
+      for await (const chunk of stream) {
+
+        const chunkContent = chunk.choices[0]?.delta.content  //New chunk content
+
+        //If chunkContent not undefined (sent at end of completion)
+        if (chunkContent !== undefined) {
+
+          content += chunkContent         //Add chunk content to lesson plan
+          chunkCounter++                  //Increment chunk counter
+
+          // If chunkLimit reached
+          if (chunkCounter >= 3) {
+              //Update firestore with current content
+              await db.collection('lessons').doc(docId)
+                .update({ temporaryLessonPlan: marked(content) });
+            
+              chunkCounter = 0; //Reset counter after update
+          }
+
+        }
+      }
+
+      //Update any remaining content after the loop
+      if (chunkCounter > 0) {
+        await db.collection('lessons').doc(docId)
+          .update({ temporaryLessonPlan: marked(content) })
+      }
+
+      //Convert markdown output to HTML
+      const htmlContent = marked(content)
+
+      //Save to firebase storage
+      const lessonPlanPath = `lessons/${docId}/plan.html`
+      const lessonPlanRef   = storage.bucket().file(lessonPlanPath)
+      await lessonPlanRef.save(htmlContent, { contentType: 'text/html' })
+
+      //Update the firestore document
+      await db.collection('lessons').doc(docId).update({
+        'contentRef.plan': lessonPlanPath,
+        'status': 'complete'
+      })
+
+      //Delete temporary lesson plan from Firestore and update status
+      await db.collection('lessons').doc(docId)
+        .update({ temporaryLessonPlan: FieldValue.delete() })
+
+
+    } catch (error) {
+      console.error('Error while generating lesson plan: ', error)
+
+      //Update firestore document in case of failure
+      await db.collection('lessons').doc(docId).update({
+        'status': 'failed'
+      })
     }
-  });
-});
+
+
+  })
+
 
 /**
  * createStudentHandout rate limiter
@@ -219,7 +283,7 @@ exports.createStudentHandout = functions.https.onRequest(async (req, res) => {
       const messages = [
         {
           role: "system",
-          content: `You are a CELTA trained ESL worksheet helper. Identify any parts of the users lesson plan you can provide VISUAL HTML content for and create it for them.`
+          content: `You are a CELTA trained ESL worksheet helper. Identify any parts of the users lesson plan you can provide VISUAL HTML content for and create it for them. The content is for PRINTING. DO NOT include interactive features.`
         },
         {
           role: "user",
@@ -591,6 +655,140 @@ exports.getContent = functions.https.onRequest(async (req, res) => {
     } else {
       res.setHeader('Allow', ['GET'])
       res.status(405).send(`Method ${req.method} Not Allowed`)
+    }
+  })
+})
+
+exports.getLessons = functions.https.onRequest(async (req, res) => {
+  cors(req, res, async () => {
+    if (req.method === 'GET') {
+
+      try {
+        if (req.query.public === 'true') {
+          const publicLessonsQuery = db.collection('lessons').where('public', '==', true)
+          const publicLessonsSnapshot = await publicLessonsQuery.get()
+          const publicLessons = publicLessonsSnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          }))
+          res.status(200).json(publicLessons)
+          return
+        }
+
+        if (!req.query.ids || !req.query.ids.length) {
+          res.status(200).json([])
+          return;
+        }
+
+        const ids = req.query.ids.split(',').filter(id => id.trim() !== '')
+        if (ids.length === 0) {
+          res.status(200).json([])
+          return
+        }
+
+        const lessonsPromises = ids.map(id => db.collection('lessons').doc(id).get())
+        const lessonsSnapshots = await Promise.all(lessonsPromises)
+        
+        const lessons = lessonsSnapshots
+          .filter(snapshot => snapshot.exists)
+          .map(snapshot => ({
+            id: snapshot.id,
+            ...snapshot.data()
+          }))
+
+          res.status(200).json(lessons)
+          return
+      } catch (error) {
+        console.error(error)
+        res.status(500).json({ error: error.message })
+      }
+
+    } else {
+      res.status(405).send(`Method ${req.method} Not Allowed.`)
+    }
+  })
+})
+
+exports.getActivities = functions.https.onRequest(async (req, res) => {
+  cors(req, res, async () => {
+    if (req.method === 'GET') {
+
+      try {
+        if (!req.query.ids && req.query.ids.length) {
+          //Return nothing
+          res.status(200).json([])
+        }
+
+        const ids = req.query.ids.split(',').filter(id => id.trim() !== '')
+
+        if (ids.length === 0) {
+            res.status(200).json([])
+            return
+        }
+
+        const activitiesPromises = ids.map(id => db.collection('activities').doc(id).get())
+        const activitiesSnapshots = await Promise.all(activitiesPromises)
+
+        const activities = activitiesSnapshots
+          .filter(snapshot => snapshot.exists)
+          .map(snapshot => ({
+              id: snapshot.id,
+              ...snapshot.data()
+          }))
+
+          res.status(200).json(activities)
+
+      } catch (error) {
+        console.error(error)
+        res.status(500).json({ error: error.message })
+      }
+    } else {
+      res.status(405).send(`Method ${req.method} Not Allowed.`)
+    }
+  })
+})
+
+exports.fetchMarkdownContent = functions.https.onRequest(async (req, res) => {
+  cors (req, res, async() => {
+    if (req.method === 'GET') {
+
+      const { urlPath } = req.query
+      
+      try {
+        const file = storage.bucket().file(urlPath)
+
+        //Check if file exists
+        const exists = (await file.exists())[0]
+        if(!exists) {
+          res.status(404).json({ error: 'File not found' })
+          return;
+        }
+
+        //Fetch the file contents
+        const stream = file.createReadStream()
+        let data = ''
+
+        stream.on('data', (chunk) => {
+          data += chunk;
+        })
+
+        stream.on('error', (error) => {
+          console.error(`Error fetching markdown content:`, error)
+          res.status(500).json({ error: 'Failed to fetch content' })
+        })
+
+        stream.on('end', () => {
+          res.status(200).json({ content: data })
+        })
+
+      } catch (error) {
+        console.error('Error fetching markdown content:', error)
+        res.status(500).json({ error: 'Failed to fetch content' })
+      }
+
+    } else {
+      res.setHeader('Allow', ['GET'])
+      res.status(405).send(`Method ${req.method} Not Allowed.`)
     }
   })
 })

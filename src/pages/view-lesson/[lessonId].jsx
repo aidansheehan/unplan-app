@@ -1,7 +1,6 @@
 import { db } from '../../../firebaseConfig'
-import { doc, getDoc } from 'firebase/firestore'
+import { doc, getDoc, onSnapshot } from 'firebase/firestore'
 import Layout from '@/components/layout'
-// import TextContentPresentationComponent from '@/components/text-content-presentation/text-content-presentation.component'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFrownOpen } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
@@ -13,12 +12,13 @@ import { useError } from '@/context/error.context'
 import TinyMceEditor from '@/components/tinymce-editor.component'
 import InlineLoadingComponent from '@/components/inline-loading.component'
 import HtmlContentPresentationComponent from '@/components/html-content-presentation/html-content-presentation.component'
+import LoadingSpinner from '@/components/loading-spinner'
 
 
 const ViewLesson = ({lessonData, lessonId, error}) => {
 
-    const { contentRef, level, public: isLocked }       = lessonData    //Destructure lessonData
-    const { handout: handoutUrl, plan: lessonPlanUrl }  = contentRef    //Destructure contentRef
+    const { contentRef, level, public: isLocked }       = lessonData   //Destructure lessonData
+    const { handout: handoutUrl }                       = contentRef   //Destructure contentRef
 
     const { handleError } = useError()
 
@@ -28,6 +28,9 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
 
     const [ lessonPlanContent, setLessonPlanContent ]   = useState('')
     const [ handoutContent, setHandoutContent ]         = useState('')
+
+    const [ lessonStatus, setLessonStatus ] = useState(lessonData.status || 'pending')
+    const [ lessonPlanUrl, setLessonPlanUrl ] = useState(contentRef.plan || '')
 
     //Function to generate a handout for the class
     const generateHandout = async () => {
@@ -68,6 +71,36 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
 
     }
 
+    useEffect(() => {
+
+        //If lesson plan still being generated
+        if (lessonStatus === 'pending') {
+            //Reference to the lesson document
+            const lessonDocRef = doc(db, 'lessons', lessonId)
+
+            //Listen for real-time updates
+            const unsubscribe = onSnapshot(lessonDocRef, (doc) => {
+                if (doc.exists()) {
+                    const updatedData = doc.data()
+                    setLessonStatus(updatedData.status)
+                    setLessonPlanContent(updatedData.temporaryLessonPlan)
+                    if (updatedData.status === 'complete') {
+                        setLessonPlanUrl(updatedData.contentRef.plan || '')
+                        unsubscribe()
+                    }
+                } else {
+                    //TODO Handle case where document does not exist
+                }
+            })
+
+            //Clean up the listener
+            return () => {
+                unsubscribe()
+            }
+        }
+
+    }, [lessonId])
+
     /** Load Lesson Plan */
     useEffect(() => {
 
@@ -88,9 +121,11 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
             }
         }
 
-        fetchLessonPlan()
+        if (lessonPlanUrl && !lessonPlanContent) {
+            fetchLessonPlan()
+        }
 
-    }, [ lessonPlanUrl ])
+    }, [])
 
     /** Load Handout */
     useEffect(() => {
@@ -159,11 +194,13 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                         isLocked ? (
                             <HtmlContentPresentationComponent htmlContent={lessonPlanContent} title={lessonData.topic} />
                         ) : (
-                            <TinyMceEditor title='Lesson Plan' contentUrl={lessonPlanUrl} value={lessonPlanContent} setValue={setLessonPlanContent} id={lessonId}  />
+                            <TinyMceEditor title='Lesson Plan' contentUrl={lessonPlanUrl} value={lessonPlanContent} setValue={setLessonPlanContent} id={lessonId} disabled={lessonStatus === 'pending'} />
                         )
                         
+                    ) : lessonStatus === 'failed' ? (
+                        <p>Failed.</p>
                     ) : (
-                        <p>Loading...</p>
+                        <LoadingSpinner />
                     )
                 }
 
@@ -185,7 +222,7 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                             
                         ) : (
                             <div >
-                                <button onClick={generateHandout} className="block md:w-auto bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-600 transition-colors duration-300 m-auto" >
+                                <button disabled={!lessonPlanContent} onClick={generateHandout} className="block md:w-auto bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-600 transition-colors duration-300 m-auto" >
                                     Generate Handout
                                 </button>
                             </div>
