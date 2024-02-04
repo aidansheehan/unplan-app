@@ -2,6 +2,7 @@ const functions = require('firebase-functions')
 const OpenAI = require('openai')
 const admin = require('firebase-admin')
 const { marked } = require('marked')
+const { FieldValue } = require('@google-cloud/firestore')
 
 const db = admin.firestore()
 const storage = admin.storage()
