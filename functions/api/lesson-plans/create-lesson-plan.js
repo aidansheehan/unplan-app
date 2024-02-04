@@ -1,6 +1,6 @@
 const functions = require('firebase-functions')
 const cors = require('cors')({ origin: true })
-const { rateLimitMiddleware } = require('../../utils/rate-limit.middleware')
+const { rateLimitMiddleware } = require('../../middleware/rate-limit.middleware')
 const { httpMethodRestrictorMiddleware } = require('../../middleware/http-method-restrictor.middleware')
 const admin = require('firebase-admin')
 const { FieldValue } = require('@google-cloud/firestore')

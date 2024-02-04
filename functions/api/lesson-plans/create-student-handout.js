@@ -1,6 +1,6 @@
 const functions = require('firebase-functions')
 const { httpMethodRestrictorMiddleware } = require('../../middleware/http-method-restrictor.middleware')
-const { rateLimitMiddleware } = require('../../utils/rate-limit.middleware')
+const { rateLimitMiddleware } = require('../../middleware/rate-limit.middleware')
 const cors = require('cors')({ origin: true })
 const OpenAI = require('openai')
 const admin = require('firebase-admin')

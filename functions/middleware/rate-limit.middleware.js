@@ -1,5 +1,5 @@
 const { FirebaseFunctionsRateLimiter } = require('firebase-functions-rate-limiter')
-const { sendRateLimitEmail } = require('./rate-limit-mailer')
+const { sendRateLimitEmail } = require('../utils/rate-limit-mailer')
 const rateLimitConfig = require('../config/rate-limit-config')
 const admin = require('firebase-admin')
 
