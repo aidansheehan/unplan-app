@@ -39,4 +39,4 @@ const sendRateLimitEmail = async (processName) => {
     await transporter.sendMail(mailOptions)
 }
 
-module.exports = sendRateLimitEmail
+module.exports = { sendRateLimitEmail }
