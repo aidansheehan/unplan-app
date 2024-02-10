@@ -239,7 +239,7 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                         Soon, you'll be able to create audio files for listening activities and enrich your lessons with engaging images.
                     </p>
                     <div className='mt-2 w-full flex justify-center'>
-                        <Link href="/signup" className="bg-orange-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-600 transition-colors duration-300 w-fit">
+                        <Link href="/mailing" className="bg-orange-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-600 transition-colors duration-300 w-fit">
                             Sign Up for Updates
                         </Link>
                     </div>

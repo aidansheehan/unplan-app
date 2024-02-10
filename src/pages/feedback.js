@@ -41,7 +41,7 @@ const Feedback = () => {
                     <p className="text-sm text-center mt-2">Sign up for our mailing list to see how your suggestions are shaping our future updates!</p>
 
                     <div className="mt-6 text-center">
-                        <Link href="/signup" className="inline-block bg-orange-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors duration-300">
+                        <Link href="/mailing" className="inline-block bg-orange-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors duration-300">
                             Sign Up for Updates
                         </Link>
                     </div>

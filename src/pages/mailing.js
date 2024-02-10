@@ -3,7 +3,7 @@ import { useError } from "@/context/error.context"
 
 const { useState } = require("react")
 
-const Signup = () => {
+const Mailing = () => {
 
     const [ email, setEmail ]                       = useState('')      //Email state
     const [ success, setSuccess ]                   = useState(false)   //Success state
@@ -125,4 +125,4 @@ const Signup = () => {
     )
 }
 
-export default Signup
+export default Mailing
