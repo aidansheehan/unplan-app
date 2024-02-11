@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 import GoogleContinueButtonComponent from './google-continue-button.component'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import { useRouter } from 'next/router'
 import { auth } from '../../firebaseConfig'
 
@@ -18,10 +18,10 @@ const SignupForm = () => {
         const { email, password/*, mailingList*/ } = data
 
         try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-            console.log('User created: ', userCredential.user)
-            //Redirect to the login page or dashboard after successful signup
-            router.push('/login')
+            await createUserWithEmailAndPassword(auth, email, password)     // Create the user
+            await signInWithEmailAndPassword(auth, email, password)         // Sign the new user in
+            router.push('/protected')                                       // Redirect to protected route
+
         } catch (error) {
             //TBD handle error gracefully
             console.error('There was an error signing up')

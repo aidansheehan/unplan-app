@@ -32,11 +32,11 @@
         [x] Form
             [x] Autocomplete
         [x] Functionality
-    [ ] Signup form
+    [x] Signup form
         [x] Form
             [x] Autocomplete
         [x] Functionality
-        [ ] Login on successful signup
+        [x] Login on successful signup
     [ ] Persist user sessions
     [x] avoid FOUC
     [x] Logout
