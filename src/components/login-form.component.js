@@ -18,9 +18,7 @@ const LoginFormComponent = () => {
         const { email, password } = data    //Destructure login data
 
         try {
-            const result = await signInWithEmailAndPassword(auth, email, password)
-            console.log('Signed in!')
-            console.log('signIN response: ', result)
+            await signInWithEmailAndPassword(auth, email, password)
             router.push('/protected')
         } catch (error) {
             //TBD gracefully handle error
@@ -53,6 +51,7 @@ const LoginFormComponent = () => {
                             id="email"
                             className={`w-full p-2 ${errors.email ? 'border-red-500' : ''}`}
                             placeholder="Email"
+                            autoComplete='username'
                         />
                     </div>
                     {errors.email && <p className="text-red-500 text-xs italic">{errors.email.message}</p>}
@@ -70,6 +69,7 @@ const LoginFormComponent = () => {
                             id="password"
                             className={`w-full p-2 ${errors.password ? 'border-red-500' : ''}`}
                             placeholder="Password"
+                            autoComplete='current-password'
                         />
                     </div>
                     {errors.password && <p className="text-red-500 text-xs italic">{errors.password.message}</p>}

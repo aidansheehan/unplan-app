@@ -30,14 +30,16 @@
 ### auth
     [x] Login
         [x] Form
+            [x] Autocomplete
         [x] Functionality
     [ ] Signup form
         [x] Form
+            [x] Autocomplete
         [x] Functionality
         [ ] Login on successful signup
     [ ] Persist user sessions
     [x] avoid FOUC
-    [ ] Logout
+    [x] Logout
     [ ] Google
         [ ] Use google brand guidelines
         [ ] Implement 'Continue with Google'

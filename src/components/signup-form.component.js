@@ -53,6 +53,7 @@ const SignupForm = () => {
                             id="email"
                             className={`w-full p-2 ${errors.email ? 'border-red-500' : ''}`}
                             placeholder="Email"
+                            autoComplete='email'
                         />
                     </div>
                     {errors.email && <p className="text-red-500 text-xs italic">{errors.email.message}</p>}
@@ -71,12 +72,14 @@ const SignupForm = () => {
                     id="password"
                     className={`w-full p-2 ${errors.password ? 'border-red-500' : ''}`}
                     placeholder="Password"
+                    autoComplete='new-password'
                 />
                 </div>
                 {errors.password && <p className="text-red-500 text-xs italic">{errors.password.message}</p>}
                 </div>
 
                 {/* Mailing List Input */}
+                {/* TODO how will google users sign up for mailing list? */}
                 <div className="flex items-center justify-between mb-4">
                 <label className="flex items-center">
                     <input 
@@ -98,7 +101,6 @@ const SignupForm = () => {
             </form>
 
             {/* Agreement Section */}
-            {/* TODO how will google users sign up for mailing list? */}
             <p className='text-xs text-gray-400 mb-4' >
                 By clicking "Create Account" or "Continue with Google", you agree to the Easy Plan ESL TOS and Privacy Policy.
             </p>
