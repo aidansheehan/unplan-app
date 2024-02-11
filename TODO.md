@@ -42,9 +42,25 @@
     [x] Logout
     [ ] Google
         [ ] Use google brand guidelines
-        [ ] Implement 'Continue with Google'
+        [x] Implement 'Continue with Google'
     [ ] Error handling
-    [ ] Form should validate according to firebase password rules
+        [ ] Already have account
+        [ ] Issue creating account
+        [ ] Issue logging in
+            [ ] Wrong PW
+            [ ] Wrong email
+            [ ] Server side?
+    [ ] Form (password, maybe email?) should validate according to firebase password rules
+    [ ] 'Edge' cases?
+        [ ] Forgot / Reset password
+        [ ] Confirm email?
+        [ ] Contact (acc deletion, whatever else, just multi purpose contact us we'll help form)
+    [ ] Authenticated usage of app
+        [ ] Protected routes (create LP, CR Activities, Your Lessons, Home)
+        [ ] Lesson plans saved & accessed by user
+        [ ] Activities saved & accessed by user
+        [ ] Conditionally render navigation
+    [ ] Test live
 
 ### PUBILCITY (maybe all as 1 branch)
 [ ] P1: Implement SEO practices following guides to improve search engine rankings

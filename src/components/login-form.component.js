@@ -13,6 +13,7 @@ const LoginFormComponent = () => {
 
     const router = useRouter()
 
+    //Handle login (email + password) submit
     const onSubmit = async (data) => {
 
         const { email, password } = data    //Destructure login data
@@ -24,9 +25,7 @@ const LoginFormComponent = () => {
             //TBD gracefully handle error
             console.error(error)
         }
-
-
-    };
+    }
 
     return (
         <div className="flex flex-col items-center justify-center bg-white p-10 rounded-lg md:shadow-md max-w-md text-sm text-center my-4">
