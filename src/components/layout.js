@@ -4,7 +4,8 @@ import { faHome, faClipboardList, faBook, faBars, faTimes, faScroll, faComments,
 import SidebarComponent from './sidebar-component';
 import ErrorDisplayComponent from './error-display.component';
 import Link from 'next/link';
-// import { UserAuth } from '@/context/auth.context';
+import { useAuth } from '@/context/auth.context'
+import SignOutButtonComponent from './sign-out.button.component';
 
 const NAV_ITEMS = [
   {
@@ -54,7 +55,8 @@ const Layout = ({ children, title }) => {
   const APP_TITLE = 'EASY PLAN ESL';
   const [isNavOpen, setIsNavOpen] = useState(false);
 
-  // const { user } = UserAuth()
+  const { user } = useAuth()
+  console.log('USER: ', user)
 
   const toggleNav = () => setIsNavOpen(!isNavOpen);
 
@@ -65,15 +67,18 @@ const Layout = ({ children, title }) => {
         <button className="p-2 md:hidden" onClick={toggleNav} >
           <FontAwesomeIcon icon={isNavOpen ? faTimes : faBars} className="text-white" />
         </button>
-        {/* {
+        {
           user ? (
-            <span>{`Hello, ${user}!`}</span>
+            <div className='flex flex-col' >
+                <span>{`Hello, ${user.email}!`}</span>
+                <SignOutButtonComponent />
+            </div>
           ) : (
             <Link href='/signup' >
               Sign Up
             </Link>
           )
-        } */}
+        }
       </header>
 
       <SidebarComponent navItems={NAV_ITEMS} isNavOpen={isNavOpen} />

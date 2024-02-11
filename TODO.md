@@ -1,110 +1,3 @@
-# TODO MVP
-
-[x] Ensure lesson plan displayed nicely and PRINTS well
-[x] Generate mats
-[x] Init firebase project with firebase storage
-    [x] Save lesson plans to server on generation
-    [x] Navigate to page for this lesson so at least links to lessons are sharable and reloadable
-        [x] Find lesson by ID in db, retrieve handout and plan markdown, display
-            [x] Fix crazy long page load times
-                [x] Implement placeholder content for LP + Handouts, disable print btn while loading
-[x] Implement a LESSON LIBRARY
-    [x] Lessons displayed in lesson library, click to link to lessons
-    [x] Only display lessons with public flag
-    [x] Add example lessons
-    [x] Implement search bar
-[x] Feedback page
-[x] Implement basic site navigation
-[x] Implement basic user lessons lib
-[x] Implement a really basic terms of use page
-[x] LOADING PAGE Improve loading page as is quite a long load time (after generate lesson - give a message,  countdown and indication of time to process, whatever)
-[x] FORM IMPROVEMENTS: Add placeholder example text to form inputs to show ppl how to use, fix lesson duration (should specify units, have suggestions), add student age group
-[x] Implement sign up to mailing list
-    [x] Mailing list page
-    [x] Handle mailing list
-    [x] Welcome email
-    [x] Handle ALREADY SUBSCRIBED
-    [x] Handle error
-[x] Improve landing page
-[x] Fix landscape menu broken
-[x] Fix / standardize lesson lib + your lessons layout
-[x] Add padding to top of text display components so text not flush with top.
-[x] Error handling
-[x] Age group should also demand user selction like level for consistent UX
-[x] Fix signup
-[?] fix feedback form not working (use brevo smtp client?)
-[x] Windows dt issues
-    [x] Scroll on nav - investigate, either use custom scroll or remove scroll (what do other apps with sidebars do?)
-    [x] Header overlap main scroll
-    [x] Maybe smaller main text on  homepage by 1? Set up A /B and ask mum thoughts + possible smaller text on nav text
-[x] Browser compat. issues
-    [x] Fix overscroll ugly
-    [x] Prevent overscroll where possible
-    [x] Safari dt can't see lesson cards
-[x] Prevent abuse / 'Security'
-    [x] Implement rate limiting on openAI cloud functions at 1000 calls / day w/ email notification if triggered
-    [x] Validate cloud function input
-        [x] Reject if incorrect
-        [x] Impose size limits to prevent massive inputs (Implement on BE & FE) 
-        [x] Implement on FE too
-[x] Implement basic activity generation so can test vs lesson planning as core VP
-    [x] Activity display page
-    [x] Activity generation cloud function
-        [x] Find sb who
-        [x] Grammar / Vocabulary Worksheet
-        [x] Reading Comprehension
-    [x] Nav page
-    [x] Activity generation form
-        [x] Find sb who
-        [x] Grammar / Vocabulary Worksheet
-        [x] Reading Comprehension
-    [x] Rate limiting
-        [x] Find sb who + TEST
-        [x] Grammar/ Vocabulary Worksheet + TEST
-        [x] Reading Comprehension + TEST
-    [x] Add to sidebar
-    [x] Move terms somewhere less intrusive to reduce clutter (Can be part of landing page refactor)
-    [x] Refactor FullPageLoading to handle different activities (maybe show instructions instead of teaching tips)
-    [x] Make display work (see below, especially for tables)
-    [x] Add 'My Activities' under activity bit stored in local storage
-    [x] Update Landing Page to advertise both VPs
-    [x] Add CTA to feedback in /activities - 'is there an activity you would like but don't see, tell us about it'?
-[x] Remove title from layout, standardize like in My Activities everywhere else (<TitleComponent>)\
-[x] Test
-    [x] Chrome
-    [x] Safari
-    [x] Firefox
-    [x] Windows
-    [x] Mobile
-[x] Make Public
-
-## BRANCHES
-### GA-4
-    [x] Implement GA4
-    [ ] Remove vercel analytics
-    [ ] Ensure not triggered on preview deploys & localhost
-
-### editable-content
-    [x] Add tinymce & setup, self host
-    [x] Remove unhelpful toolbar options
-    [x] save
-        [x] Restructure / HTML files?
-            [x] Convert md to html in db (copy, double up as below)
-            [x] Save as HTML
-            [x] Retrieve as HTML
-        [x] Add save button to editor and check working
-        [x] hook up with in editor save btn and test
-        [x] Autosave
-        [x] Public lessons 'lock' editor so can't update
-    [x] Plan page refactor (use linguahouse as guide)
-        [x] Metadata section at top, small text
-        [x] Plan, handout just nice simple components use page scroll to view, horizontal line breaks to split out content
-        [x] Media (audio & pictures) - Leave a 'Coming Soon...' with CTA mailing list
-    [x] Handouts
-        [x] Move handout generation to plan page
-        [x] Use tinymce for handout, implement save functionality
-        [x] Make sure you STRIP HTML and pass in lesson plan to GPT as string for better results
-
 ### Clean up Editable Content
     [ ] Block edits to public lessons on backend in cloud fn
     [ ] Save initial draft to storage too so can compare (plan.html, plan-initial.html), add legal disclamier you own content you create.
@@ -134,17 +27,17 @@
     [x] Reduce writes by sending each time threshold number of chunks reached
     [x] fix 2 min loader on activities -> 20 secs (revert full page loader to original)
 
-### modular-backend
-    [x] Modular functions for each service for maintainability + readability
-
 ### auth
     [x] Login
         [x] Form
         [x] Functionality
-    [x] Signup form
+    [ ] Signup form
         [x] Form
         [x] Functionality
+        [ ] Login on successful signup
     [ ] Persist user sessions
+    [x] avoid FOUC
+    [ ] Logout
     [ ] Google
         [ ] Use google brand guidelines
         [ ] Implement 'Continue with Google'

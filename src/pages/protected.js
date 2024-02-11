@@ -1,5 +1,6 @@
-import Layout from "@/components/layout"
-import { UserAuth } from "@/context/auth.context"
+import Layout from '@/components/layout'
+import { useAuth } from '@/context/auth.context'
+import ProtectedRoute from '@/hoc/protected-route.hoc'
 
 /**
  * POC protected route
@@ -7,17 +8,7 @@ import { UserAuth } from "@/context/auth.context"
  */
 const Protected = () => {
 
-    const { user } = UserAuth()
-
-    console.log('user: ', user)
-
-    if (!user) {
-        return (
-            <Layout >
-                You need to be logged in to view this page 😔
-            </Layout>
-        )
-    }
+    const { user } = useAuth()
 
     return (
         <Layout >
@@ -27,4 +18,4 @@ const Protected = () => {
     )
 }
 
-export default Protected
+export default ProtectedRoute(Protected)
