@@ -1,16 +1,33 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import Link from 'next/link';
-import GoogleContinueButtonComponent from './google-continue-button.component';
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons'
+import Link from 'next/link'
+import GoogleContinueButtonComponent from './google-continue-button.component'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { useRouter } from 'next/router'
+import { auth } from '../../firebaseConfig'
 
 const LoginFormComponent = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const onSubmit = (data) => {
-        // Handle the form submission logic here
-        console.log(data);
+    const router = useRouter()
+
+    const onSubmit = async (data) => {
+
+        const { email, password } = data    //Destructure login data
+
+        try {
+            const result = await signInWithEmailAndPassword(auth, email, password)
+            console.log('Signed in!')
+            console.log('signIN response: ', result)
+            router.push('/protected')
+        } catch (error) {
+            //TBD gracefully handle error
+            console.error(error)
+        }
+
+
     };
 
     return (

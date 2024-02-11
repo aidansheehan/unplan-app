@@ -4,13 +4,30 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 import GoogleContinueButtonComponent from './google-continue-button.component'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { useRouter } from 'next/router'
+import { auth } from '../../firebaseConfig'
 
 const SignupForm = () => {
     const { register, handleSubmit, formState: { errors } } = useForm()
 
-    const onSubmit = (data) => {
-        // Handle the form submission logic here
-        console.log(data)
+    const router = useRouter()
+
+    const onSubmit = async (data) => {
+
+        const { email, password/*, mailingList*/ } = data
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+            console.log('User created: ', userCredential.user)
+            //Redirect to the login page or dashboard after successful signup
+            router.push('/login')
+        } catch (error) {
+            //TBD handle error gracefully
+            console.error('There was an error signing up')
+        }
+
+
     };
 
     return (

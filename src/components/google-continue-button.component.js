@@ -2,6 +2,7 @@
 /**
  * 'Continue with Google' button
  * TODO add onClick handler
+ * TODO follow google brand guidelines https://developers.google.com/identity/branding-guidelines
  */
 const GoogleContinueButtonComponent = () => (
     <>

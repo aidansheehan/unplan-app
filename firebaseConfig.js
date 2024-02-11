@@ -1,5 +1,6 @@
 import { initializeApp, getApps, getApp } from 'firebase/app'
-import { getAnalytics } from 'firebase/analytics'
+// import { getAnalytics } from 'firebase/analytics'
+import { connectAuthEmulator, getAuth } from 'firebase/auth'
 import { connectStorageEmulator, getStorage } from 'firebase/storage'
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 import 'firebase/storage'
@@ -26,11 +27,18 @@ const storage = getStorage(app)
 // Initialize Cloud Firestore
 const db = getFirestore(app)
 
+// Initialize Firebase Authentication & get a reference to the service
+const auth = getAuth(app)
+
 //Connect to Firestore Emulator in development environment
 if (process.env.NODE_ENV === 'development') {
   if (typeof window === 'undefined' || !window['_init']) {
 
     connectStorageEmulator(storage, 'localhost', 9199)  //Connect to storage emulator
+
+    // TODO test working
+    // connectAuthEmulator(auth, 'localhost', 9099)        //Connect to auth emulator
+    connectAuthEmulator(auth, 'http://localhost:9099/')
 
     if (!db._settingsFrozen) {
       connectFirestoreEmulator(db, 'localhost', 8080)     //Connect to firestore emulator
@@ -43,4 +51,4 @@ if (process.env.NODE_ENV === 'development') {
 // // Initialize analytics
 // // const analytics = getAnalytics(app)
 
-export { app, storage, db }
+export { app, storage, db, auth }

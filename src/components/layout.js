@@ -4,6 +4,7 @@ import { faHome, faClipboardList, faBook, faBars, faTimes, faScroll, faComments,
 import SidebarComponent from './sidebar-component';
 import ErrorDisplayComponent from './error-display.component';
 import Link from 'next/link';
+// import { UserAuth } from '@/context/auth.context';
 
 const NAV_ITEMS = [
   {
@@ -37,7 +38,7 @@ const NAV_ITEMS = [
     text: 'Feedback'
   },
   {
-    href: '/signup',
+    href: '/mailing',
     icon: faEnvelope,
     text: 'Join Mailing List'
   },
@@ -53,6 +54,8 @@ const Layout = ({ children, title }) => {
   const APP_TITLE = 'EASY PLAN ESL';
   const [isNavOpen, setIsNavOpen] = useState(false);
 
+  // const { user } = UserAuth()
+
   const toggleNav = () => setIsNavOpen(!isNavOpen);
 
   return (
@@ -62,6 +65,15 @@ const Layout = ({ children, title }) => {
         <button className="p-2 md:hidden" onClick={toggleNav} >
           <FontAwesomeIcon icon={isNavOpen ? faTimes : faBars} className="text-white" />
         </button>
+        {/* {
+          user ? (
+            <span>{`Hello, ${user}!`}</span>
+          ) : (
+            <Link href='/signup' >
+              Sign Up
+            </Link>
+          )
+        } */}
       </header>
 
       <SidebarComponent navItems={NAV_ITEMS} isNavOpen={isNavOpen} />

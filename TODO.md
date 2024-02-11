@@ -135,7 +135,19 @@
     [x] fix 2 min loader on activities -> 20 secs (revert full page loader to original)
 
 ### modular-backend
-    [ ] Modular functions for each service for maintainability + readability
+    [x] Modular functions for each service for maintainability + readability
+
+### auth
+    [x] Login
+        [x] Form
+        [x] Functionality
+    [x] Signup form
+        [x] Form
+        [x] Functionality
+    [ ] Persist user sessions
+    [ ] Google
+        [ ] Use google brand guidelines
+        [ ] Implement 'Continue with Google'
 
 ### PUBILCITY (maybe all as 1 branch)
 [ ] P1: Implement SEO practices following guides to improve search engine rankings
