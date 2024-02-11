@@ -41,6 +41,8 @@
     [ ] Google
         [ ] Use google brand guidelines
         [ ] Implement 'Continue with Google'
+    [ ] Error handling
+    [ ] Form should validate according to firebase password rules
 
 ### PUBILCITY (maybe all as 1 branch)
 [ ] P1: Implement SEO practices following guides to improve search engine rankings

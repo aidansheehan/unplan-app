@@ -56,7 +56,6 @@ const Layout = ({ children, title }) => {
   const [isNavOpen, setIsNavOpen] = useState(false);
 
   const { user } = useAuth()
-  console.log('USER: ', user)
 
   const toggleNav = () => setIsNavOpen(!isNavOpen);
 
