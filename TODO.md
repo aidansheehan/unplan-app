@@ -45,10 +45,12 @@
     [x] Persist user sessions
     [x] avoid FOUC
     [x] Logout
-    [ ] Google
+    [x] Google
         [x] Use google brand guidelines
         [x] Implement 'Continue with Google'
-        [ ] Handle mailing list?
+    [ ] Mailing List
+        [ ] email + password
+        [ ] google
     [ ] Error handling
         [ ] Already have account
         [ ] Issue creating account
@@ -73,6 +75,10 @@
             [x] Reading
             [x] User Activities
             [ ] Individual activity
+        [ ] Individual Activities - allow users to share with each other but not edit each others shit, routes not protected so new users can see (also for library!)
+            [ ] Refactor to request data in useEffect so can path auth token
+            [ ] Handle auth in firebase - if not that users lesson, access should be locked
+            [ ] Create a ticket to better handle locked lessons (Read Only mode with TinyMCE allowing local edits, maybe ability to fork), keep public flag for library use but locked should be set by is current user
     [ ] Test live
 
 

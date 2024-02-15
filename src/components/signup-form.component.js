@@ -15,6 +15,7 @@ const SignupForm = () => {
 
     const onSubmit = async (data) => {
 
+        // TODO handle mailing list signup
         const { email, password/*, mailingList*/ } = data
 
         try {
@@ -87,7 +88,6 @@ const SignupForm = () => {
                         type="checkbox" 
                         id="mailingList"
                         className="form-checkbox cursor-pointer" 
-                        defaultChecked={true}
                     />
                     <span className="ml-2 text-sm text-gray-600">I agree to join Easy Plan ESL's mailing list</span>
                 </label>
