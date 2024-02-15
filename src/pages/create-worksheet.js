@@ -3,6 +3,7 @@ import FullPageLoading from "@/components/full-page.loading.component";
 import Layout from "@/components/layout";
 import TagInputComponent from "@/components/tag-input.component";
 import ACTIVITY_INSTRUCTIONS from "@/constants/activity-info.constant";
+import { useAuth } from "@/context/auth.context";
 import { useError } from "@/context/error.context";
 import ProtectedRoute from "@/hoc/protected-route.hoc";
 import { useRouter } from "next/router";
@@ -18,8 +19,9 @@ const GrammarVocabWorksheet = () => {
     const [ targetGrammar, setTargetGrammar ]   = useState([])
     const [isLoading, setIsLoading]             = useState(false)
 
-    const router = useRouter();
-    const { handleError } = useError();
+    const router            = useRouter()
+    const { handleError }   = useError()
+    const { getToken }      = useAuth()
 
 
     const handleChange = (e) => {
@@ -33,24 +35,30 @@ const GrammarVocabWorksheet = () => {
 
         try {
 
+            // Get user auth token
+            const authToken = await getToken()
+            if (!authToken) {
+                throw new Error('User is not authenticated')
+            }
+
             //Construct request data
             const requestData = {...formData, targetWords: targetWords.map(tW => tW.text), targetGrammar: targetGrammar.map(tG => tG.text)}
 
             const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}generateGrammarVocabularyWorksheet`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`
+                },
                 body: JSON.stringify(requestData)
             });
 
             if (!response.ok) throw new Error('Failed to generate worksheet');
 
+            //Parse response data to JSON
             const data = await response.json();
 
-            //Store worksheet / Activity ID in local storage
-            const storedActivityIds = JSON.parse(localStorage.getItem('activityIds')) || []
-            storedActivityIds.push(data.worksheetId)
-            localStorage.setItem('activityIds', JSON.stringify(storedActivityIds))
-
+            //Navigate to the worksheet
             router.push(`/activity/${data.worksheetId}`);
 
         } catch (error) {

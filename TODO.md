@@ -63,8 +63,16 @@
         [ ] Contact (acc deletion, whatever else, just multi purpose contact us we'll help form)
     [ ] Authenticated usage of app
         [x] Protected routes (create LP, CR Activities, Your Lessons, Home)
-        [x] Lesson plans saved & accessed by user
+        [ ] Lesson plans saved & accessed by user
+            [x] on create
+            [x] your-lessons
+            [ ] individual lesson
         [ ] Activities saved & accessed by user
+            [x] Worksheet
+            [ ] Find Sb Who
+            [ ] Reading
+            [x] User Activities
+            [ ] Individual activity
     [ ] Test live
 
 

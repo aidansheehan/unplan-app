@@ -4,6 +4,7 @@ import Link from "next/link"
 import GrammarVocabCard from "./grammar-vocabulary.card.component"
 import FindSomeoneWhoCard from "./find-sb-who.card.component"
 import ReadingComprehensionCard from "./reading-comprehension.card.component"
+import { useAuth } from "@/context/auth.context"
 
 const { useState, useEffect } = require("react")
 
@@ -12,27 +13,35 @@ const UserActivitiesComponent = () => {
     const [ activities, setActivities ] = useState([])
     const [ isLoading, setIsLoading ] = useState(false)
 
-    const { handleError } = useError()
+    const { handleError }   = useError()
+    const { getToken }      = useAuth()
 
     useEffect(() => {
 
         const fetchYourActivities = async () => {
 
-            //Fetch Activity IDs from local storage
-            const activityIds = JSON.parse(localStorage.getItem('activityIds')) || []
+            setIsLoading(true)
 
-            if (activityIds && activityIds.length) {
-                setIsLoading(true)
-                const activityIdsQuery = activityIds.join(',')
-                const res = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}getActivities?ids=${activityIdsQuery}`)
-                if (!res.ok) {
-                    handleError
-                }
-                const activitiesData = await res.json()
-                
-                setActivities(activitiesData)
-                setIsLoading(false)
+            const authToken = await getToken()
+            if (!authToken) {
+                throw new Error('User is not authenticated')
             }
+
+            //Get user activities response
+            const res = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}getActivities`, {
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            })
+            if (!res.ok) {
+                handleError(res.status)
+                throw new Error(`Failed to fetch activities, status: ${res.status}`)
+            }
+
+            const activitiesData = await res.json()
+
+            setActivities(activitiesData)
+            setIsLoading(false)
 
         }
 
