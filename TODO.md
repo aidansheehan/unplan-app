@@ -69,8 +69,8 @@
             [ ] individual lesson
         [ ] Activities saved & accessed by user
             [x] Worksheet
-            [ ] Find Sb Who
-            [ ] Reading
+            [x] Find Sb Who
+            [x] Reading
             [x] User Activities
             [ ] Individual activity
     [ ] Test live

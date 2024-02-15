@@ -6,6 +6,7 @@ import ActivityInstructionsComponent from "@/components/activity-instructions.co
 import ACTIVITY_INFO from "@/constants/activity-info.constant";
 import { useError } from "@/context/error.context";
 import ProtectedRoute from "@/hoc/protected-route.hoc";
+import { useAuth } from "@/context/auth.context";
 
 const ReadingComprehension = () => {
     const [formData, setFormData] = useState({
@@ -19,34 +20,42 @@ const ReadingComprehension = () => {
     });
     const [isLoading, setIsLoading] = useState(false);
 
-    const router = useRouter();
-    const { handleError } = useError();
+    const router            = useRouter()
+    const { handleError }   = useError()
+    const { getToken }      = useAuth()
 
+    // Handle form input change
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
-    };
+    }
 
+    // Handle form submission
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
+        e.preventDefault()
+        setIsLoading(true)
+
+        const authToken = await getToken()
+        if (!authToken) {
+            throw new Error('User is not authenticated')
+        }
 
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}generateReadingComprehensionWorksheet`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`
+                },
                 body: JSON.stringify({...formData, numberOfActivities: +formData.numberOfActivities, timeAllocation: +formData.timeAllocation})
             });
 
             if (!response.ok) throw new Error('Failed to generate activity');
 
+            // Parse response data as JSON
             const data = await response.json();
 
-            //Store worksheet / Activity ID in local storage
-            const storedActivityIds = JSON.parse(localStorage.getItem('activityIds')) || []
-            storedActivityIds.push(data.worksheetId)
-            localStorage.setItem('activityIds', JSON.stringify(storedActivityIds))
-
+            // Navigate to view activity
             router.push(`/activity/${data.worksheetId}`);
             
         } catch (error) {

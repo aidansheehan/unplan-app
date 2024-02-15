@@ -2,6 +2,7 @@ import ActivityInstructionsComponent from "@/components/activity-instructions.co
 import FullPageLoading from "@/components/full-page.loading.component";
 import Layout from "@/components/layout";
 import ACTIVITY_INFO from "@/constants/activity-info.constant";
+import { useAuth } from "@/context/auth.context";
 import { useError } from "@/context/error.context";
 import ProtectedRoute from "@/hoc/protected-route.hoc";
 import { useRouter } from "next/router";
@@ -20,38 +21,44 @@ const FindSbWho = () => {
     });
     const [ isLoading, setIsLoading ] = useState(false)
 
-    const router = useRouter();
-    const { handleError } = useError();
+    const router            = useRouter()
+    const { handleError }   = useError()
+    const { getToken }      = useAuth()
 
-    //Handle form input changes
+    // Handle form input changes
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    //Handle form submission
+    // Handle form submission
     const handleSubmit = async (e) => {
-        e.preventDefault();  //Prevent default form submission behaviour
-        setIsLoading(true);  //Set loading state true
+        e.preventDefault();  // Prevent default form submission behaviour
+        setIsLoading(true);  // Set loading state true
+
+        // Get user auth token
+        const authToken = await getToken()
+        if (!authToken) {
+            throw new Error('User is not authenticated.')
+        }
 
         try {
-            //Generate 'Find Someone Who' activity
+            // Generate 'Find Someone Who' activity
             const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}generateFindSomeoneWhoWorksheet`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`
+                },
                 body: JSON.stringify(formData)
             });
 
             if (!response.ok) throw new Error('Failed to generate activity');
 
+            // Parse response data as JSON
             const data = await response.json();
 
-            //Store worksheet / Activity ID in local storage
-            const storedActivityIds = JSON.parse(localStorage.getItem('activityIds')) || []
-            storedActivityIds.push(data.worksheetId)
-            localStorage.setItem('activityIds', JSON.stringify(storedActivityIds))
-
-            //Redirect to view page with activity ID
+            // Redirect to view page with activity ID
             router.push(`/activity/${data.worksheetId}`);
             
         } catch (error) {
