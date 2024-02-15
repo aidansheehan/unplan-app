@@ -41,15 +41,16 @@
     [x] avoid FOUC
     [x] Logout
     [ ] Google
-        [ ] Use google brand guidelines
+        [x] Use google brand guidelines
         [x] Implement 'Continue with Google'
+        [ ] Handle mailing list?
     [ ] Error handling
         [ ] Already have account
         [ ] Issue creating account
         [ ] Issue logging in
             [ ] Wrong PW
             [ ] Wrong email
-            [ ] Server side?
+            [ ] Server side (sth went wrong)?
     [ ] Form (password, maybe email?) should validate according to firebase password rules
     [ ] 'Edge' cases?
         [ ] Forgot / Reset password
