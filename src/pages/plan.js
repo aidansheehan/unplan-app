@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useError } from '@/context/error.context';
 import LoadingSpinner from '@/components/loading-spinner';
 import ProtectedRoute from '@/hoc/protected-route.hoc';
+import { useAuth } from '@/context/auth.context';
 
 /**
  * Page to plan a lesson
@@ -14,8 +15,9 @@ const Plan = () => {
     const [ isLoading, setIsLoading ]   = useState(false)
     const [ useCEFR, setUseCEFR ]       = useState(false)
 
-    const router = useRouter()
-    const { handleError } = useError()
+    const router            = useRouter()
+    const { handleError }   = useError()
+    const { getToken }      = useAuth()
 
     //Map function to translate level basic to CEFR and back
     const translateLevel = (currentLevel, toCEFR) => {
@@ -66,24 +68,28 @@ const Plan = () => {
 
         try {
 
+            // Get user auth token
+            const authToken = await getToken()
+            if (!authToken) {
+                throw new Error('User is not authenticated')
+            }
+
             //Create the lesson plan
             const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}createLessonPlan`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`
+                },
                 body: JSON.stringify(formData)
             })
 
-            if (!response.ok) throw new Error('Failed to generate lesson plan')
+            if (!response.ok) throw new Error('Failed to create lesson plan')
 
             const data          = await response.json() //Response to JSON
             const { lessonId }  = data                  //Destructure response
 
-            //Store lessonID in local storage
-            const storedLessonIds = JSON.parse(localStorage.getItem('lessonIds')) || []
-            storedLessonIds.push(lessonId)
-            localStorage.setItem('lessonIds', JSON.stringify(storedLessonIds))
-
-            //Redirect to view page with lesson ID
+            //Redirect to lesson view page with lesson ID
             router.push(`/view-lesson/${lessonId}`)
 
             

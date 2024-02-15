@@ -11,6 +11,11 @@
     You could block 'print' until all images have been inserted (or at least be like 'You haven't added images. Print anyway...', maybe less error prone)
     Or, You could simplify and just add it as a seperate component for now
 
+## Plan Improvements
+    [ ] Handle error ('failed' state) with re-generate button (on lesson plan + activity)
+    [ ] Disable 'Generate Handout' button until lesson plan complete
+
+
 ### loading-ux
     [x] Properly sandboxed emulator dev environment
         [x] Lesson plans
@@ -37,7 +42,7 @@
             [x] Autocomplete
         [x] Functionality
         [x] Login on successful signup
-    [ ] Persist user sessions
+    [x] Persist user sessions
     [x] avoid FOUC
     [x] Logout
     [ ] Google
@@ -58,32 +63,16 @@
         [ ] Contact (acc deletion, whatever else, just multi purpose contact us we'll help form)
     [ ] Authenticated usage of app
         [x] Protected routes (create LP, CR Activities, Your Lessons, Home)
-        [ ] Lesson plans saved & accessed by user
+        [x] Lesson plans saved & accessed by user
         [ ] Activities saved & accessed by user
-        [ ] Conditionally render navigation
     [ ] Test live
 
-### PUBILCITY (maybe all as 1 branch)
-[ ] P1: Implement SEO practices following guides to improve search engine rankings
-[ ] P1: Implement meta tags required for facebook without warnings
-[ ] P1: Create a facebook page, add an initial post and basic content, then you can post there as you grow?
-[ ] P2: Add CTA to give feedback to bottom of activity / lesson plan view. also link back to 'activities' for activity and 'my lessons' for lessons. Maybe 'your lessons' should be called 'my lessons'?
-
-### CORE PRODUCT (seperate branches)
-[ ] Identify and implement new DB structure to allow proposed growth ideas
-    [ ] Timestamp lessons
-
-[ ] Handle image generation 
-[ ] Add EDIT btn with WYSIWYG editor P1?
-[ ] Seperate lesson plan & handouts generation (checkbox 'generate handout activities' so users can decide if they want them or not? + 'Generate materials for this lesson' on other page to improve load times & decrease API costs)4
-[ ] Plans & Activities not level / age appropriate particularly at the bottom end, too vague - NEED TO PROVIDE EXAMPLES OF GODO CONTENT AND FINE-TUNE GPT MODEL FOR THIS, can also start with split on beginner / int / advanced different prompts, could experiment with feeding like 'plan a free practice' then feed free practice and metadata, 'plan a controlled practice' - plan the lesson in an order that makes sense, feeding it it's generated content each time
 
 ## Feedback
 [x] Remove kindy
     [x] From form
     [x] From library
 [ ] Add class profile to initial form (can your students write? can your students read?) - AI will generate appropriate activities and exclude innapropriate activities for that particular class
-[ ] Make localStorage limitations clear to users
 [ ] Radio button to select generate handout -> button to generate handout
 [ ] ... pictures, visual stories
 [ ] ... Shared library of content with votes

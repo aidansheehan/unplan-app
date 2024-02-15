@@ -11,7 +11,23 @@ const db = admin.firestore()
  */
 const createLessonPlan = functions.https.onRequest(async (req, res) => {
     cors(req, res, () => {
-        httpMethodRestrictorMiddleware(['POST'])(req, res, () => {
+        httpMethodRestrictorMiddleware(['POST'])(req, res, async () => {
+
+            //Authenticate request
+            const authToken = req.headers.authorization?.split('Bearer ')[1]
+            if (!authToken) {
+                return res.status(403).send('Unauthorized')
+            }
+
+            let uid;   // Init auth token
+
+            try {
+                const decodedToken  = await admin.auth().verifyIdToken(authToken)   // Decode token
+                uid                 = decodedToken.uid                              // Get user ID
+            } catch (error) {
+                return res.status(403).send('Invalid token')
+            }
+
             rateLimitMiddleware('createLessonPlan', req, res, async () => {
             
                 //Extract inputs
@@ -29,7 +45,7 @@ const createLessonPlan = functions.https.onRequest(async (req, res) => {
         
                 //Create firestore document
                 const docRef = await db.collection('lessons').add({
-                    topic, level, duration, objectives, ageGroup, isOneToOne, isOnline,
+                    topic, level, duration, objectives, ageGroup, isOneToOne, isOnline, uid,
                     contentRef: {},
                     status: 'pending',
                     createdAt: FieldValue.serverTimestamp()
