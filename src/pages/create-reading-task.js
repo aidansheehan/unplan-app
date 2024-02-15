@@ -5,6 +5,7 @@ import FullPageLoading from "@/components/full-page.loading.component";
 import ActivityInstructionsComponent from "@/components/activity-instructions.component";
 import ACTIVITY_INFO from "@/constants/activity-info.constant";
 import { useError } from "@/context/error.context";
+import ProtectedRoute from "@/hoc/protected-route.hoc";
 
 const ReadingComprehension = () => {
     const [formData, setFormData] = useState({
@@ -189,4 +190,4 @@ const ReadingComprehension = () => {
     );
 };
 
-export default ReadingComprehension;
+export default ProtectedRoute(ReadingComprehension);

@@ -3,6 +3,7 @@ import Layout from '@/components/layout';
 import { useRouter } from 'next/router';
 import { useError } from '@/context/error.context';
 import LoadingSpinner from '@/components/loading-spinner';
+import ProtectedRoute from '@/hoc/protected-route.hoc';
 
 /**
  * Page to plan a lesson
@@ -292,4 +293,4 @@ const Plan = () => {
     )
 }
 
-export default Plan
+export default ProtectedRoute(Plan)

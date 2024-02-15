@@ -3,6 +3,7 @@ import LessonsGrid from "@/components/lessons-grid.component";
 import LoadingSpinner from "@/components/loading-spinner";
 import SearchBarComponent from "@/components/search-bar.component";
 import { useError } from "@/context/error.context";
+import ProtectedRoute from "@/hoc/protected-route.hoc";
 import useLessons from "@/hooks/use-lessons.hook";
 
 const YourLessons = () => {
@@ -35,4 +36,4 @@ const YourLessons = () => {
 
 }
 
-export default YourLessons
+export default ProtectedRoute(YourLessons)

@@ -4,6 +4,7 @@ import Layout from "@/components/layout";
 import TagInputComponent from "@/components/tag-input.component";
 import ACTIVITY_INSTRUCTIONS from "@/constants/activity-info.constant";
 import { useError } from "@/context/error.context";
+import ProtectedRoute from "@/hoc/protected-route.hoc";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -147,4 +148,4 @@ const GrammarVocabWorksheet = () => {
     )
 }
 
-export default GrammarVocabWorksheet
+export default ProtectedRoute(GrammarVocabWorksheet)

@@ -3,6 +3,7 @@ import FullPageLoading from "@/components/full-page.loading.component";
 import Layout from "@/components/layout";
 import ACTIVITY_INFO from "@/constants/activity-info.constant";
 import { useError } from "@/context/error.context";
+import ProtectedRoute from "@/hoc/protected-route.hoc";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -179,4 +180,4 @@ const FindSbWho = () => {
     )
 }
 
-export default FindSbWho
+export default ProtectedRoute(FindSbWho)
