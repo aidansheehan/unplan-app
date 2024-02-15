@@ -18,7 +18,7 @@ const useGoogleSignIn = () => {
 
         try {
             await signInWithPopup(auth, provider)
-            router.push('/protected')
+            router.push('/')
         } catch (error) {
             // TBD handle errors gracefully
             console.error('Error during sign in with Google: ', error)

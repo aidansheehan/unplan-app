@@ -20,7 +20,7 @@ const SignupForm = () => {
         try {
             await createUserWithEmailAndPassword(auth, email, password)     // Create the user
             await signInWithEmailAndPassword(auth, email, password)         // Sign the new user in
-            router.push('/protected')                                       // Redirect to protected route
+            router.push('/')                                                // Redirect to protected route
 
         } catch (error) {
             //TBD handle error gracefully

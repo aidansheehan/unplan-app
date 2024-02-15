@@ -20,7 +20,7 @@ const LoginFormComponent = () => {
 
         try {
             await signInWithEmailAndPassword(auth, email, password)
-            router.push('/protected')
+            router.push('/')
         } catch (error) {
             //TBD gracefully handle error
             console.error(error)
