@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form"
 import { auth } from "../../firebaseConfig"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons"
+import Link from "next/link"
 
 /**
  * Send password reset email using defualt firebase functionality
@@ -60,6 +61,11 @@ const ForgotPasswordFormComponent = () => {
                     Send Reset Email
                 </button>
             </form>
+
+            <Link href='/login' className="text-white font-bold py-2 px-4 rounded w-full transition-colors duration-300 bg-blue-500 hover:bg-blue-600 mb-6">
+                Back to login
+            </Link>
+
         </div>
     )
 }
