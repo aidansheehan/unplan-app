@@ -18,11 +18,9 @@ const SettingsPage = () => {
 
     useEffect(() => {
         const user = auth.currentUser
-        console.log('hi')
         if (user) {
             // Check if user has an email/password account
             const { providerData } = user
-            console.log('provider data: ', providerData)
             const isEmailProvider = providerData.some(p => p.providerId === 'password')
             setShowChangePassword(isEmailProvider)
         }

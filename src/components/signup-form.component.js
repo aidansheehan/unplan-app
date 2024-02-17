@@ -68,7 +68,7 @@ const SignupForm = () => {
                     <FontAwesomeIcon icon={faLock} className="text-gray-500"/>
                 </span>
                 <input
-                    {...register('password', { required: 'Password is required.', minLength: { value: 8, message: 'Password must be at least 8 characters.' } })}
+                    {...register('password', { required: 'Password is required.', minLength: { value: 6, message: 'Password must be at least 6 characters.' } })}
                     type="password"
                     id="password"
                     className={`w-full p-2 ${errors.password ? 'border-red-500' : ''}`}
