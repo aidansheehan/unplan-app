@@ -35,8 +35,6 @@ const TinyMceEditor = ({value, setValue, contentUrl, title, id, disabled}) => {
             }
           })
 
-          console.log('RESPONSE: ', response)
-
           // If response ok
           if (response && response.success) {
 
