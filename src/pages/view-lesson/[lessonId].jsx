@@ -18,12 +18,13 @@ import { useAuth } from '@/context/auth.context'
 
 const ViewLesson = ({lessonData, lessonId, error}) => {
 
-    const { contentRef, level, public: isLocked }       = lessonData   //Destructure lessonData
-    const { handout: handoutUrl }                       = contentRef   //Destructure contentRef
+    const { contentRef, level, uid }       = lessonData   //Destructure lessonData
+    const { handout: handoutUrl }          = contentRef   //Destructure contentRef
 
     const [ planLoading, setPlanLoading ]               = useState(true)
     const [ handoutLoading, setHandoutLoading ]         = useState(true)
     const [ handoutGenerating, setHandoutGenerating ]   = useState(false)
+    const [ isOwner, setIsOwner ]                       = useState(false)
 
     const [ lessonPlanContent, setLessonPlanContent ]   = useState('')
     const [ handoutContent, setHandoutContent ]         = useState('')
@@ -31,7 +32,7 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
     const [ lessonStatus, setLessonStatus ]     = useState(lessonData.status || 'pending')
     const [ lessonPlanUrl, setLessonPlanUrl ]   = useState(contentRef.plan || '')
 
-    const { getToken } = useAuth()
+    const { getToken, user, loading } = useAuth()
 
     //Function to generate a handout for the class
     const generateHandout = async () => {
@@ -167,6 +168,15 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
 
     }, [ handoutUrl ])
 
+    useEffect(() => {
+
+        // Check if the current user is the lesson creator
+        if (user && uid === user.uid) setIsOwner(true)
+
+        else setIsOwner(false)
+
+    }, [lessonId, user])
+
     if (error) {
         return (
             <Layout title="Lesson Not Found">
@@ -184,6 +194,14 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
         )
     }
 
+    if (loading) {
+        return (
+            <Layout >
+                Loading...
+            </Layout>
+        )
+    }
+
     return (
         <Layout >
 
@@ -193,7 +211,7 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                 <LessonSectionTitle title='Lesson Plan' />
                 {
                     lessonPlanContent ? (
-                        isLocked ? (
+                        !isOwner ? (
                             <HtmlContentPresentationComponent htmlContent={lessonPlanContent} title={lessonData.topic} />
                         ) : (
                             <TinyMceEditor title='Lesson Plan' contentUrl={lessonPlanUrl} value={lessonPlanContent} setValue={setLessonPlanContent} id={lessonId} disabled={lessonStatus === 'pending'} />
@@ -216,7 +234,7 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                     ) : (
                         handoutContent ? (
                             //TODO should take actual content as prop to prevent double loading
-                            isLocked ? (
+                            !isOwner ? (
                                 <HtmlContentPresentationComponent htmlContent={handoutContent} title={`Handout - ${lessonData.topic}`} />
                             ) : (
                                 <TinyMceEditor value={handoutContent} setValue={setHandoutContent} contentUrl={handoutUrl} id={lessonId} title='Student Handout' />

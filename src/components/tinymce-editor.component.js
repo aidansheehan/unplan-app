@@ -1,12 +1,15 @@
 import { useEffect, useRef } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import _ from 'lodash'
+import { useAuth } from '@/context/auth.context'
+import apiRequest from '@/services/api-request'
 
 const TinyMceEditor = ({value, setValue, contentUrl, title, id, disabled}) => {
 
     const contentRef    = useRef('')          //Editor content ref
     const editorRef     = useRef(null)        //Editor component ref
     const contentUrlRef = useRef(contentUrl)  //contentUrl ref
+    const { getToken }  = useAuth()           // Function to retrieve auth token
 
     //Function to save new content
     const saveContent = async () => {
@@ -17,35 +20,31 @@ const TinyMceEditor = ({value, setValue, contentUrl, title, id, disabled}) => {
               console.error('File path not found for ', title)
               return;
           }
-  
-          try {
-  
-              //TODO use real firebase
-              const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}updateContent`, {
-                  method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({
-                      filePath: currentContentUrl,
-                      content: contentRef.current
-                  })
-              })
-  
-              if (response.ok) {
-                  console.log('Content saved successfully')
-                  if (editorRef.current) {
-  
-                      //Set dirty state false to avoid autosave warning
-                      editorRef.current.setDirty(false)
-                  }
-  
-              } else {
-                  console.error('Failed to save content')
-                  console.log('response: ', response)
-              }
-          } catch (error) {
-              console.error('Error saving content:', error)
+
+          // Get user auth token
+          const authToken = await getToken()
+
+          // Save changes
+          const response = await apiRequest('updateContent', {
+            authToken,
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: {
+              filePath: currentContentUrl,
+              content: contentRef.current
+            }
+          })
+
+          console.log('RESPONSE: ', response)
+
+          // If response ok
+          if (response && response.success) {
+
+            if (editorRef.current) {
+
+              // Set dirty state false to avoid autosave warning
+              editorRef.current.setDirty(false)
+            }
           }
      }
     
