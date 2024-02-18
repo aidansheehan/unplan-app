@@ -64,7 +64,7 @@
     [ ] 'Edge' cases?
         [x] Forgot / Reset password
         [ ] Confirm email?
-    [ ] Authenticated usage of app
+    [x] Authenticated usage of app
         [x] Protected routes (create LP, CR Activities, Your Lessons, Home)
         [x] Lesson plans saved & accessed by user
             [x] on create
@@ -74,10 +74,7 @@
             [x] Find Sb Who
             [x] Reading
             [x] User Activities
-        [ ] Individual Activities / Lessons - allow users to share with each other but not edit each others shit, routes not protected so new users can see (also for library!)
-            [ ] Refactor to request data in useEffect so can path auth token
-            [ ] Handle auth in firebase - if not that users lesson, access should be locked
-            [ ] Create a ticket to better handle locked lessons (Read Only mode with TinyMCE allowing local edits, maybe ability to fork), keep public flag for library use but locked should be set by is current user
+        [x] Individual Activities / Lessons - allow users to share with each other but not edit each others shit, routes not protected so new users can see (also for library!)
     [ ] Test live
 
 ## Feedback
