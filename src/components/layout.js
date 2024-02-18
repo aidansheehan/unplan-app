@@ -87,7 +87,7 @@ const Layout = ({ children, title }) => {
       </main>
 
 {/* TODO remove */}
-      <div className="fixed inset-x-0 bottom-[var(--footer-height)] z-30 bg-yellow-200 text-yellow-800 text-center py-2">
+      <div className="fixed inset-x-0 bottom-0 z-30 bg-yellow-200 text-yellow-800 text-center py-2">
     <p>This app is under construction.</p>
   </div>
 
