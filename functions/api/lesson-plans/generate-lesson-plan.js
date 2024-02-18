@@ -1,8 +1,8 @@
 const functions = require('firebase-functions')
 const OpenAI = require('openai')
 const admin = require('firebase-admin')
-const { marked } = require('marked')
 const { FieldValue } = require('@google-cloud/firestore')
+const { renderMarkdown } = require('../../utils/custom-marked-renderer')
 
 const db = admin.firestore()
 const storage = admin.storage()
@@ -76,7 +76,7 @@ const generateLessonPlan = functions.runWith({ timeoutSeconds: 300 }).firestore
         if (chunkCounter >= 3) {
             //Update firestore with current content
             await db.collection('lessons').doc(docId)
-              .update({ temporaryLessonPlan: marked(content) });
+              .update({ temporaryLessonPlan: renderMarkdown(content) });
           
             chunkCounter = 0; //Reset counter after update
         }
@@ -87,11 +87,11 @@ const generateLessonPlan = functions.runWith({ timeoutSeconds: 300 }).firestore
     //Update any remaining content after the loop
     if (chunkCounter > 0) {
       await db.collection('lessons').doc(docId)
-        .update({ temporaryLessonPlan: marked(content) })
+        .update({ temporaryLessonPlan: renderMarkdown(content) })
     }
 
     //Convert markdown output to HTML
-    const htmlContent = marked(content)
+    const htmlContent = renderMarkdown(content)
 
     //Save to firebase storage
     const lessonPlanPath = `lessons/${docId}/plan.html`

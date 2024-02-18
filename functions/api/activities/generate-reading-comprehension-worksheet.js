@@ -3,10 +3,10 @@ const { httpMethodRestrictorMiddleware } = require('../../middleware/http-method
 const { rateLimitMiddleware } = require('../../middleware/rate-limit.middleware')
 const cors = require('cors')({origin: true})
 const OpenAI = require('openai')
-const { marked } = require('marked')
 const { v4: uuidv4 } = require('uuid')
 const admin = require('firebase-admin')
 const authenticateRequestMiddleware = require('../../middleware/authenticate-request.middleware')
+const { renderMarkdown } = require('../../utils/custom-marked-renderer')
 
 const storage = admin.storage()
 
@@ -81,7 +81,7 @@ const generateReadingComprehensionWorksheet = functions.https.onRequest(async (r
                     });
     
                     const { content } = completion.choices[0].message   //Destructure GPT content
-                    const htmlContent = marked(content)                 //Format content as HTML
+                    const htmlContent = renderMarkdown(content)         //Format content as HTML
     
                     // Generate a unique worksheet ID
                     const uniqueWorksheetId = uuidv4();

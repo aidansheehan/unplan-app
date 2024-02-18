@@ -3,10 +3,10 @@ const { httpMethodRestrictorMiddleware } = require('../../middleware/http-method
 const { rateLimitMiddleware } = require('../../middleware/rate-limit.middleware')
 const OpenAI = require('openai')
 const cors = require('cors')({ origin: true })
-const { marked } = require('marked')
 const { v4: uuidv4 } = require('uuid')
 const admin = require('firebase-admin')
 const authenticateRequestMiddleware = require('../../middleware/authenticate-request.middleware')
+const { renderMarkdown } = require('../../utils/custom-marked-renderer')
 
 const storage = admin.storage()
 
@@ -70,7 +70,7 @@ const generateFindSomeoneWhoWorksheet = functions.https.onRequest(async (req, re
                     })
     
                     const { content }       = completion.choices[0].message                             //Destructure completion message
-                    const htmlContent       = marked(content)                                           //Content as HTML
+                    const htmlContent       = renderMarkdown(content) //marked(content)                                           //Content as HTML
                     const uniqueWorksheetId = uuidv4()                                                  //Generate a unique worksheet ID
                     const worksheetPath     = `worksheets/findSomeoneWho/${uniqueWorksheetId}.html`     //Construct worksheet path
                     const contentRef        = storage.bucket().file(worksheetPath)                      //Generate content ref
