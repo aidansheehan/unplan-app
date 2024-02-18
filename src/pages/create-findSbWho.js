@@ -6,7 +6,7 @@ import { useAuth } from "@/context/auth.context";
 import ProtectedRoute from "@/hoc/protected-route.hoc";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useErrorHandling } from "@/hooks/use-error-handling.hook";
+import apiRequest from "@/services/api-request";
 
 /**
  * Page to create 'Find Someone Who...'
@@ -22,7 +22,6 @@ const FindSbWho = () => {
     const [ isLoading, setIsLoading ] = useState(false)
 
     const router            = useRouter()
-    const { handleError }   = useErrorHandling()
     const { getToken }      = useAuth()
 
     // Handle form input changes
@@ -38,37 +37,27 @@ const FindSbWho = () => {
 
         // Get user auth token
         const authToken = await getToken()
-        if (!authToken) {
-            throw new Error('User is not authenticated.')
-        }
 
-        try {
-            // Generate 'Find Someone Who' activity
-            const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}generateFindSomeoneWhoWorksheet`, {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authToken}`
-                },
-                body: JSON.stringify(formData)
-            });
+        // Generate the 'Find Someone Who' activity
+        const response = await apiRequest('generateFindSomeoneWhoWorksheet', {
+            method: 'POST',
+            authToken,
+            headers: {'Content-Type': 'application/json'},
+            body: formData
+        })
 
-            if (!response.ok) {
-                handleError(res.status)
-                return
-            }
-
-            // Parse response data as JSON
-            const data = await response.json();
+        // If response ok
+        if (response && response.worksheetId) {
 
             // Redirect to view page with activity ID
-            router.push(`/activity/${data.worksheetId}`);
-            
-        } catch (error) {
-            console.error(error);
-            setIsLoading(false);
-            handleError(error);
+            router.push(`/activity/${response.worksheetId}`)
+        } 
+        
+        // Response not ok
+        else {
+            setIsLoading(false) // Set loading state false
         }
+
     };
 
     return (

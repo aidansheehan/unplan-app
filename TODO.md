@@ -51,14 +51,16 @@
     [ ] Mailing List
         [ ] email + password
         [ ] google
-    [ ] Error handling
-        [ ] Already have account
-        [ ] Issue creating account
-        [ ] Issue logging in
-            [ ] Wrong PW
-            [ ] Wrong email
-            [ ] Server side (sth went wrong)?
-    [ ] Form (password, maybe email?) should validate according to firebase password rules
+    [x] Error handling
+        [x] Already have account
+        [x] Issue creating account
+        [x] Issue logging in
+            [x] Wrong PW
+            [x] Wrong email
+            [x] Server side (sth went wrong)?
+        [x] Toast notifications
+        [x] Implement event emitter for global use
+    [x] Form (password, maybe email?) should validate according to firebase password rules
     [ ] 'Edge' cases?
         [x] Forgot / Reset password
         [ ] Confirm email?
@@ -76,6 +78,7 @@
             [ ] Refactor to request data in useEffect so can path auth token
             [ ] Handle auth in firebase - if not that users lesson, access should be locked
             [ ] Create a ticket to better handle locked lessons (Read Only mode with TinyMCE allowing local edits, maybe ability to fork), keep public flag for library use but locked should be set by is current user
+    [ ] Promise notifications
     [ ] Test live
 
 

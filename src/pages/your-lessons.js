@@ -6,6 +6,7 @@ import { useAuth } from "@/context/auth.context";
 import { useErrorHandling } from "@/hooks/use-error-handling.hook";
 import ProtectedRoute from "@/hoc/protected-route.hoc";
 import useLessons from "@/hooks/use-lessons.hook";
+import apiRequest from "@/services/api-request";
 
 const YourLessons = () => {
 
@@ -17,25 +18,11 @@ const YourLessons = () => {
 
         const authToken = await getToken()
 
-        try {
-            // Get user lessons response
-            const res = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}getUserLessons`, {
-                headers: {
-                    'Authorization': `Bearer ${authToken}`
-                }
-            })
+        // Get user lessons
+        const lessons = await apiRequest('getUserLessons', { authToken })
 
-            if (!res.ok) {
-
-                handleError(res.status)
-                return
-            }
-
-            return res.json()
-        } catch (error) {
-            console.error(error)
-            handleError(error)
-        }
+        // Return the lessons
+        return lessons;
     }
 
     const { isLoading, searchTerm, setSearchTerm, filteredLessons } = useLessons(fetchYourLessons)

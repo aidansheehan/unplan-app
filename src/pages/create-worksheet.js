@@ -5,9 +5,10 @@ import TagInputComponent from "@/components/tag-input.component";
 import ACTIVITY_INSTRUCTIONS from "@/constants/activity-info.constant";
 import { useAuth } from "@/context/auth.context";
 import ProtectedRoute from "@/hoc/protected-route.hoc";
+import apiRequest from "@/services/api-request";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useErrorHandling } from "@/hooks/use-error-handling.hook";
+// import { useErrorHandling } from "@/hooks/use-error-handling.hook";
 
 const GrammarVocabWorksheet = () => {
     const [formData, setFormData] = useState({
@@ -20,7 +21,7 @@ const GrammarVocabWorksheet = () => {
     const [isLoading, setIsLoading]             = useState(false)
 
     const router            = useRouter()
-    const { handleError }   = useErrorHandling()
+    // const { handleError }   = useErrorHandling()
     const { getToken }      = useAuth()
 
 
@@ -33,39 +34,32 @@ const GrammarVocabWorksheet = () => {
         e.preventDefault();
         setIsLoading(true);
 
-        try {
+        // Get user auth token
+        const authToken = await getToken()
 
-            // Get user auth token
-            const authToken = await getToken()
+        // Construct request data
+        const requestData = {...formData, targetWords: targetWords.map(tW => tW.text), targetGrammar: targetGrammar.map(tG => tG.text)}
 
-            //Construct request data
-            const requestData = {...formData, targetWords: targetWords.map(tW => tW.text), targetGrammar: targetGrammar.map(tG => tG.text)}
+        // Generate the worksheet
+        const response = await apiRequest('generateGrammarVocabularyWorksheet', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            authToken,
+            body: requestData
+        })
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}generateGrammarVocabularyWorksheet`, {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authToken}`
-                },
-                body: JSON.stringify(requestData)
-            });
+        // If response ok
+        if (response && response.worksheetId) {
 
-            if (!response.ok) {
-                handleError(response.status)
-                return
-            }
-
-            //Parse response data to JSON
-            const data = await response.json();
-
-            //Navigate to the worksheet
-            router.push(`/activity/${data.worksheetId}`);
-
-        } catch (error) {
-            console.error(error);
-            setIsLoading(false);
-            handleError(error);
+            // Redirect to view page with activity ID
+            router.push(`/activity/${response.worksheetId}`)
         }
+
+        // Response not ok
+        else {
+            setIsLoading(false)
+        }
+
     };
 
     return (

@@ -8,11 +8,12 @@ import LessonMetadataComponent from '@/components/lesson-metadata.component'
 import LessonSectionTitle from '@/components/lesson-section-title.component'
 import { useEffect, useState } from 'react'
 import { stripHtml } from 'string-strip-html'
-import { useErrorHandling } from '@/hooks/use-error-handling.hook'
 import TinyMceEditor from '@/components/tinymce-editor.component'
 import InlineLoadingComponent from '@/components/inline-loading.component'
 import HtmlContentPresentationComponent from '@/components/html-content-presentation/html-content-presentation.component'
 import LoadingSpinner from '@/components/loading-spinner'
+import apiRequest from '@/services/api-request'
+import { useAuth } from '@/context/auth.context'
 
 
 const ViewLesson = ({lessonData, lessonId, error}) => {
@@ -20,17 +21,17 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
     const { contentRef, level, public: isLocked }       = lessonData   //Destructure lessonData
     const { handout: handoutUrl }                       = contentRef   //Destructure contentRef
 
-    const { handleError } = useErrorHandling()
-
-    const [ planLoading, setPlanLoading ] = useState(true)
-    const [ handoutLoading, setHandoutLoading ] = useState(true)
-    const [ handoutGenerating, setHandoutGenerating ] = useState(false)
+    const [ planLoading, setPlanLoading ]               = useState(true)
+    const [ handoutLoading, setHandoutLoading ]         = useState(true)
+    const [ handoutGenerating, setHandoutGenerating ]   = useState(false)
 
     const [ lessonPlanContent, setLessonPlanContent ]   = useState('')
     const [ handoutContent, setHandoutContent ]         = useState('')
 
-    const [ lessonStatus, setLessonStatus ] = useState(lessonData.status || 'pending')
-    const [ lessonPlanUrl, setLessonPlanUrl ] = useState(contentRef.plan || '')
+    const [ lessonStatus, setLessonStatus ]     = useState(lessonData.status || 'pending')
+    const [ lessonPlanUrl, setLessonPlanUrl ]   = useState(contentRef.plan || '')
+
+    const { getToken } = useAuth()
 
     //Function to generate a handout for the class
     const generateHandout = async () => {
@@ -41,32 +42,32 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
             setHandoutLoading(true) //Set handout loading state true
             setHandoutGenerating(true)
 
-            //Strip lesson plan of html
+            // Strip lesson plan of html
             const strippedLessonPlan = stripHtml(lessonPlanContent).result
 
-            try {
-                //Get handout response
-                const handoutResponse = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}createStudentHandout`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ level, lessonId, lessonPlan: strippedLessonPlan })
-                })
+            // Get user auth token
+            const authToken = await getToken()
 
-                //Handle error response
-                if (!handoutResponse.ok) {
-                    handleError(handoutResponse.status)
-                    return
-                }
+            // Get handout response
+            const response = await apiRequest('createStudentHandout', {
+                method: 'POST',
+                authToken,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: { level, lessonId, lessonPlan: strippedLessonPlan }
+            })
 
-                const handoutData = await handoutResponse.json()    //Parse data to JSON
-                setHandoutContent(handoutData.lessonHandout)        //Set handout content
-            } catch (error) {
-                console.error('Error calling createStudentHandout: ', error.message)
-                handleError(error)
-            } finally {
-                setHandoutGenerating(false)
-                setHandoutLoading(false)
+            // Response ok
+            if (response && response.lessonHandout) {
+
+                setHandoutContent(response.lessonHandout)   // Set handout content
+
             }
+
+            setHandoutGenerating(false)
+            setHandoutLoading(false)
+
         }
 
     }
@@ -86,6 +87,7 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                     setLessonPlanContent(updatedData.temporaryLessonPlan)
                     if (updatedData.status === 'complete') {
                         setLessonPlanUrl(updatedData.contentRef.plan || '')
+                        setPlanLoading(false)
                         unsubscribe()
                     }
                 } else {
@@ -222,7 +224,7 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                             
                         ) : (
                             <div >
-                                <button disabled={!lessonPlanContent} onClick={generateHandout} className="block md:w-auto bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-600 transition-colors duration-300 m-auto" >
+                                <button disabled={!lessonPlanContent || planLoading} onClick={generateHandout} className="block md:w-auto bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-600 transition-colors duration-300 m-auto" >
                                     Generate Handout
                                 </button>
                             </div>

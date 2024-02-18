@@ -1,7 +1,7 @@
 import { useContext, createContext, useState, useEffect } from 'react'
 import { signOut, onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../../firebaseConfig'
-import { useErrorHandling } from '@/hooks/use-error-handling.hook'
+import { appEvents } from '@/services/app-events'
 
 const AuthContext = createContext()
 
@@ -9,8 +9,6 @@ export const AuthContextProvider = ({children}) => {
 
     const [ user, setUser ]         = useState(null)    //User state
     const [ loading, setLoading ]   = useState(true)    //Loading state
-
-    const { handleError } = useErrorHandling()
 
     // Sign out function
     const logout = async () => {
@@ -26,7 +24,7 @@ export const AuthContextProvider = ({children}) => {
             return token;
         } catch (error) {
             console.error('Error getting user token:', error)
-            handleError(error)
+            appEvents.emit('error', error)
         }
     }
 

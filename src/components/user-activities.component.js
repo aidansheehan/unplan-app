@@ -3,7 +3,7 @@ import GrammarVocabCard from "./grammar-vocabulary.card.component"
 import FindSomeoneWhoCard from "./find-sb-who.card.component"
 import ReadingComprehensionCard from "./reading-comprehension.card.component"
 import { useAuth } from "@/context/auth.context"
-import { useErrorHandling } from "@/hooks/use-error-handling.hook"
+import apiRequest from "@/services/api-request"
 
 const { useState, useEffect } = require("react")
 
@@ -12,7 +12,6 @@ const UserActivitiesComponent = () => {
     const [ activities, setActivities ] = useState([])
     const [ isLoading, setIsLoading ] = useState(false)
 
-    const { handleError }   = useErrorHandling()
     const { getToken }      = useAuth()
 
     useEffect(() => {
@@ -26,18 +25,8 @@ const UserActivitiesComponent = () => {
                 throw new Error('User is not authenticated')
             }
 
-            //Get user activities response
-            const res = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}getActivities`, {
-                headers: {
-                    'Authorization': `Bearer ${authToken}`
-                }
-            })
-            if (!res.ok) {
-                handleError(res.status)
-                return
-            }
-
-            const activitiesData = await res.json()
+            // Get user activities
+            const activitiesData = await apiRequest('getActivities', { authToken })
 
             setActivities(activitiesData)
             setIsLoading(false)
@@ -55,13 +44,13 @@ const UserActivitiesComponent = () => {
                 isLoading ? (
                     <LoadingSpinner />
                 ) : (
-                    activities.length === 0 ? (
+                    activities?.length === 0 ? (
                         <p className="mb-8 w-full text-center mt-8">No activities created yet. Start creating!</p>
                     ) : (
                         <div className="px-4 flex flex-col flex-flow justify-start w-full gap-4 ">
 
                             {
-                                activities.map(activity => {
+                                activities?.map(activity => {
 
                                     if (activity.activity === 'grammarVocab') {
                                         return <GrammarVocabCard activity={activity} key={activity.id} />

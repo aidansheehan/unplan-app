@@ -6,6 +6,7 @@ import { config } from '@fortawesome/fontawesome-svg-core'
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 import { AuthContextProvider } from '@/context/auth.context'
 import { Toaster } from 'react-hot-toast'
+import GlobalErrorHandlerComponent from '@/components/global-error-handler.component'
 
 config.autoAddCss = false
 
@@ -18,6 +19,7 @@ export default function App({ Component, pageProps }) {
             position='top-right'
             reverseOrder={false}
           />
+          <GlobalErrorHandlerComponent />
       </AuthContextProvider>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID} />
       <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_CONTAINER_ID} />

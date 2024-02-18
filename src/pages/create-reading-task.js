@@ -6,7 +6,7 @@ import ActivityInstructionsComponent from "@/components/activity-instructions.co
 import ACTIVITY_INFO from "@/constants/activity-info.constant";
 import ProtectedRoute from "@/hoc/protected-route.hoc";
 import { useAuth } from "@/context/auth.context";
-import { useErrorHandling } from "@/hooks/use-error-handling.hook";
+import apiRequest from "@/services/api-request";
 
 const ReadingComprehension = () => {
     const [formData, setFormData] = useState({
@@ -21,7 +21,6 @@ const ReadingComprehension = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const router            = useRouter()
-    const { handleError }   = useErrorHandling()
     const { getToken }      = useAuth()
 
     // Handle form input change
@@ -37,32 +36,24 @@ const ReadingComprehension = () => {
 
         const authToken = await getToken()
 
-        try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}generateReadingComprehensionWorksheet`, {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authToken}`
-                },
-                body: JSON.stringify({...formData, numberOfActivities: +formData.numberOfActivities, timeAllocation: +formData.timeAllocation})
-            });
+        // Generate the Reading Task
+        const response = await apiRequest('generateReadingComprehensionWorksheet', {
+            method: 'POST',
+            authToken,
+            headers: { 'Content-Type': 'application/json' },
+            body: { ...formData, numberOfActivities: +formData.numberOfActivities, timeAllocation: +formData.timeAllocation }
+        })
 
-            if (!response.ok) {
-                handleError(response.status)
-                return
-            }
-
-            // Parse response data as JSON
-            const data = await response.json();
-
-            // Navigate to view activity
-            router.push(`/activity/${data.worksheetId}`);
-            
-        } catch (error) {
-            console.error(error);
-            setIsLoading(false);
-            handleError(error);
+        // If response ok
+        if (response && response.worksheetId) {
+            router.push(`/activity/${response.worksheetId}`)
         }
+
+        // Response not ok
+        else {
+            setIsLoading(false)
+        }
+
     };
 
     return (
