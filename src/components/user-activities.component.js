@@ -1,9 +1,9 @@
-import { useError } from "@/context/error.context"
 import LoadingSpinner from "./loading-spinner"
-import Link from "next/link"
 import GrammarVocabCard from "./grammar-vocabulary.card.component"
 import FindSomeoneWhoCard from "./find-sb-who.card.component"
 import ReadingComprehensionCard from "./reading-comprehension.card.component"
+import { useAuth } from "@/context/auth.context"
+import apiRequest from "@/services/api-request"
 
 const { useState, useEffect } = require("react")
 
@@ -12,27 +12,24 @@ const UserActivitiesComponent = () => {
     const [ activities, setActivities ] = useState([])
     const [ isLoading, setIsLoading ] = useState(false)
 
-    const { handleError } = useError()
+    const { getToken }      = useAuth()
 
     useEffect(() => {
 
         const fetchYourActivities = async () => {
 
-            //Fetch Activity IDs from local storage
-            const activityIds = JSON.parse(localStorage.getItem('activityIds')) || []
+            setIsLoading(true)
 
-            if (activityIds && activityIds.length) {
-                setIsLoading(true)
-                const activityIdsQuery = activityIds.join(',')
-                const res = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}getActivities?ids=${activityIdsQuery}`)
-                if (!res.ok) {
-                    handleError
-                }
-                const activitiesData = await res.json()
-                
-                setActivities(activitiesData)
-                setIsLoading(false)
+            const authToken = await getToken()
+            if (!authToken) {
+                throw new Error('User is not authenticated')
             }
+
+            // Get user activities
+            const activitiesData = await apiRequest('getActivities', { authToken })
+
+            setActivities(activitiesData)
+            setIsLoading(false)
 
         }
 
@@ -47,13 +44,13 @@ const UserActivitiesComponent = () => {
                 isLoading ? (
                     <LoadingSpinner />
                 ) : (
-                    activities.length === 0 ? (
+                    activities?.length === 0 ? (
                         <p className="mb-8 w-full text-center mt-8">No activities created yet. Start creating!</p>
                     ) : (
                         <div className="px-4 flex flex-col flex-flow justify-start w-full gap-4 ">
 
                             {
-                                activities.map(activity => {
+                                activities?.map(activity => {
 
                                     if (activity.activity === 'grammarVocab') {
                                         return <GrammarVocabCard activity={activity} key={activity.id} />

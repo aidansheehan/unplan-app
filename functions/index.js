@@ -18,6 +18,7 @@ const { generateFindSomeoneWhoWorksheet }       = require('./api/activities/gene
 const { generateGrammarVocabularyWorksheet }    = require('./api/activities/generate-grammar-vocabulary-worksheet')
 const { generateReadingComprehensionWorksheet } = require('./api/activities/generate-reading-comprehension-worksheet')
 const { getLessons }                            = require('./api/content-management/get-lessons')
+const { getUserLessons }                        = require('./api/content-management/get-user-lessons')
 const { getContent }                            = require('./api/content-management/get-content')
 const { updateContent }                         = require('./api/content-management/update-content')
 const { getActivities }                         = require('./api/content-management/get-activities')
@@ -33,7 +34,8 @@ exports.generateGrammarVocabularyWorksheet    = generateGrammarVocabularyWorkshe
 exports.generateReadingComprehensionWorksheet = generateReadingComprehensionWorksheet
 
 /** Content Management Functions */
-exports.getLessons    = getLessons
-exports.getContent    = getContent
-exports.updateContent = updateContent
-exports.getActivities = getActivities
+exports.getLessons        = getLessons
+exports.getUserLessons    = getUserLessons
+exports.getContent        = getContent
+exports.updateContent     = updateContent
+exports.getActivities     = getActivities

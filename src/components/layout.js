@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faClipboardList, faBook, faBars, faTimes, faScroll, faComments, faChalkboardTeacher, faEnvelope, faTasks } from '@fortawesome/free-solid-svg-icons';
 import SidebarComponent from './sidebar-component';
-import ErrorDisplayComponent from './error-display.component';
 import Link from 'next/link';
+import { useAuth } from '@/context/auth.context'
+import SignOutButtonComponent from './sign-out.button.component';
 
 const NAV_ITEMS = [
   {
@@ -37,7 +38,7 @@ const NAV_ITEMS = [
     text: 'Feedback'
   },
   {
-    href: '/signup',
+    href: '/mailing',
     icon: faEnvelope,
     text: 'Join Mailing List'
   },
@@ -53,6 +54,8 @@ const Layout = ({ children, title }) => {
   const APP_TITLE = 'EASY PLAN ESL';
   const [isNavOpen, setIsNavOpen] = useState(false);
 
+  const { user } = useAuth()
+
   const toggleNav = () => setIsNavOpen(!isNavOpen);
 
   return (
@@ -62,6 +65,18 @@ const Layout = ({ children, title }) => {
         <button className="p-2 md:hidden" onClick={toggleNav} >
           <FontAwesomeIcon icon={isNavOpen ? faTimes : faBars} className="text-white" />
         </button>
+        {
+          user ? (
+            <div className='flex flex-col' >
+                <span>{`Hello, ${user.email}!`}</span>
+                <SignOutButtonComponent />
+            </div>
+          ) : (
+            <Link href='/signup' >
+              Sign Up
+            </Link>
+          )
+        }
       </header>
 
       <SidebarComponent navItems={NAV_ITEMS} isNavOpen={isNavOpen} />
@@ -80,7 +95,7 @@ const Layout = ({ children, title }) => {
           © 2024 Aidan Sheehan
         </span>
       </footer>
-      <ErrorDisplayComponent />
+      {/* <ErrorDisplayComponent /> */}
     </div>
   );
 };

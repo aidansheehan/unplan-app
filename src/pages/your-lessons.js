@@ -2,23 +2,27 @@ import Layout from "@/components/layout";
 import LessonsGrid from "@/components/lessons-grid.component";
 import LoadingSpinner from "@/components/loading-spinner";
 import SearchBarComponent from "@/components/search-bar.component";
-import { useError } from "@/context/error.context";
+import { useAuth } from "@/context/auth.context";
+import { useErrorHandling } from "@/hooks/use-error-handling.hook";
+import ProtectedRoute from "@/hoc/protected-route.hoc";
 import useLessons from "@/hooks/use-lessons.hook";
+import apiRequest from "@/services/api-request";
 
 const YourLessons = () => {
 
-    const { handleError } = useError()
+    const { handleError }   = useErrorHandling()
+    const { getToken }      = useAuth()
 
     //Function to fetch user's lessons
     const fetchYourLessons = async () => {
-        const storedLessonIds = JSON.parse(localStorage.getItem('lessonIds')) || []
-        const lessonIdsQuery = storedLessonIds.join(',')
-        const res = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}getLessons?ids=${lessonIdsQuery}`)
-        if (!res.ok) {
-            handleError(res.status)
-            throw new Error(`Failed to fetch lessons, status: ${res.status}`)
-        }
-        return res.json()
+
+        const authToken = await getToken()
+
+        // Get user lessons
+        const lessons = await apiRequest('getUserLessons', { authToken })
+
+        // Return the lessons
+        return lessons;
     }
 
     const { isLoading, searchTerm, setSearchTerm, filteredLessons } = useLessons(fetchYourLessons)
@@ -35,4 +39,4 @@ const YourLessons = () => {
 
 }
 
-export default YourLessons
+export default ProtectedRoute(YourLessons)

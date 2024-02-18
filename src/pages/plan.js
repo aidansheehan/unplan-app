@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import Layout from '@/components/layout';
 import { useRouter } from 'next/router';
-import { useError } from '@/context/error.context';
 import LoadingSpinner from '@/components/loading-spinner';
+import ProtectedRoute from '@/hoc/protected-route.hoc';
+import { useAuth } from '@/context/auth.context';
+import apiRequest from '@/services/api-request';
 
 /**
  * Page to plan a lesson
@@ -13,8 +15,8 @@ const Plan = () => {
     const [ isLoading, setIsLoading ]   = useState(false)
     const [ useCEFR, setUseCEFR ]       = useState(false)
 
-    const router = useRouter()
-    const { handleError } = useError()
+    const router            = useRouter()
+    const { getToken }      = useAuth()
 
     //Map function to translate level basic to CEFR and back
     const translateLevel = (currentLevel, toCEFR) => {
@@ -63,35 +65,27 @@ const Plan = () => {
         e.preventDefault()  //Prevent default form submission behaviour
         setIsLoading(true)  //Set loading state true
 
-        try {
+        // Get user auth token
+        const authToken = await getToken()
 
-            //Create the lesson plan
-            const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}createLessonPlan`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            })
+        // Create the lesson plan
+        const response = await apiRequest('createLessonPlan', {
+            authToken,
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: formData
+        })
 
-            if (!response.ok) throw new Error('Failed to generate lesson plan')
-
-            const data          = await response.json() //Response to JSON
-            const { lessonId }  = data                  //Destructure response
-
-            //Store lessonID in local storage
-            const storedLessonIds = JSON.parse(localStorage.getItem('lessonIds')) || []
-            storedLessonIds.push(lessonId)
-            localStorage.setItem('lessonIds', JSON.stringify(storedLessonIds))
-
-            //Redirect to view page with lesson ID
-            router.push(`/view-lesson/${lessonId}`)
-
-            
-        } catch (error) {
-            console.error(error)
+        // If response incorrect set loading false and return early
+        if (!response || !response.lessonId) {
             setIsLoading(false)
-            handleError(error)
-
+            return
         }
+
+        const { lessonId } = response   // Destructure response
+
+        //Redirect to lesson view page with lesson ID
+        router.push(`/view-lesson/${lessonId}`)
 
     }
 
@@ -292,4 +286,4 @@ const Plan = () => {
     )
 }
 
-export default Plan
+export default ProtectedRoute(Plan)

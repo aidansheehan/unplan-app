@@ -2,9 +2,11 @@ import ActivityInstructionsComponent from "@/components/activity-instructions.co
 import FullPageLoading from "@/components/full-page.loading.component";
 import Layout from "@/components/layout";
 import ACTIVITY_INFO from "@/constants/activity-info.constant";
-import { useError } from "@/context/error.context";
+import { useAuth } from "@/context/auth.context";
+import ProtectedRoute from "@/hoc/protected-route.hoc";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import apiRequest from "@/services/api-request";
 
 /**
  * Page to create 'Find Someone Who...'
@@ -19,45 +21,43 @@ const FindSbWho = () => {
     });
     const [ isLoading, setIsLoading ] = useState(false)
 
-    const router = useRouter();
-    const { handleError } = useError();
+    const router            = useRouter()
+    const { getToken }      = useAuth()
 
-    //Handle form input changes
+    // Handle form input changes
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    //Handle form submission
+    // Handle form submission
     const handleSubmit = async (e) => {
-        e.preventDefault();  //Prevent default form submission behaviour
-        setIsLoading(true);  //Set loading state true
+        e.preventDefault();  // Prevent default form submission behaviour
+        setIsLoading(true);  // Set loading state true
 
-        try {
-            //Generate 'Find Someone Who' activity
-            const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}generateFindSomeoneWhoWorksheet`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            });
+        // Get user auth token
+        const authToken = await getToken()
 
-            if (!response.ok) throw new Error('Failed to generate activity');
+        // Generate the 'Find Someone Who' activity
+        const response = await apiRequest('generateFindSomeoneWhoWorksheet', {
+            method: 'POST',
+            authToken,
+            headers: {'Content-Type': 'application/json'},
+            body: formData
+        })
 
-            const data = await response.json();
+        // If response ok
+        if (response && response.worksheetId) {
 
-            //Store worksheet / Activity ID in local storage
-            const storedActivityIds = JSON.parse(localStorage.getItem('activityIds')) || []
-            storedActivityIds.push(data.worksheetId)
-            localStorage.setItem('activityIds', JSON.stringify(storedActivityIds))
-
-            //Redirect to view page with activity ID
-            router.push(`/activity/${data.worksheetId}`);
-            
-        } catch (error) {
-            console.error(error);
-            setIsLoading(false);
-            handleError(error);
+            // Redirect to view page with activity ID
+            router.push(`/activity/${response.worksheetId}`)
+        } 
+        
+        // Response not ok
+        else {
+            setIsLoading(false) // Set loading state false
         }
+
     };
 
     return (
@@ -179,4 +179,4 @@ const FindSbWho = () => {
     )
 }
 
-export default FindSbWho
+export default ProtectedRoute(FindSbWho)

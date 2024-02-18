@@ -1,72 +1,27 @@
-import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLaptopCode, faClock, faPrint, faPencilRuler } from '@fortawesome/free-solid-svg-icons';
 import Layout from '@/components/layout';
+import { useAuth } from '@/context/auth.context';
+import ProtectedRoute from '@/hoc/protected-route.hoc';
+import Link from 'next/link';
 
-export default function Home() {
+const Home = () => {
+
+  const { user } = useAuth()
 
   return (
     <Layout>
-<section className="bg-blue-100 text-gray-800 px-4 py-12 md:py-24 w-full">
-  <div className="max-w-4xl mx-auto">
-    <h2 className="text-4xl md:text-5xl xl:text-6xl font-bold text-center leading-tight text-blue-900 font-bree">
-      Free, Custom Lesson Plans & Activity Materials for ESL Teachers
-    </h2>
-    <p className="mt-8 md:mt-12 text-lg md:text-xl text-center text-blue-700">
-      Effortlessly create tailored lesson plans and engaging activity handouts in seconds.
-    </p>
-    <div className="mt-8 text-center space-y-4 md:space-y-0 md:space-x-4">
-      <Link href="/plan" className="inline-block w-full md:w-auto bg-orange-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors duration-300 mb-2 md:mb-0">
-        Create A Lesson Plan
-      </Link>
-      <Link href="/activities" className="inline-block w-full md:w-auto bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-600 transition-colors duration-300">
-        Generate Activity Materials
-      </Link>
-    </div>
-  </div>
-</section>
-      {/* Features Section */}
-      <section className="flex-grow flex flex-col justify-center items-center bg-blue-50 w-full">
-        <div className="text-center py-8 px-4">
-          <h2 className="text-2xl font-semibold text-blue-700 mb-4 font-bree">Why Choose <span className='font-bold font-permanent-marker' >EASY PLAN ESL</span>?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {FeatureCard(faLaptopCode, 'Quick Lesson Generation', 'Generate custom lesson plans quickly with just a few clicks.', 'bg-yellow-100', 'text-yellow-500')}
-            {  FeatureCard(
-                faPencilRuler,
-                'Engaging Class Handouts',
-                'Generate creative and interactive handouts for your classroom activities.',
-                'bg-purple-100',
-                'text-purple-500'
-              )}
-            {FeatureCard(faClock, 'Save Time', 'Streamline your planning process to save time and enhance your teaching experience.', 'bg-orange-100', 'text-orange-500')}
-            {FeatureCard(faPrint, 'Easy Printing', 'Effortlessly print your lesson materials ready for the classroom.', 'bg-green-100', 'text-green-500')}
-  
-          </div>
+        <div className='flex flex-col items-center justify-center bg-white p-10 rounded-lg md:shadow-md max-w-md text-sm text-center my-4'>
+            <p>{`Hello, ${user.email}.`}</p>
+            <p>Welcome to a protected page! 😊</p>
+            <p>You can't see this if you're not signed in.</p>
+            <p>I will be a dashboard one day</p>
         </div>
-
-        {/* Library Section */}
-        <div className="w-full text-center py-8 bg-blue-200 px-4">
-          <h3 className="text-2xl font-semibold text-blue-800 mb-4 font-bree">Explore Our Lesson Library</h3>
-          <p className="mb-4 text-blue-700">Browse through a curated selection of ready-to-use lesson plans.</p>
-          <Link href="/library" className="inline-block bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition-colors duration-300">
-              Visit Library
-          </Link>
-        </div>
-      </section>
+        <Link href='/settings' >
+            Settings
+        </Link>
     </Layout>
-  );
+  )
 }
 
-function FeatureCard(icon, title, description, bgColor, iconColor) {
-  return (
-    <div className={`rounded-xl p-6 shadow-lg bg-white`}>
-      <div className={`p-4 inline-flex rounded-full ${bgColor} mb-4`}>
-        <FontAwesomeIcon icon={icon} className={iconColor} size="2x" />
-      </div>
-      <h4 className="mb-2 font-semibold text-lg text-gray-800 font-bree">{title}</h4>
-      <p className="text-gray-600">{description}</p>
-    </div>
-  );
-}
+export default ProtectedRoute(Home)
 
 

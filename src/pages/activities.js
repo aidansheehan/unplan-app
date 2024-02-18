@@ -3,6 +3,7 @@ import Layout from "@/components/layout"
 import ActivityLinkComponent from "@/components/activity-link.component"
 import Link from "next/link"
 import UserActivitiesComponent from "@/components/user-activities.component"
+import ProtectedRoute from "@/hoc/protected-route.hoc"
 
 /**
  * TODO should maybe be part of ACTIVITY_INFO constant
@@ -88,4 +89,4 @@ const Activities = () => {
     )
 }
 
-export default Activities
+export default ProtectedRoute(Activities)
