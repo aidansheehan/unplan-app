@@ -2,7 +2,7 @@ import Layout from "@/components/layout"
 import LessonsGrid from "@/components/lessons-grid.component"
 import LoadingSpinner from "@/components/loading-spinner"
 import SearchBarComponent from "@/components/search-bar.component"
-import { useError } from "@/context/error.context"
+import { useErrorHandling } from "@/hooks/use-error-handling.hook"
 import useLessons from "@/hooks/use-lessons.hook"
 
 /**
@@ -10,14 +10,14 @@ import useLessons from "@/hooks/use-lessons.hook"
  */
 const Library = () => {
 
-    const { handleError } = useError()
+    const { handleError } = useErrorHandling()
 
     //Function to fetch library lessons
     const fetchlibraryLessons = async () => {
         const res = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}getLessons?public=true`)
         if (!res.ok) {
             handleError(res.status)
-            throw new Error(`Failed to fetch public lessons, status: ${res.status}`)
+            return
         }
         return res.json()
     }

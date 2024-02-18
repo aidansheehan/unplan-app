@@ -8,7 +8,7 @@ import LessonMetadataComponent from '@/components/lesson-metadata.component'
 import LessonSectionTitle from '@/components/lesson-section-title.component'
 import { useEffect, useState } from 'react'
 import { stripHtml } from 'string-strip-html'
-import { useError } from '@/context/error.context'
+import { useErrorHandling } from '@/hooks/use-error-handling.hook'
 import TinyMceEditor from '@/components/tinymce-editor.component'
 import InlineLoadingComponent from '@/components/inline-loading.component'
 import HtmlContentPresentationComponent from '@/components/html-content-presentation/html-content-presentation.component'
@@ -20,7 +20,7 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
     const { contentRef, level, public: isLocked }       = lessonData   //Destructure lessonData
     const { handout: handoutUrl }                       = contentRef   //Destructure contentRef
 
-    const { handleError } = useError()
+    const { handleError } = useErrorHandling()
 
     const [ planLoading, setPlanLoading ] = useState(true)
     const [ handoutLoading, setHandoutLoading ] = useState(true)
@@ -54,8 +54,8 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
 
                 //Handle error response
                 if (!handoutResponse.ok) {
-                    const errorText = await handoutResponse.json()
-                    throw new Error(`Failed to generate lesson materials: ${errorText}`)
+                    handleError(handoutResponse.status)
+                    return
                 }
 
                 const handoutData = await handoutResponse.json()    //Parse data to JSON

@@ -3,10 +3,10 @@ import FullPageLoading from "@/components/full-page.loading.component";
 import Layout from "@/components/layout";
 import ACTIVITY_INFO from "@/constants/activity-info.constant";
 import { useAuth } from "@/context/auth.context";
-import { useError } from "@/context/error.context";
 import ProtectedRoute from "@/hoc/protected-route.hoc";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useErrorHandling } from "@/hooks/use-error-handling.hook";
 
 /**
  * Page to create 'Find Someone Who...'
@@ -22,7 +22,7 @@ const FindSbWho = () => {
     const [ isLoading, setIsLoading ] = useState(false)
 
     const router            = useRouter()
-    const { handleError }   = useError()
+    const { handleError }   = useErrorHandling()
     const { getToken }      = useAuth()
 
     // Handle form input changes
@@ -53,7 +53,10 @@ const FindSbWho = () => {
                 body: JSON.stringify(formData)
             });
 
-            if (!response.ok) throw new Error('Failed to generate activity');
+            if (!response.ok) {
+                handleError(res.status)
+                return
+            }
 
             // Parse response data as JSON
             const data = await response.json();

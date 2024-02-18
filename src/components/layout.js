@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faClipboardList, faBook, faBars, faTimes, faScroll, faComments, faChalkboardTeacher, faEnvelope, faTasks } from '@fortawesome/free-solid-svg-icons';
 import SidebarComponent from './sidebar-component';
-import ErrorDisplayComponent from './error-display.component';
 import Link from 'next/link';
 import { useAuth } from '@/context/auth.context'
 import SignOutButtonComponent from './sign-out.button.component';
@@ -96,7 +95,7 @@ const Layout = ({ children, title }) => {
           © 2024 Aidan Sheehan
         </span>
       </footer>
-      <ErrorDisplayComponent />
+      {/* <ErrorDisplayComponent /> */}
     </div>
   );
 };

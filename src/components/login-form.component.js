@@ -7,6 +7,8 @@ import GoogleContinueButtonComponent from './google-continue-button/google-conti
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { useRouter } from 'next/router'
 import { auth } from '../../firebaseConfig'
+import { toast } from 'react-hot-toast'
+import { AUTH_ERROR_MESSAGES } from '@/constants/auth-error-messages.constant'
 
 const LoginFormComponent = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -22,8 +24,14 @@ const LoginFormComponent = () => {
             await signInWithEmailAndPassword(auth, email, password)
             router.push('/')
         } catch (error) {
-            //TBD gracefully handle error
+
             console.error(error)
+
+            // Map code to friendly message to display to user
+            const friendlyMessage = AUTH_ERROR_MESSAGES[error.code] || 'Something went wrong! Please try again'
+            
+            // Display error toast
+            toast.error(friendlyMessage)
         }
     }
 

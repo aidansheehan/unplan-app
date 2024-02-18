@@ -4,9 +4,9 @@ import Layout from "@/components/layout";
 import FullPageLoading from "@/components/full-page.loading.component";
 import ActivityInstructionsComponent from "@/components/activity-instructions.component";
 import ACTIVITY_INFO from "@/constants/activity-info.constant";
-import { useError } from "@/context/error.context";
 import ProtectedRoute from "@/hoc/protected-route.hoc";
 import { useAuth } from "@/context/auth.context";
+import { useErrorHandling } from "@/hooks/use-error-handling.hook";
 
 const ReadingComprehension = () => {
     const [formData, setFormData] = useState({
@@ -21,7 +21,7 @@ const ReadingComprehension = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const router            = useRouter()
-    const { handleError }   = useError()
+    const { handleError }   = useErrorHandling()
     const { getToken }      = useAuth()
 
     // Handle form input change
@@ -36,9 +36,6 @@ const ReadingComprehension = () => {
         setIsLoading(true)
 
         const authToken = await getToken()
-        if (!authToken) {
-            throw new Error('User is not authenticated')
-        }
 
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}generateReadingComprehensionWorksheet`, {
@@ -50,7 +47,10 @@ const ReadingComprehension = () => {
                 body: JSON.stringify({...formData, numberOfActivities: +formData.numberOfActivities, timeAllocation: +formData.timeAllocation})
             });
 
-            if (!response.ok) throw new Error('Failed to generate activity');
+            if (!response.ok) {
+                handleError(response.status)
+                return
+            }
 
             // Parse response data as JSON
             const data = await response.json();

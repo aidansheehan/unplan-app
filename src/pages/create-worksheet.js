@@ -4,10 +4,10 @@ import Layout from "@/components/layout";
 import TagInputComponent from "@/components/tag-input.component";
 import ACTIVITY_INSTRUCTIONS from "@/constants/activity-info.constant";
 import { useAuth } from "@/context/auth.context";
-import { useError } from "@/context/error.context";
 import ProtectedRoute from "@/hoc/protected-route.hoc";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useErrorHandling } from "@/hooks/use-error-handling.hook";
 
 const GrammarVocabWorksheet = () => {
     const [formData, setFormData] = useState({
@@ -20,7 +20,7 @@ const GrammarVocabWorksheet = () => {
     const [isLoading, setIsLoading]             = useState(false)
 
     const router            = useRouter()
-    const { handleError }   = useError()
+    const { handleError }   = useErrorHandling()
     const { getToken }      = useAuth()
 
 
@@ -37,9 +37,6 @@ const GrammarVocabWorksheet = () => {
 
             // Get user auth token
             const authToken = await getToken()
-            if (!authToken) {
-                throw new Error('User is not authenticated')
-            }
 
             //Construct request data
             const requestData = {...formData, targetWords: targetWords.map(tW => tW.text), targetGrammar: targetGrammar.map(tG => tG.text)}
@@ -53,7 +50,10 @@ const GrammarVocabWorksheet = () => {
                 body: JSON.stringify(requestData)
             });
 
-            if (!response.ok) throw new Error('Failed to generate worksheet');
+            if (!response.ok) {
+                handleError(response.status)
+                return
+            }
 
             //Parse response data to JSON
             const data = await response.json();

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import Layout from '@/components/layout';
 import { useRouter } from 'next/router';
-import { useError } from '@/context/error.context';
 import LoadingSpinner from '@/components/loading-spinner';
 import ProtectedRoute from '@/hoc/protected-route.hoc';
 import { useAuth } from '@/context/auth.context';
+import { useErrorHandling } from '@/hooks/use-error-handling.hook';
 
 /**
  * Page to plan a lesson
@@ -16,7 +16,7 @@ const Plan = () => {
     const [ useCEFR, setUseCEFR ]       = useState(false)
 
     const router            = useRouter()
-    const { handleError }   = useError()
+    const { handleError }   = useErrorHandling()
     const { getToken }      = useAuth()
 
     //Map function to translate level basic to CEFR and back
@@ -70,9 +70,6 @@ const Plan = () => {
 
             // Get user auth token
             const authToken = await getToken()
-            if (!authToken) {
-                throw new Error('User is not authenticated')
-            }
 
             //Create the lesson plan
             const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}createLessonPlan`, {
@@ -84,7 +81,10 @@ const Plan = () => {
                 body: JSON.stringify(formData)
             })
 
-            if (!response.ok) throw new Error('Failed to create lesson plan')
+            if (!response.ok) {
+                handleError(response.status)
+                return
+            }
 
             const data          = await response.json() //Response to JSON
             const { lessonId }  = data                  //Destructure response

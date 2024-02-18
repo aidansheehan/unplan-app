@@ -7,6 +7,8 @@ import GoogleContinueButtonComponent from './google-continue-button/google-conti
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import { useRouter } from 'next/router'
 import { auth } from '../../firebaseConfig'
+import { AUTH_ERROR_MESSAGES } from '@/constants/auth-error-messages.constant'
+import { toast } from 'react-hot-toast'
 
 const SignupForm = () => {
     const { register, handleSubmit, formState: { errors } } = useForm()
@@ -24,8 +26,14 @@ const SignupForm = () => {
             router.push('/')                                                // Redirect to protected route
 
         } catch (error) {
-            //TBD handle error gracefully
-            console.error('There was an error signing up')
+
+            console.error(error)
+
+            // Map code to friendly message to display to user
+            const friendlyMessage = AUTH_ERROR_MESSAGES[error.code] || 'Failed to create user'
+
+            // Display error toast
+            toast.error(friendlyMessage)
         }
 
 

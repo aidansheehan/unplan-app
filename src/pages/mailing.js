@@ -1,5 +1,5 @@
 import Layout from "@/components/layout"
-import { useError } from "@/context/error.context"
+import { useErrorHandling } from "@/hooks/use-error-handling.hook"
 
 const { useState } = require("react")
 
@@ -11,7 +11,7 @@ const Mailing = () => {
     const [ duplicateUser, setDuplicateUser ]       = useState(false)   //Duplicate user state
     const [ isPledgeVisible, setIsPledgeVisible ]   = useState(false)   //Privacy pledge visible state
 
-    const { handleError } = useError()
+    const { handleError } = useErrorHandling()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -39,7 +39,7 @@ const Mailing = () => {
                     setSuccess(true)        //Set attempt successful
                     setDuplicateUser(true)  //Set duplicate user state
                 } else {
-                    throw new Error(`There was an error adding the user to the mailing list`)
+                    handleError('There was an error adding the user to the mailing list')
                 }
 
             }

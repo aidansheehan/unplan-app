@@ -1,10 +1,9 @@
-import { useError } from "@/context/error.context"
 import LoadingSpinner from "./loading-spinner"
-import Link from "next/link"
 import GrammarVocabCard from "./grammar-vocabulary.card.component"
 import FindSomeoneWhoCard from "./find-sb-who.card.component"
 import ReadingComprehensionCard from "./reading-comprehension.card.component"
 import { useAuth } from "@/context/auth.context"
+import { useErrorHandling } from "@/hooks/use-error-handling.hook"
 
 const { useState, useEffect } = require("react")
 
@@ -13,7 +12,7 @@ const UserActivitiesComponent = () => {
     const [ activities, setActivities ] = useState([])
     const [ isLoading, setIsLoading ] = useState(false)
 
-    const { handleError }   = useError()
+    const { handleError }   = useErrorHandling()
     const { getToken }      = useAuth()
 
     useEffect(() => {
@@ -35,7 +34,7 @@ const UserActivitiesComponent = () => {
             })
             if (!res.ok) {
                 handleError(res.status)
-                throw new Error(`Failed to fetch activities, status: ${res.status}`)
+                return
             }
 
             const activitiesData = await res.json()
