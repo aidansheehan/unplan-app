@@ -86,6 +86,11 @@ const Layout = ({ children, title }) => {
         {children}
       </main>
 
+{/* TODO remove */}
+      <div className="fixed inset-x-0 bottom-[var(--footer-height)] z-30 bg-yellow-200 text-yellow-800 text-center py-2">
+    <p>This app is under construction.</p>
+  </div>
+
       <footer className="h-[var(--footer-height)] text-center bg-gray-200 flex justify-center items-center absolute w-full bottom-0 z-20 border-t border-gray-300 px-4 md:px-20">
       <Link href="/terms" className="text-blue-500 hover:text-blue-700 hover:underline hidden md:block absolute right-7">
             Terms of Use
@@ -95,7 +100,6 @@ const Layout = ({ children, title }) => {
           © 2024 Aidan Sheehan
         </span>
       </footer>
-      {/* <ErrorDisplayComponent /> */}
     </div>
   );
 };
