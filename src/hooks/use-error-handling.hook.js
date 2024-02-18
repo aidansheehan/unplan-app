@@ -22,7 +22,6 @@ const logoutErrorMessages = [
  */
 export const useErrorHandling = () => {
 
-    // console.log('use auth: ', useAuth())
     const { logout } = useAuth()
 
     // Function to force a user to logout

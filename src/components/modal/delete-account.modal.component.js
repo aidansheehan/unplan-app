@@ -10,7 +10,6 @@ const DeleteAccountModal = ({ isOpen, onClose }) => {
 
     // Function to confirm account deletion
     const confirmDeleteAccount = () => {
-        console.log('hi')
         toast((t) => (
             <div>
                 <p>Are you sure you want to delete your account? This cannot be undone.</p>

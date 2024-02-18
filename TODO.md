@@ -78,9 +78,7 @@
             [ ] Refactor to request data in useEffect so can path auth token
             [ ] Handle auth in firebase - if not that users lesson, access should be locked
             [ ] Create a ticket to better handle locked lessons (Read Only mode with TinyMCE allowing local edits, maybe ability to fork), keep public flag for library use but locked should be set by is current user
-    [ ] Promise notifications
     [ ] Test live
-
 
 ## Feedback
 [x] Remove kindy

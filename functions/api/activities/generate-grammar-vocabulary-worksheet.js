@@ -63,8 +63,6 @@ const generateGrammarVocabularyWorksheet = functions.https.onRequest(async (req,
     
                     // Save generated Markdown content
                     await contentRef.save(htmlContent, { contentType: 'text/html' })
-
-                    console.log('USER ID: ', uid)
     
                     // Save metadata to firestore and get doc ref
                     const docRef = await admin.firestore().collection('activities').add({

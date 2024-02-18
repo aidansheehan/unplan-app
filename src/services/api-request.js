@@ -24,7 +24,6 @@ const apiRequest = async (path, { authToken, body, method = 'GET', ...customConf
 
         // Handle not-ok status response
         if (!response.ok) {
-            console.log('RESPONSE NOT OK!')
             appEvents.emit('error', response.status)
             return
         }
