@@ -12,8 +12,17 @@ export const AuthContextProvider = ({children}) => {
 
     // Sign out function
     const logout = async () => {
-        await signOut(auth)
-        setUser(null)
+        setLoading(true); // Start loading
+        try {
+            await signOut(auth);
+            setUser(null);
+        } catch (error) {
+            console.error('Error signing out: ', error);
+            appEvents.emit('error', error);
+            // Optionally handle error state here
+        } finally {
+            setLoading(false); // End loading
+        }
     }
 
     // Function to get the current user's auth token
