@@ -57,7 +57,7 @@ const ReadingComprehension = () => {
     };
 
     return (
-        <Layout title={isLoading ? '' : "Create Reading Comprehension Worksheet"}>
+        <>
             {isLoading ? <FullPageLoading message='Creating Your Reading Comprehension Task...' /> : (
                 <div className='w-full h-full p-4'>
                     <ActivityInstructionsComponent instructionText={ACTIVITY_INFO.readingComprehension.instructions} />
@@ -186,7 +186,7 @@ const ReadingComprehension = () => {
                     </form>
                 </div>
             )}
-        </Layout>
+        </>
     );
 };
 

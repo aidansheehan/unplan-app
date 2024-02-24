@@ -1,4 +1,3 @@
-import Layout from '@/components/layout';
 import { useAuth } from '@/context/auth.context';
 import ProtectedRoute from '@/hoc/protected-route.hoc';
 import Link from 'next/link';
@@ -8,7 +7,7 @@ const Home = () => {
   const { user } = useAuth()
 
   return (
-    <Layout>
+    <>
         <div className='flex flex-col items-center justify-center bg-white p-10 rounded-lg md:shadow-md max-w-md text-sm text-center my-4'>
             <p>{`Hello, ${user.email}.`}</p>
             <p>Welcome to a protected page! 😊</p>
@@ -18,7 +17,8 @@ const Home = () => {
         <Link href='/settings' >
             Settings
         </Link>
-    </Layout>
+    </>
+
   )
 }
 

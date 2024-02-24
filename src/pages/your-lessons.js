@@ -1,4 +1,3 @@
-import Layout from "@/components/layout";
 import LessonsGrid from "@/components/lessons-grid.component";
 import LoadingSpinner from "@/components/loading-spinner";
 import SearchBarComponent from "@/components/search-bar.component";
@@ -28,13 +27,10 @@ const YourLessons = () => {
     const { isLoading, searchTerm, setSearchTerm, filteredLessons } = useLessons(fetchYourLessons)
 
     return (
-        <Layout title='Your Lessons'>
-            <div className="p-8 w-full flex-grow flex flex-col" >
-                <SearchBarComponent searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-                {isLoading ? <LoadingSpinner /> : <LessonsGrid lessons={filteredLessons} />}
-            </div>
-
-        </Layout>
+        <div className="p-8 w-full flex-grow flex flex-col" >
+            <SearchBarComponent searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+            {isLoading ? <LoadingSpinner /> : <LessonsGrid lessons={filteredLessons} />}
+        </div>
     )
 
 }

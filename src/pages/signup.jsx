@@ -1,4 +1,3 @@
-import Layout from '@/components/layout'
 import SignupFormComponent from '@/components/signup-form.component'
 import RedirectIfAuthenticated from '@/hoc/redirect-if-authenticated'
 
@@ -8,9 +7,7 @@ import RedirectIfAuthenticated from '@/hoc/redirect-if-authenticated'
 const SignUp = () => {
 
     return (
-        <Layout >
-            <SignupFormComponent />
-        </Layout>
+        <SignupFormComponent />
     )
 }
 

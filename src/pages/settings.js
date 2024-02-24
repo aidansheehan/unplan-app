@@ -27,45 +27,44 @@ const SettingsPage = () => {
     }, [])
 
     return (
-        <Layout >
-<div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-    <h1 className="text-xl font-bold text-gray-700 mb-4 flex items-center justify-start">
-        <FontAwesomeIcon icon={faUserCog} className="mr-2" />
-        Account Settings
-    </h1>
 
-    {showChangePassword && (
-        <button
-            onClick={() => setIsChangePasswordModalOpen(true)}
-            className="text-blue-500 hover:text-blue-700 transition-colors duration-200 text-sm flex items-center justify-start mb-3"
-        >
-            <FontAwesomeIcon icon={faKey} className="mr-2" />
-            Change Password
-        </button>
-    )}
+        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <h1 className="text-xl font-bold text-gray-700 mb-4 flex items-center justify-start">
+                <FontAwesomeIcon icon={faUserCog} className="mr-2" />
+                Account Settings
+            </h1>
 
-    <button
-        onClick={() => setIsDeleteAccountModalOpen(true)}
-        className="text-red-500 hover:text-red-700 transition-colors duration-200 text-sm flex items-center justify-start"
-    >
-        <FontAwesomeIcon icon={faTrashAlt} className="mr-2" />
-        Delete Account
-    </button>
+            {showChangePassword && (
+                <button
+                    onClick={() => setIsChangePasswordModalOpen(true)}
+                    className="text-blue-500 hover:text-blue-700 transition-colors duration-200 text-sm flex items-center justify-start mb-3"
+                >
+                    <FontAwesomeIcon icon={faKey} className="mr-2" />
+                    Change Password
+                </button>
+            )}
 
-    {/* Modals */}
-    {showChangePassword && (
-        <ChangePasswordModal
-            isOpen={isChangePasswordModalOpen}
-            onClose={() => setIsChangePasswordModalOpen(false)}
-        />
-    )}
-    <DeleteAccountModal
-        isOpen={isDeleteAccountModalOpen}
-        onClose={() => setIsDeleteAccountModalOpen(false)}
-    />
-</div>
+            <button
+                onClick={() => setIsDeleteAccountModalOpen(true)}
+                className="text-red-500 hover:text-red-700 transition-colors duration-200 text-sm flex items-center justify-start"
+            >
+                <FontAwesomeIcon icon={faTrashAlt} className="mr-2" />
+                Delete Account
+            </button>
 
-        </Layout>
+            {/* Modals */}
+            {showChangePassword && (
+                <ChangePasswordModal
+                    isOpen={isChangePasswordModalOpen}
+                    onClose={() => setIsChangePasswordModalOpen(false)}
+                />
+            )}
+            <DeleteAccountModal
+                isOpen={isDeleteAccountModalOpen}
+                onClose={() => setIsDeleteAccountModalOpen(false)}
+            />
+        </div>
+
     )
 }
 

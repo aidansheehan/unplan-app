@@ -63,7 +63,7 @@ const GrammarVocabWorksheet = () => {
     };
 
     return (
-        <Layout title={isLoading ? '' : "Create Grammar/Vocabulary Worksheet"}>
+        <>
             {
                 isLoading ? (
                     <FullPageLoading message="Creating Your Worksheet..." />
@@ -146,7 +146,7 @@ const GrammarVocabWorksheet = () => {
                     </div>
                 )
             }
-        </Layout>
+        </>
     )
 }
 

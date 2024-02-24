@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Layout from '@/components/layout';
 import { useRouter } from 'next/router';
 import LoadingSpinner from '@/components/loading-spinner';
 import ProtectedRoute from '@/hoc/protected-route.hoc';
@@ -90,7 +89,6 @@ const Plan = () => {
     }
 
     return (
-    <Layout title='Create Your Lesson Plan'>
 
         <div className='w-full h-full p-4 flex-grow'>
             
@@ -282,7 +280,6 @@ const Plan = () => {
 
         </div>
 
-    </Layout>
     )
 }
 

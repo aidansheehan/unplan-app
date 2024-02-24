@@ -77,6 +77,12 @@
         [x] Individual Activities / Lessons - allow users to share with each other but not edit each others shit, routes not protected so new users can see (also for library!)
     [ ] Test live
 
+## Redesign
+    [ ] Sidebar
+        [x] Add, customize to our data
+        [ ] Fix CORS errors on GET requests
+        [ ] Add signout to settings page
+
 ## Feedback
 [x] Remove kindy
     [x] From form

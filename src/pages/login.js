@@ -1,4 +1,3 @@
-import Layout from '@/components/layout'
 import LoginFormComponent from '@/components/login-form.component'
 import RedirectIfAuthenticated from '@/hoc/redirect-if-authenticated'
 
@@ -8,9 +7,7 @@ import RedirectIfAuthenticated from '@/hoc/redirect-if-authenticated'
 const LogIn = () => {
 
     return (
-        <Layout >
-            <LoginFormComponent />
-        </Layout>
+        <LoginFormComponent />
     )
 }
 

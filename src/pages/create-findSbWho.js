@@ -61,7 +61,7 @@ const FindSbWho = () => {
     };
 
     return (
-        <Layout title={isLoading ? '' : "Create 'Find Someone Who...' Worksheet"}>
+        <>
             {
                 isLoading ? (
                     <FullPageLoading message='Creating Your Activity Worksheet...' />
@@ -175,7 +175,7 @@ const FindSbWho = () => {
                     </div>
                 )
             }
-        </Layout>
+        </>
     )
 }
 

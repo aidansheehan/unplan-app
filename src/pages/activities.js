@@ -41,7 +41,7 @@ const ACTIVITIES = [
 const Activities = () => {
 
     return (
-        <Layout >
+
 <div className="p-4 lg:p-8 flex-grow">
 
 <div className="text-center mb-12">
@@ -85,7 +85,7 @@ const Activities = () => {
 
             </div>
 
-        </Layout>
+
     )
 }
 
