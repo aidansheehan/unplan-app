@@ -7,6 +7,7 @@ import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 import { AuthContextProvider } from '@/context/auth.context'
 import { Toaster } from 'react-hot-toast'
 import GlobalErrorHandlerComponent from '@/components/global-error-handler.component'
+import LayoutComponent from '@/components/layout.component'
 
 config.autoAddCss = false
 
@@ -14,7 +15,10 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <AuthContextProvider >
-          <Component {...pageProps} />
+          <LayoutComponent>
+              <Component {...pageProps} />
+          </LayoutComponent>
+          
           <Toaster 
             position='top-right'
             reverseOrder={false}

@@ -1,15 +1,14 @@
 import LessonsGrid from "@/components/lessons-grid.component";
 import LoadingSpinner from "@/components/loading-spinner";
+import PageHeaderComponent from "@/components/page-header";
 import SearchBarComponent from "@/components/search-bar.component";
 import { useAuth } from "@/context/auth.context";
-import { useErrorHandling } from "@/hooks/use-error-handling.hook";
 import ProtectedRoute from "@/hoc/protected-route.hoc";
 import useLessons from "@/hooks/use-lessons.hook";
 import apiRequest from "@/services/api-request";
 
 const YourLessons = () => {
 
-    const { handleError }   = useErrorHandling()
     const { getToken }      = useAuth()
 
     //Function to fetch user's lessons
@@ -27,7 +26,8 @@ const YourLessons = () => {
     const { isLoading, searchTerm, setSearchTerm, filteredLessons } = useLessons(fetchYourLessons)
 
     return (
-        <div className="p-8 w-full flex-grow flex flex-col" >
+        <div className="flex flex-col" >
+            <PageHeaderComponent text='My Lessons' />
             <SearchBarComponent searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
             {isLoading ? <LoadingSpinner /> : <LessonsGrid lessons={filteredLessons} />}
         </div>

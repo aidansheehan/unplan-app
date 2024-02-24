@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import { useAuth } from '@/context/auth.context'
 import { useEffect } from 'react'
-import LayoutComponent from '@/components/layout.component'
 
 /**
  * Higher-order wrapper component for protected routes
@@ -33,9 +32,7 @@ const ProtectedRoute = (Component) => {
 
         // User is authenticated, render the intended component
         return (
-            <LayoutComponent>
-                <Component {...props} />
-            </LayoutComponent>
+            <Component {...props} />
         )
 
     }

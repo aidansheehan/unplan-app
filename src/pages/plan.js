@@ -4,6 +4,7 @@ import LoadingSpinner from '@/components/loading-spinner';
 import ProtectedRoute from '@/hoc/protected-route.hoc';
 import { useAuth } from '@/context/auth.context';
 import apiRequest from '@/services/api-request';
+import PageHeaderComponent from '@/components/page-header';
 
 /**
  * Page to plan a lesson
@@ -90,7 +91,9 @@ const Plan = () => {
 
     return (
 
-        <div className='w-full h-full p-4 flex-grow'>
+        <div className='flex-grow'>
+
+            <PageHeaderComponent text='Create a Lesson Plan' />
             
                     <form onSubmit={handleSubmit} className="max-w-xl mx-auto space-y-4">
                         <div>

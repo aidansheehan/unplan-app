@@ -203,7 +203,6 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
     }
 
     return (
-        <Layout >
 
             <div className='p-8 w-full flex-grow flex flex-col' >
 
@@ -267,8 +266,6 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                 </div>
                 
             </div>
-
-        </Layout>
 
     )
 }

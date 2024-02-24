@@ -14,7 +14,7 @@ export default function Document() {
           rel="stylesheet"
         />
       </Head>
-      <body class='h-full'>
+      <body className='h-full'>
         <Main />
         <NextScript />
       </body>
