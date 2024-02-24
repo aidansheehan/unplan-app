@@ -1,5 +1,6 @@
 import { useAuth } from '@/context/auth.context'
-import { useRouter } from 'next/router'
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 /**
  * Sign-out button
@@ -7,7 +8,6 @@ import { useRouter } from 'next/router'
 const SignOutButtonComponent = () => {
 
     const { logout } = useAuth()
-    const router     = useRouter()
 
     const handleSignOut = async () => {
         try {
@@ -17,6 +17,16 @@ const SignOutButtonComponent = () => {
             console.error('Failed to sign out: ', error)
         }
     }
+
+    return (
+        <button
+            onClick={handleSignOut}
+            className="text-gray-500 hover:text-gray-700 transition-colors duration-200 text-sm flex items-center justify-starts mb-3"
+        >
+            <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
+            Sign Out
+        </button>
+    )
 
     return (
         <button onClick={handleSignOut}>

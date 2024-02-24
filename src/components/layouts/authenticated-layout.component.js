@@ -14,7 +14,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function LayoutComponent({children}) {
+export default function AuthLayoutComponent({children}) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const navigation = useNavigationWithCurrentPath()
@@ -24,14 +24,6 @@ export default function LayoutComponent({children}) {
 
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-white">
-        <body class="h-full">
-        ```
-      */}
       <div>
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog as="div" className="relative z-50 lg:hidden" onClose={setSidebarOpen}>

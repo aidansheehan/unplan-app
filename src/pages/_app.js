@@ -7,7 +7,7 @@ import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 import { AuthContextProvider } from '@/context/auth.context'
 import { Toaster } from 'react-hot-toast'
 import GlobalErrorHandlerComponent from '@/components/global-error-handler.component'
-import LayoutComponent from '@/components/layout.component'
+import LayoutComponent from '@/components/layouts/layout.component'
 
 config.autoAddCss = false
 

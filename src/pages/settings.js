@@ -3,10 +3,9 @@ import { auth } from "../../firebaseConfig"
 import ProtectedRoute from "@/hoc/protected-route.hoc"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faKey, faTrashAlt, faUserCog } from "@fortawesome/free-solid-svg-icons"
-
-const { default: Layout } = require("@/components/layout")
-const { default: ChangePasswordModal } = require("@/components/modal/change-password.modal.component")
-const { useState, useEffect } = require("react")
+import SignOutButtonComponent from "@/components/sign-out.button.component"
+import ChangePasswordModal from "@/components/modal/change-password.modal.component"
+import { useState, useEffect } from "react"
 
 /**
  * Settings page for account management
@@ -43,6 +42,8 @@ const SettingsPage = () => {
                     Change Password
                 </button>
             )}
+
+            <SignOutButtonComponent />
 
             <button
                 onClick={() => setIsDeleteAccountModalOpen(true)}
