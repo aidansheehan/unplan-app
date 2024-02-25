@@ -17,7 +17,7 @@ const ProtectedRoute = (Component) => {
             if (!loading && !user) {
 
                 // Redirect to sign up with current path as query parameter
-                router.push(`/signup?redirect=${encodeURIComponent(router.asPath)}`)
+                router.push(router.asPath === '/' ? '/signup' : `/signup?redirect=${encodeURIComponent(router.asPath)}`)
 
             }
 
