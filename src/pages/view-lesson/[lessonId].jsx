@@ -287,10 +287,10 @@ export async function getServerSideProps(context) {
 
         const lessonData = lessonDoc.data() //Get lessonData
 
-        //Convert Timestamp to serializable format (ISO string)
-        if (lessonData.createdAt && lessonData.createdAt.toDate) {
-            lessonData.createdAt = lessonData.createdAt.toDate().toISOString()
-        }
+        lessonData.createdAt = lessonData.createdAt.toDate().toISOString()
+        lessonData.updatedAt = lessonData.updatedAt.toDate().toISOString()
+
+        
 
         return {
             props: {

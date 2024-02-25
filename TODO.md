@@ -80,8 +80,12 @@
 ## Redesign
     [ ] Sidebar
         [x] Add, customize to our data
-        [ ] Fix CORS errors on GET requests
-        [ ] Add signout to settings page
+        [x] Fix local emulators
+        [x] Add signout to settings page
+        [x] Follow exact nav as before for now
+        [x] Dashboard
+        [x] Activities follow lessons (1 page for creation, 1 page for storage)
+        [ ] Empty states CTA (dashboard + my unplan pages)
 
 ## Feedback
 [x] Remove kindy

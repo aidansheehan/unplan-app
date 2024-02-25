@@ -14,11 +14,19 @@ const getUserLessons = functions.https.onRequest((req, res) => {
         httpMethodRestrictorMiddleware(['GET'])(req, res, async () => {
             authenticateRequestMiddleware(req, res, async () => {
 
-                const { uid } = req // Extract user ID from request
+                const { uid }   = req                           // Extract user ID from request
+                const limit     = parseInt(req.query.limit)     // Optionally get a limit from query parameters
 
                 try {
                     //Query DB for lesson plans matching user ID
-                    const lessonsSnapshot = await db.collection('lessons').where('uid', '==', uid).get()
+                    let query = await db.collection('lessons').where('uid', '==', uid).orderBy('updatedAt', 'desc')
+
+                    // If a limit is specified and it's a number, apply it to the query
+                    if (limit && !isNaN(limit)) {
+                        query = query.limit(limit)
+                    }
+
+                    const lessonsSnapshot = await query.get()
 
                     const lessons = []  //Init lesson plans
 

@@ -20,6 +20,7 @@ const NAVIGATION = [
         current: false,
         children: [
             { name: 'Lessons', href: '/your-lessons', current: false },
+            { name: 'Activities', href: '/my-activities', current: false }
             // { name: 'Activities', href: '' }
         ]
     },

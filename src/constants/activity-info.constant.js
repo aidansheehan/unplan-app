@@ -1,3 +1,6 @@
+import FindSbWhoIconComponent from "@/components/activity-icons/findSbWho.icon.component"
+import GramVocabIconComponent from "@/components/activity-icons/gramVocab.icon.component"
+import ReadingComprehensionIconComponent from "@/components/activity-icons/readingComprehension.icon.component"
 
 /**
  * Map activity keys to texts
@@ -10,7 +13,8 @@ const ACTIVITY_INFO = {
         worksheet with various statements or prompts. They must move around the classroom and talk 
         to their classmates to find someone who matches each statement. For example, "Find someone 
         who has been to Europe" requires the student to ask their peers about their travel experiences. 
-        It's a great way to get students speaking and to learn more about each other!`
+        It's a great way to get students speaking and to learn more about each other!`,
+        icon: FindSbWhoIconComponent
     },
     grammarVocab: {
         title: 'Grammar/Vocabulary Worksheet',
@@ -19,7 +23,8 @@ const ACTIVITY_INFO = {
         enabling teachers to tailor the content to their class's needs. The activities will progress 
         from controlled practice, where students focus on accuracy, to free practice, where they 
         can use the language more creatively. This worksheet is great for reinforcing new language 
-        points and ensuring students feel confident using them in different contexts.`
+        points and ensuring students feel confident using them in different contexts.`,
+        icon: GramVocabIconComponent
     },
     readingComprehension: {
         title: 'Reading Comprehension Worksheet',
@@ -28,7 +33,8 @@ const ACTIVITY_INFO = {
         comprehension questions that range from simple recall to more complex analysis and critical 
         thinking. The worksheet will be tailored to the specified level, length, and objectives, ensuring 
         that it aligns with the students' learning needs. This is an excellent tool for improving reading 
-        comprehension and encouraging thoughtful engagement with the text.`
+        comprehension and encouraging thoughtful engagement with the text.`,
+        icon: ReadingComprehensionIconComponent
     }
 
 }
