@@ -14,6 +14,8 @@ const SignupForm = () => {
     const { register, handleSubmit, formState: { errors } } = useForm()
 
     const router = useRouter()
+    
+    const { redirect } = router.query
 
     const onSubmit = async (data) => {
 
@@ -23,7 +25,6 @@ const SignupForm = () => {
         try {
             await createUserWithEmailAndPassword(auth, email, password)     // Create the user
             await signInWithEmailAndPassword(auth, email, password)         // Sign the new user in
-            router.push('/')                                                // Redirect to protected route
 
         } catch (error) {
 
@@ -118,7 +119,7 @@ const SignupForm = () => {
             <div className='mb-4'>
                 <p className='text-sm text-gray-500'>
                     Already have an account?{" "}
-                    <Link href='/login' className='text-blue-500 hover:text-blue-600'>
+                    <Link href={redirect ? `/login?redirect=${encodeURIComponent(redirect)}` : '/login'} className='text-blue-500 hover:text-blue-600'>
                         Log in
                     </Link>
                 </p>

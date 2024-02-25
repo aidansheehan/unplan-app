@@ -15,6 +15,8 @@ const LoginFormComponent = () => {
 
     const router = useRouter()
 
+    const { redirect } = router.query
+
     //Handle login (email + password) submit
     const onSubmit = async (data) => {
 
@@ -22,7 +24,7 @@ const LoginFormComponent = () => {
 
         try {
             await signInWithEmailAndPassword(auth, email, password)
-            router.push('/')
+
         } catch (error) {
 
             console.error(error)
@@ -100,7 +102,7 @@ const LoginFormComponent = () => {
             <div className='mb-4'>
                 <p className='text-sm text-gray-500'>
                     Don't have an account?{" "}
-                    <Link href='/signup' className='text-blue-500 hover:text-blue-600'>
+                    <Link href={redirect ? `/signup?redirect-${encodeURIComponent(redirect)}` : '/signup'} className='text-blue-500 hover:text-blue-600'>
                         Sign up
                     </Link>
                 </p>
