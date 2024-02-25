@@ -1,7 +1,6 @@
 import { faBookOpen, faFileAlt, faUsers } from "@fortawesome/free-solid-svg-icons"
 import ActivityLinkComponent from "@/components/activity-link.component"
 import Link from "next/link"
-import UserActivitiesComponent from "@/components/user-activities.component"
 import ProtectedRoute from "@/hoc/protected-route.hoc"
 import PageHeaderComponent from "@/components/page-header"
 
@@ -73,8 +72,6 @@ const Activities = () => {
         }
 
   </div>
-
-            <UserActivitiesComponent />
 
             <div className="mt-4 text-center px-8">
                     <h2 className="text-2xl font-bold mb-4 text-blue-800">Looking for something else, Teach?</h2>
