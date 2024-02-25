@@ -22,8 +22,14 @@ const RedirectIfAuthenticated = (Component) => {
                 // User is authenticated
                 if (user) {
 
-                    // Redirect to the home page
-                    router.push('/')
+                    // Extract 'redirect' query parameter
+                    const { redirect } = router.query
+                    
+                    // Decide where to redirect user
+                    const redirectTo = redirect ? decodeURIComponent(redirect) : '/'
+
+                    // Redirect to protected route
+                    router.push(redirectTo)
                 }
 
                 // User is not authenticated

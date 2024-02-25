@@ -14,6 +14,7 @@ import HtmlContentPresentationComponent from '@/components/html-content-presenta
 import LoadingSpinner from '@/components/loading-spinner'
 import apiRequest from '@/services/api-request'
 import { useAuth } from '@/context/auth.context'
+import ProtectedRoute from '@/hoc/protected-route.hoc'
 
 
 const ViewLesson = ({lessonData, lessonId, error}) => {
@@ -310,4 +311,4 @@ export async function getServerSideProps(context) {
 
 }
 
-export default ViewLesson
+export default ProtectedRoute(ViewLesson)

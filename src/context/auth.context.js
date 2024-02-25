@@ -16,6 +16,9 @@ export const AuthContextProvider = ({children}) => {
         try {
             await signOut(auth);
             setUser(null);
+            
+            // Navigate user to landing page
+            window.location.href = 'https://unplan.io'
         } catch (error) {
             console.error('Error signing out: ', error);
             appEvents.emit('error', error);

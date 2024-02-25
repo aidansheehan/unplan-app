@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useRouter } from 'next/router'
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import { auth } from '../../firebaseConfig'
 
@@ -8,8 +7,6 @@ import { auth } from '../../firebaseConfig'
  */
 const useGoogleSignIn = () => {
     const [ loading, setLoading ]   = useState(false)
-    // const [ error, setError ]       = useState(null)
-    const router                    = useRouter()
 
     //Function to handle google sign-in
     const signIn = async () => {
@@ -18,7 +15,7 @@ const useGoogleSignIn = () => {
 
         try {
             await signInWithPopup(auth, provider)
-            router.push('/')
+
         } catch (error) {
             // TBD handle errors gracefully
             console.error('Error during sign in with Google: ', error)

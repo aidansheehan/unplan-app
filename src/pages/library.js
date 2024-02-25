@@ -2,7 +2,7 @@ import Layout from "@/components/layout"
 import LessonsGrid from "@/components/lessons-grid.component"
 import LoadingSpinner from "@/components/loading-spinner"
 import SearchBarComponent from "@/components/search-bar.component"
-import { useErrorHandling } from "@/hooks/use-error-handling.hook"
+import ProtectedRoute from "@/hoc/protected-route.hoc"
 import useLessons from "@/hooks/use-lessons.hook"
 import apiRequest from "@/services/api-request"
 
@@ -33,4 +33,4 @@ const Library = () => {
 }
 
 
-export default Library
+export default ProtectedRoute(Library)
