@@ -1,6 +1,5 @@
 import { db } from '../../../firebaseConfig'
 import { doc, getDoc, onSnapshot } from 'firebase/firestore'
-import Layout from '@/components/layout'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFrownOpen } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
@@ -179,7 +178,6 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
 
     if (error) {
         return (
-            <Layout title="Lesson Not Found">
                 <div className="w-full h-full p-4 text-center">
                     <FontAwesomeIcon icon={faFrownOpen} size="3x" className="text-orange-500 mb-4" />
                     <h2 className="text-2xl font-bold text-blue-900 mb-4">Oops! Lesson not found.</h2>
@@ -190,15 +188,14 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                             Go Back to Your Lessons
                     </Link>
                 </div>
-            </Layout>
         )
     }
 
     if (loading) {
         return (
-            <Layout >
+            <p>
                 Loading...
-            </Layout>
+            </p>
         )
     }
 
