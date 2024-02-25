@@ -1,8 +1,7 @@
-import Layout from "@/components/layout"
 import LessonsGrid from "@/components/lessons-grid.component"
 import LoadingSpinner from "@/components/loading-spinner"
+import PageHeaderComponent from "@/components/page-header"
 import SearchBarComponent from "@/components/search-bar.component"
-import { useErrorHandling } from "@/hooks/use-error-handling.hook"
 import useLessons from "@/hooks/use-lessons.hook"
 import apiRequest from "@/services/api-request"
 
@@ -22,12 +21,11 @@ const Library = () => {
     const { isLoading, searchTerm, setSearchTerm, filteredLessons } = useLessons(fetchlibraryLessons)
 
     return (
-        <Layout title='Lesson Library' >
-            <div className="p-8 w-full flex-grow flex flex-col" >
-                <SearchBarComponent searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-                {isLoading ? <LoadingSpinner /> : <LessonsGrid lessons={filteredLessons} />}
-            </div>
-        </Layout>
+        <div >
+            <PageHeaderComponent text='Lesson Library' />
+            <SearchBarComponent searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+            {isLoading ? <LoadingSpinner /> : <LessonsGrid lessons={filteredLessons} />}
+        </div>
     )
 
 }

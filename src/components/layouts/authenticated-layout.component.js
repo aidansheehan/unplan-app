@@ -1,14 +1,12 @@
 import { Fragment, useState } from 'react'
 import { Dialog, Transition, Disclosure } from '@headlessui/react'
+import Link from 'next/link'
 import {
   Bars3Icon,
-  HomeIcon,
   XMarkIcon,
   ChevronRightIcon,
-  PlusIcon,
-  UserIcon,
-  Cog6ToothIcon
 } from '@heroicons/react/24/outline'
+import useNavigationWithCurrentPath from '@/hooks/use-navigation-with-current-path'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -18,9 +16,6 @@ export default function AuthLayoutComponent({children}) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const navigation = useNavigationWithCurrentPath()
-
-  // Find bottom option NB will not support multiple bottom options
-  const bottomOption = navigation.find(n => n.bottom)
 
   return (
     <>
@@ -233,9 +228,9 @@ export default function AuthLayoutComponent({children}) {
                                             href={subItem.href}
                                             className={classNames(
                                                 subItem.current
-                                                ? 'bg-indigo-700 text-white'
+                                                ? 'bg-indigo-700 text-white font-semibold'
                                                 : 'text-indigo-200 hover:text-white hover:bg-indigo-700',
-                                                'block rounded-md py-2 pr-2 pl-9 text-sm leading-6 text-gray-700'
+                                                'block rounded-md py-2 pr-2 pl-9 text-sm leading-6 text-gray-700 my-1'
                                             )}
                                             >
                                             {subItem.name}
@@ -253,26 +248,31 @@ export default function AuthLayoutComponent({children}) {
                   </ul>
                 </li>
 
-                <li className="-mx-6 mt-auto">
-                  <Link
-                    href={bottomOption.href}
-                    className={classNames(
-                        bottomOption.current
-                                    ? 'bg-indigo-700 text-white'
-                                    : 'text-indigo-200 hover:text-white hover:bg-indigo-700',
-                                    'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
-                    )}
-                  >
-                    <Cog6ToothIcon 
-                        className={classNames(
-                            bottomOption.current ? 'text-white' : 'text-indigo-200 group-hover:text-white',
-                            'h-6 w-6 shrink-0'
-                        )}
-                    />
-                    <span className="sr-only">Settings</span>
-                    <span aria-hidden="true">Settings</span>
-                  </Link>
-                </li>
+                {
+                    navigation.filter(n => n.bottom).map((item) => (
+                        <li key={item.name} className="-mx-6 mt-auto">
+                          <Link
+                            href={item.href}
+                            className={classNames(
+                                item.current
+                                            ? 'bg-indigo-700 text-white'
+                                            : 'text-indigo-200 hover:text-white hover:bg-indigo-700',
+                                            'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
+                            )}
+                          >
+                            <item.icon
+                                className={classNames(
+                                    item.current ? 'text-white' : 'text-indigo-200 group-hover:text-white',
+                                    'h-6 w-6 shrink-0'
+                                )}
+                            />
+                            <span className="sr-only">Settings</span>
+                            <span aria-hidden="true">Settings</span>
+                          </Link>
+                        </li>
+                    ))
+                }
+
               </ul>
             </nav>
           </div>
@@ -295,67 +295,3 @@ export default function AuthLayoutComponent({children}) {
     </>
   )
 }
-
-
-import { useRouter } from 'next/router';
-import Link from 'next/link'
-
-const useNavigationWithCurrentPath = () => {
-  const { pathname } = useRouter();
-
-  const navigation = [
-    { name: 'Home', href: '/', icon: HomeIcon, current: false },
-    {
-      name: 'Create',
-      icon: PlusIcon,
-      current: false,
-      children: [
-        { name: 'Lesson Plan', href: '/plan', current: false },
-        { name: 'Activities', href: '/activities', current: false }
-      ]
-    },
-    {
-        name: 'My Unplan',
-        icon: UserIcon,
-        current: false,
-        children: [
-            { name: 'Lessons', href: '/your-lessons', current: false },
-            // { name: 'Activities', href: '' }
-        ]
-    },
-    {
-        name: 'Settings',
-        icon: Cog6ToothIcon,
-        href: '/settings',
-        current: false,
-        bottom: true
-    }
-  ];
-
-  // Iterate over the navigation items to set the current property based on the current path
-  const adaptedNavigation = navigation.map((item) => {
-    // If the item has children, check if any child's href matches the current pathname
-    if (item.children) {
-      const updatedChildren = item.children.map((child) => ({
-        ...child,
-        // Set current to true if the child's href matches the pathname
-        current: pathname === child.href,
-      }));
-
-      return {
-        ...item,
-        children: updatedChildren,
-        // Set the parent item's current to true if any child is current
-        current: updatedChildren.some((child) => child.current),
-      };
-    } else {
-      return {
-        ...item,
-        // Set current to true if the item's href matches the pathname
-        current: pathname === item.href,
-      };
-    }
-  });
-
-  return adaptedNavigation;
-};
