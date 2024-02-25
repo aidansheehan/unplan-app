@@ -33,7 +33,8 @@ const NAVIGATION = [
         name: 'Feedback',
         icon: ChatBubbleBottomCenterIcon,
         current: false,
-        href: '/feedback'
+        href: '/feedback',
+        bottom: true
     },
     {
         name: 'Settings',

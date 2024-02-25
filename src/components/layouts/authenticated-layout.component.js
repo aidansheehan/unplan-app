@@ -248,9 +248,11 @@ export default function AuthLayoutComponent({children}) {
                   </ul>
                 </li>
 
+                </ul>
+                <ul className='mt-auto' role="list" >
                 {
                     navigation.filter(n => n.bottom).map((item) => (
-                        <li key={item.name} className="-mx-6 mt-auto">
+                        <li key={item.name} className="-mx-6">
                           <Link
                             href={item.href}
                             className={classNames(
@@ -266,8 +268,8 @@ export default function AuthLayoutComponent({children}) {
                                     'h-6 w-6 shrink-0'
                                 )}
                             />
-                            <span className="sr-only">Settings</span>
-                            <span aria-hidden="true">Settings</span>
+                            <span className="sr-only">{item.name}</span>
+                            <span aria-hidden="true">{item.name}</span>
                           </Link>
                         </li>
                     ))
