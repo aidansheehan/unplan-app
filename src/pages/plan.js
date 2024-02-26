@@ -5,6 +5,7 @@ import ProtectedRoute from '@/hoc/protected-route.hoc';
 import { useAuth } from '@/context/auth.context';
 import apiRequest from '@/services/api-request';
 import PageHeaderComponent from '@/components/page-header';
+import ButtonPrimaryComponent from '@/components/button/button.primary.component';
 
 /**
  * Page to plan a lesson
@@ -91,11 +92,11 @@ const Plan = () => {
 
     return (
 
-        <div className='flex-grow'>
+        <div className='flex-grow bg-white'>
 
             <PageHeaderComponent text='Create a Lesson Plan' />
             
-                    <form onSubmit={handleSubmit} className="max-w-xl mx-auto space-y-4">
+                    <form onSubmit={handleSubmit} className="max-w-xl mx-auto space-y-4 px-4 py-5 sm:px-6">
                         <div>
                         <label htmlFor="topic" className="block text-sm font-medium text-gray-700">Topic</label>
                         <input
@@ -146,7 +147,7 @@ const Plan = () => {
                                 <div className="flex">
                                     <button
                                         type="button"
-                                        className={`px-4 py-2 rounded-l-md w-1/2 md:w-auto ${!useCEFR ? 'bg-blue-500 text-white font-semibold' : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100'}`}
+                                        className={`px-4 py-2 rounded-l-md w-1/2 md:w-auto ${!useCEFR ? 'bg-highlight font-semibold' : 'bg-white border border-gray-300 hover:bg-gray-100 text-gray-700'}`}
                                         disabled={isLoading}
                                         onClick={toggleCEFR}
                                     >
@@ -154,7 +155,7 @@ const Plan = () => {
                                     </button>
                                     <button
                                         type="button"
-                                        className={`px-4 py-2 rounded-r-md w-1/2 md:w-auto ${useCEFR ? 'bg-blue-500 text-white font-semibold' : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100'}`}
+                                        className={`px-4 py-2 rounded-r-md w-1/2 md:w-auto ${useCEFR ? 'bg-highlight font-semibold' : 'bg-white border border-gray-300 hover:bg-gray-100 text-gray-700'}`}
                                         disabled={isLoading}
                                         onClick={toggleCEFR}
                                     >
@@ -202,15 +203,15 @@ const Plan = () => {
                                 />
 
                                 <button type="button" disabled={isLoading} onClick={() => setFormData({...formData, duration: 60})}
-                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 60 ? 'bg-blue-500 text-white font-semibold' : 'border border-gray-300 hover:bg-gray-100' }`}>
+                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 60 ? 'bg-highlight font-semibold' : 'border border-gray-300 hover:bg-gray-100' }`}>
                                 60 min
                                 </button>
                                 <button type="button" disabled={isLoading} onClick={() => setFormData({...formData, duration: 90})}
-                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 90 ? 'bg-blue-500 text-white font-semibold' : 'border border-gray-300 hover:bg-gray-100' }`}>
+                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 90 ? 'bg-highlight font-semibold' : 'border border-gray-300 hover:bg-gray-100' }`}>
                                 90 min
                                 </button>
                                 <button type="button" disabled={isLoading} onClick={() => setFormData({...formData, duration: 120})}
-                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 120 ? 'bg-blue-500 text-white font-semibold' : 'border border-gray-300 hover:bg-gray-100' }`}>
+                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 120 ? 'bg-highlight font-semibold' : 'border border-gray-300 hover:bg-gray-100' }`}>
                                 120 min
                                 </button>
                             </div>
@@ -272,9 +273,10 @@ const Plan = () => {
                                 isLoading ? (
                                     <LoadingSpinner />
                                 ) : (
-                                    <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                    <ButtonPrimaryComponent type='submit' >
                                         Submit Plan
-                                    </button>
+                                    </ButtonPrimaryComponent>
+
                                 )
                             }
 

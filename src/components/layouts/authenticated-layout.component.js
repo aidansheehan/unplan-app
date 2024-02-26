@@ -62,11 +62,11 @@ export default function AuthLayoutComponent({children}) {
                     </div>
                   </Transition.Child>
                   {/* Sidebar component, swap this element with another sidebar if you like */}
-                  <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6 pb-2">
-                    <div className="flex h-16 shrink-0 items-center">
+                  <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-charcoal px-6 pb-2">
+                    <div className="flex h-16 shrink-0 items-center mb-8 mt-4">
                       <img
-                        className="h-8 w-auto"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=white"
+                        className="h-12 w-auto"
+                        src="/unplan_logo.svg"
                         alt="Your Company"
                       />
                     </div>
@@ -81,14 +81,14 @@ export default function AuthLayoutComponent({children}) {
                                         href={item.href}
                                         className={classNames(
                                             item.current
-                                            ? 'bg-indigo-700 text-white'
-                                            : 'text-indigo-200 hover:text-white hover:bg-indigo-700',
+                                            ? 'bg-hover text-highlight'
+                                            : 'text-softwhite hover:text-white hover:bg-hover',
                                             'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
                                         )}
                                         >
                                         <item.icon
                                             className={classNames(
-                                            item.current ? 'text-white' : 'text-indigo-200 group-hover:text-white',
+                                            item.current ? 'text-highlight' : 'text-softwhite group-hover:text-white',
                                             'h-6 w-6 shrink-0'
                                             )}
                                             aria-hidden="true"
@@ -101,14 +101,14 @@ export default function AuthLayoutComponent({children}) {
                                             <>
                                             <Disclosure.Button
                                                 className={classNames(
-                                                item.current ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700',
+                                                item.current ? 'bg-hover text-highlight' : 'text-softwhite hover:text-white hover:bg-hover',
                                                 'flex items-center w-full text-left rounded-md p-2 gap-x-3 text-sm leading-6 font-semibold text-gray-700'
                                                 )}
                                             >
                                                 <item.icon className={classNames(
                                                     item.current 
-                                                    ? 'text-white' 
-                                                    : 'text-indigo-200 group-hover:text-white',
+                                                    ? 'text-highlight' 
+                                                    : 'text-softwhite group-hover:text-white',
                                                     'h-6 w-6 shrink-0'
                                                 )} aria-hidden="true" />
                                                 {item.name}
@@ -128,7 +128,7 @@ export default function AuthLayoutComponent({children}) {
                                                         as={Link}
                                                         href={subItem.href}
                                                         className={classNames(
-                                                            subItem.current ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700',
+                                                            subItem.current ? 'bg-hover text-highlight' : 'text-softwhite hover:text-white hover:bg-hover',
                                                             'block rounded-md py-2 pr-2 pl-9 text-sm leading-6 text-gray-700'
                                                         )}
                                                         >
@@ -159,11 +159,11 @@ export default function AuthLayoutComponent({children}) {
         {/* Static sidebar for desktop */}
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6">
-            <div className="flex h-16 shrink-0 items-center">
+          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-charcoal px-6">
+            <div className="flex h-16 shrink-0 items-center mt-8 mb-8">
               <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=white"
+                className="w-auto h-14"
+                src="/unplan_logo.svg"
                 alt="Your Company"
               />
             </div>
@@ -178,14 +178,14 @@ export default function AuthLayoutComponent({children}) {
                                 href={item.href}
                                 className={classNames(
                                     item.current
-                                    ? 'bg-indigo-700 text-white'
-                                    : 'text-indigo-200 hover:text-white hover:bg-indigo-700',
+                                    ? 'bg-hover text-highlight'
+                                    : 'text-softwhite hover:text-white hover:bg-hover',
                                     'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
                                 )}
                                 >
                                 <item.icon
                                     className={classNames(
-                                    item.current ? 'text-white' : 'text-indigo-200 group-hover:text-white',
+                                    item.current ? 'text-highlight' : 'text-softwhite group-hover:text-white',
                                     'h-6 w-6 shrink-0'
                                     )}
                                     aria-hidden="true"
@@ -199,15 +199,15 @@ export default function AuthLayoutComponent({children}) {
                                     <Disclosure.Button
                                         className={classNames(
                                             item.current
-                                                ? 'bg-indigo-700 text-white'
-                                                : 'text-indigo-200 hover:text-white hover:bg-indigo-700',
+                                                ? 'bg-hover text-highlight'
+                                                : 'text-softwhite hover:text-white hover:bg-hover',
                                         'flex items-center w-full text-left rounded-md p-2 gap-x-3 text-sm leading-6 font-semibold text-gray-700'
                                         )}
                                     >
                                         <item.icon className={classNames(
                                                 item.current 
-                                                ? 'text-white' 
-                                                : 'text-indigo-200 group-hover:text-white',
+                                                ? 'text-highlight' 
+                                                : 'text-softwhite group-hover:text-white',
                                                 'h-6 w-6 shrink-0'
                                         )} aria-hidden="true" />
                                         {item.name}
@@ -228,8 +228,8 @@ export default function AuthLayoutComponent({children}) {
                                             href={subItem.href}
                                             className={classNames(
                                                 subItem.current
-                                                ? 'bg-indigo-700 text-white font-semibold'
-                                                : 'text-indigo-200 hover:text-white hover:bg-indigo-700',
+                                                ? 'bg-hover text-highlight font-semibold'
+                                                : 'text-softwhite hover:text-white hover:bg-hover',
                                                 'block rounded-md py-2 pr-2 pl-9 text-sm leading-6 text-gray-700 my-1'
                                             )}
                                             >
@@ -257,14 +257,14 @@ export default function AuthLayoutComponent({children}) {
                             href={item.href}
                             className={classNames(
                                 item.current
-                                            ? 'bg-indigo-700 text-white'
-                                            : 'text-indigo-200 hover:text-white hover:bg-indigo-700',
+                                            ? 'bg-hover text-highlight'
+                                            : 'text-softwhite hover:text-white hover:bg-hover',
                                             'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
                             )}
                           >
                             <item.icon
                                 className={classNames(
-                                    item.current ? 'text-white' : 'text-indigo-200 group-hover:text-white',
+                                    item.current ? 'text-highlight' : 'text-softwhite group-hover:text-white',
                                     'h-6 w-6 shrink-0'
                                 )}
                             />
@@ -280,16 +280,16 @@ export default function AuthLayoutComponent({children}) {
           </div>
         </div>
 
-        <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-indigo-600 px-4 py-4 shadow-sm sm:px-6 lg:hidden">
-          <button type="button" className="-m-2.5 p-2.5 text-indigo-200 lg:hidden" onClick={() => setSidebarOpen(true)}>
+        <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-charcoal px-4 py-4 shadow-sm sm:px-6 lg:hidden">
+          <button type="button" className="-m-2.5 p-2.5 text-softwhite lg:hidden" onClick={() => setSidebarOpen(true)}>
             <span className="sr-only">Open sidebar</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
 
         </div>
 
-        <main className="py-10 lg:pl-72">
-          <div className="px-4 sm:px-6 lg:px-8">
+        <main className="md:py-10 lg:pl-72">
+          <div className="md:px-4  lg:px-8 font-body">
               {children}
           </div>
         </main>

@@ -1,0 +1,16 @@
+import Link from "next/link"
+
+const ButtonLinkPrimarySmallComponent = ({href, children}) => {
+
+    return (
+        <Link
+            type="button"
+            href={href}
+            className="ml-3 inline-flex items-center rounded-md bg-e34036 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-f05454 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-e34036"
+        >
+            {children}
+        </Link>
+    )
+}
+
+export default ButtonLinkPrimarySmallComponent

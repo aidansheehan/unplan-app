@@ -1,5 +1,4 @@
-import { faClock } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { ClockIcon } from "@heroicons/react/24/outline"
 
 /**
  * Clock icon to display lesson time
@@ -7,8 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 const LessonClockComponent = ({duration}) => {
 
     return (
-        <div className="flex items-center justify-center bg-blue-500 text-white rounded-lg p-2">
-          <FontAwesomeIcon icon={faClock} size='sm'/>
+        <div className="flex items-center justify-center bg-[#fdc717] text-gray-900 rounded-lg p-2">
+          <ClockIcon />
           <span className="ml-2 text-md">{duration} min</span>
         </div>
       )
