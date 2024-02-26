@@ -19,7 +19,7 @@ export default function AuthLayoutComponent({children}) {
 
   return (
     <>
-      <div>
+      <div className='font-nav'>
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog as="div" className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
             <Transition.Child
@@ -67,7 +67,7 @@ export default function AuthLayoutComponent({children}) {
                       <img
                         className="h-12 w-auto"
                         src="/unplan_logo.svg"
-                        alt="Your Company"
+                        alt="Unplan"
                       />
                     </div>
                     <nav className="flex flex-1 flex-col">
@@ -164,7 +164,7 @@ export default function AuthLayoutComponent({children}) {
               <img
                 className="w-auto h-14"
                 src="/unplan_logo.svg"
-                alt="Your Company"
+                alt="Unplan"
               />
             </div>
             <nav className="flex flex-1 flex-col">
@@ -280,11 +280,16 @@ export default function AuthLayoutComponent({children}) {
           </div>
         </div>
 
-        <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-charcoal px-4 py-4 shadow-sm sm:px-6 lg:hidden">
+        <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-charcoal px-4 py-4 shadow-sm sm:px-6 lg:hidden justify-between">
           <button type="button" className="-m-2.5 p-2.5 text-softwhite lg:hidden" onClick={() => setSidebarOpen(true)}>
             <span className="sr-only">Open sidebar</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
+
+          <img 
+              className={`-m-2.5 lg:hidden shrink-0 h-8 mr-0.5 ${sidebarOpen && 'hidden'}`}
+              src="/unplan_logo.svg"
+          />
 
         </div>
 

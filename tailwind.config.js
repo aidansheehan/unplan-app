@@ -13,8 +13,9 @@ module.exports = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       fontFamily: {
-        'permanent-marker': [ 'Permanent Marker', 'monospace'],
-        'bree': ['Bree Serif', 'serif']
+        heading: ['"Changa One"', 'cursive', 'sans-serif'],
+        nav: ['Roboto', 'sans-serif'],
+        body: ['Roboto Slab', 'serif']
 
       },
       boxShadow: {

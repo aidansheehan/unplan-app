@@ -12,7 +12,7 @@ const ContentGridComponent = ({contents}) => {
             href={content.href}
             className="relative rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400"
           >
-            <h2 className='text-center mb-4 font-semibold' >{content.name}</h2>
+            <h2 className='text-center mb-4 font-semibold font-heading' >{content.name}</h2>
 
             <div className="flex items-center space-x-3" >
               <div className="flex-shrink-0 pr-4">
