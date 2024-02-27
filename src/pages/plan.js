@@ -147,7 +147,7 @@ const Plan = () => {
                                 <div className="flex">
                                     <button
                                         type="button"
-                                        className={`px-4 py-2 rounded-l-md w-1/2 md:w-auto ${!useCEFR ? 'bg-highlight font-semibold' : 'bg-white border border-gray-300 hover:bg-gray-100 text-gray-700'}`}
+                                        className={`px-4 py-2 rounded-l-md w-1/2 md:w-auto ${!useCEFR ? 'bg-indigo-700 font-semibold text-white' : 'bg-white border border-indigo-200 hover:bg-indigo-50 text-gray-700'}`}
                                         disabled={isLoading}
                                         onClick={toggleCEFR}
                                     >
@@ -155,7 +155,7 @@ const Plan = () => {
                                     </button>
                                     <button
                                         type="button"
-                                        className={`px-4 py-2 rounded-r-md w-1/2 md:w-auto ${useCEFR ? 'bg-highlight font-semibold' : 'bg-white border border-gray-300 hover:bg-gray-100 text-gray-700'}`}
+                                        className={`px-4 py-2 rounded-r-md w-1/2 md:w-auto ${useCEFR ? 'bg-indigo-700 font-semibold text-white' : 'bg-white border border-indigo-200 hover:bg-indigo-50 text-gray-700'}`}
                                         disabled={isLoading}
                                         onClick={toggleCEFR}
                                     >
@@ -203,15 +203,15 @@ const Plan = () => {
                                 />
 
                                 <button type="button" disabled={isLoading} onClick={() => setFormData({...formData, duration: 60})}
-                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 60 ? 'bg-highlight font-semibold' : 'border border-gray-300 hover:bg-gray-100' }`}>
+                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 60 ? 'bg-indigo-700 font-semibold text-white' : 'border border-indigo-200 hover:bg-indigo-50' }`}>
                                 60 min
                                 </button>
                                 <button type="button" disabled={isLoading} onClick={() => setFormData({...formData, duration: 90})}
-                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 90 ? 'bg-highlight font-semibold' : 'border border-gray-300 hover:bg-gray-100' }`}>
+                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 90 ? 'bg-indigo-700 font-semibold text-white' : 'border border-indigo-200 hover:bg-indigo-50' }`}>
                                 90 min
                                 </button>
                                 <button type="button" disabled={isLoading} onClick={() => setFormData({...formData, duration: 120})}
-                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 120 ? 'bg-highlight font-semibold' : 'border border-gray-300 hover:bg-gray-100' }`}>
+                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 120 ? 'bg-indigo-700 font-semibold text-white' : 'border border-indigo-200 hover:bg-indigo-50' }`}>
                                 120 min
                                 </button>
                             </div>
@@ -232,49 +232,57 @@ const Plan = () => {
                         />
                         </div>
 
-                        <div className='flex flex-col space-y-4 mt-4 mx-8'>
+                        <div className="mt-4 divide-y divide-gray-200 border-b border-t border-gray-200">
 
-                            <div className="flex items-center justify-between">
-                                <label htmlFor="isOneToOne" className="text-sm font-medium text-gray-700">
-                                    1-to-1 Class?
-                                </label>
-                                <input
-                                    type="checkbox"
-                                    name="isOneToOne"
-                                    id="isOneToOne"
-                                    checked={formData.isOneToOne}
-                                    onChange={handleChange}
-                                    disabled={isLoading}
-                                    className="form-checkbox h-5 w-5 text-blue-600 cursor-pointer"
-                                />
-                            </div>
+                                {/* oneToOne Input */}
+                                <div className="relative flex items-start py-4">
+                                    <div className="min-w-0 flex-1 text-sm leading-6">
+                                    <label htmlFor='isOneToOne' className="select-none font-medium text-gray-900">
+                                        1-to-1 Class
+                                    </label>
+                                    </div>
+                                    <div className="ml-3 flex h-6 items-center">
+                                    <input
+                                        id='isOneToOne'
+                                        name='isOneToOne'
+                                        type="checkbox"
+                                        checked={formData.isOneToOne}
+                                        onChange={handleChange}
+                                        disabled={isLoading}
+                                        className="h-4 w-4 rounded border-gray-300 text-indigo-700 focus:ring-indigo-700"
+                                    />
+                                    </div>
+                                </div>
 
-                            <div className="flex items-center justify-between">
-                                <label htmlFor="isOnline" className="text-sm font-medium text-gray-700">
-                                    Online Class?
-                                </label>
-                                <input
-                                    type="checkbox"
-                                    name="isOnline"
-                                    id="isOnline"
-                                    checked={formData.isOnline}
-                                    onChange={handleChange}
-                                    disabled={isLoading}
-                                    className="form-checkbox h-5 w-5 text-blue-600 cursor-pointer"
-                                />
-                            </div>
+                                {/* Online Class Input */}
+                                <div className="relative flex items-start py-4">
+                                    <div className="min-w-0 flex-1 text-sm leading-6">
+                                    <label htmlFor='isOnline' className="select-none font-medium text-gray-900">
+                                        Online Class
+                                    </label>
+                                    </div>
+                                    <div className="ml-3 flex h-6 items-center">
+                                    <input
+                                        id='isOnline'
+                                        name='isOnline'
+                                        type="checkbox"
+                                        checked={formData.isOnline}
+                                        onChange={handleChange}
+                                        disabled={isLoading}
+                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                    />
+                                    </div>
+                                </div>
 
                         </div>
-
-
-
+                        
                         <div className="text-center">
                             {
                                 isLoading ? (
                                     <LoadingSpinner />
                                 ) : (
                                     <ButtonPrimaryComponent type='submit' >
-                                        Submit Plan
+                                        Create Plan
                                     </ButtonPrimaryComponent>
 
                                 )

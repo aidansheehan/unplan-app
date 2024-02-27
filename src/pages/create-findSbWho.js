@@ -1,12 +1,13 @@
 import ActivityInstructionsComponent from "@/components/activity-instructions.component";
 import FullPageLoading from "@/components/full-page.loading.component";
-import Layout from "@/components/layout";
 import ACTIVITY_INFO from "@/constants/activity-info.constant";
 import { useAuth } from "@/context/auth.context";
 import ProtectedRoute from "@/hoc/protected-route.hoc";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import apiRequest from "@/services/api-request";
+import PageHeaderComponent from "@/components/page-header";
+import ButtonPrimaryComponent from "@/components/button/button.primary.component";
 
 /**
  * Page to create 'Find Someone Who...'
@@ -62,6 +63,7 @@ const FindSbWho = () => {
 
     return (
         <>
+            <PageHeaderComponent text='Create a "Find Someone Who..." Worksheet' />
             {
                 isLoading ? (
                     <FullPageLoading message='Creating Your Activity Worksheet...' />
@@ -167,9 +169,10 @@ const FindSbWho = () => {
                             </div>
 
                             <div className="text-center">
-                                <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                <ButtonPrimaryComponent type='submit' >
                                     Create Activity
-                                </button>
+                                </ButtonPrimaryComponent>
+
                             </div>
                         </form>
                     </div>
