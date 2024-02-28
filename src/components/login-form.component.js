@@ -1,7 +1,5 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 import GoogleContinueButtonComponent from './google-continue-button.component'
 import { signInWithEmailAndPassword } from 'firebase/auth'
@@ -22,7 +20,7 @@ const LoginFormComponent = () => {
 
         try {
             await signInWithEmailAndPassword(auth, email, password)
-            router.push('/')
+            // router.push('/')
         } catch (error) {
 
             console.error(error)
@@ -36,22 +34,17 @@ const LoginFormComponent = () => {
     }
 
     return (
-        <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
+        <div className="flex min-h-full flex-1 flex-col justify-center py-6 sm:py-12 sm:px-6 lg:px-8">
 
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
+        <div className="sm:mx-auto sm:w-full sm:max-w-[480px]">
         
-          <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+          <div className="bg-white px-6 py-6 md:py-12 shadow sm:rounded-lg sm:px-12">
 
-            <div className="sm:mx-auto sm:w-full sm:max-w-md mb-8 ">
-                <img
-                    className="mx-auto h-10 w-auto"
-                    src="/unplan_logo.svg"
-                    alt="Unplan"
-                />
-                <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 font-heading">
-                    Sign in to your account
+            {/* <div className="sm:mx-auto sm:w-full sm:max-w-md mb-8 "> */}
+                <h2 className="mb-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-700 font-heading">
+                    Welcome Back!
                 </h2>
-            </div>
+            {/* </div> */}
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" >
               <div>
@@ -115,7 +108,7 @@ const LoginFormComponent = () => {
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-indigo-700 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-700"
                 >
-                  Sign in
+                  Log In
                 </button>
               </div>
             </form>
@@ -136,12 +129,6 @@ const LoginFormComponent = () => {
               </div>
             </div>
 
-            <p className="mt-10 text-center text-sm text-gray-500">
-                Don't have an account?{' '}
-            <Link href="/signup" className="font-semibold leading-6 text-indigo-700 hover:text-indigo-600">
-              Sign Up
-            </Link>
-          </p>
           </div>
 
         </div>

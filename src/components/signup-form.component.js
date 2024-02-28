@@ -51,28 +51,15 @@ const SignupForm = () => {
     };
 
     return (
-        <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
+        <div className="flex min-h-full flex-1 flex-col justify-center py-6 sm:py-12 sm:px-6 lg:px-8">
 
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
+        <div className="sm:mx-auto sm:w-full sm:max-w-[480px]">
         
-          <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+          <div className="bg-white px-6 py-6 md:py-12 shadow sm:rounded-lg sm:px-12">
 
-            <div className="sm:mx-auto sm:w-full sm:max-w-md mb-8 ">
-                <img
-                    className="mx-auto h-10 w-auto"
-                    src="/unplan_logo.svg"
-                    alt="Unplan"
-                />
-                <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 font-heading">
-                    Sign up for an account
-                </h2>
-                <p className="mt-2 text-sm leading-6 text-gray-500 text-center">
-                    Already have an account?{' '}
-                    <Link href="/login" className="font-semibold text-indigo-700 hover:text-indigo-600">
-                        Log in
-                    </Link>
-                </p>
-            </div>
+            <h2 className="mb-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-700 font-heading">
+                Let's Go!
+            </h2>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" >
 
@@ -81,7 +68,7 @@ const SignupForm = () => {
                         Username
                     </label>
                     <div className="mt-2">
-                    <input
+                <input
                         {...register('username', { required: 'Username is required.', minLength: { value: 4 } })}
                         id="username"
                         name="username"
@@ -154,7 +141,7 @@ const SignupForm = () => {
               <div>
                 <button
                   type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-700 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-700"
+                  className="font-nav flex w-full justify-center rounded-md bg-indigo-700 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-700"
                 >
                   Sign up
                 </button>
