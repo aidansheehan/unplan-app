@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
-import GoogleContinueButtonComponent from './google-continue-button/google-continue-button.component'
+import GoogleContinueButtonComponent from './google-continue-button.component'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { useRouter } from 'next/router'
 import { auth } from '../../firebaseConfig'
@@ -36,78 +36,118 @@ const LoginFormComponent = () => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center bg-white p-10 rounded-lg md:shadow-md max-w-md text-sm text-center my-4">
+        <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
 
-            <h2 className="text-2xl font-bold text-gray-800 mb-8">Sign in to Easy Plan ESL</h2>
+        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
+        
+          <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
 
-            {/* Google Sign-in Button */}
-            <GoogleContinueButtonComponent />
-            
-            {/* Email/Password Form */}
-            <form onSubmit={handleSubmit(onSubmit)} className='w-full'>
+            <div className="sm:mx-auto sm:w-full sm:max-w-md mb-8 ">
+                <img
+                    className="mx-auto h-10 w-auto"
+                    src="/unplan_logo.svg"
+                    alt="Unplan"
+                />
+                <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 font-heading">
+                    Sign in to your account
+                </h2>
+            </div>
 
-                {/* Email input */}
-                <div className="mb-4 w-full">
-                    <div className="flex border rounded w-full">
-                        <span className="flex items-center bg-gray-100 border-r p-2">
-                            <FontAwesomeIcon icon={faEnvelope} className="text-gray-500"/>
-                        </span>
-                        <input
-                            {...register('email', { required: 'Email is required.', pattern: { value: /^\S+@\S+$/i, message: 'Invalid email address.' } })}
-                            type="email"
-                            id="email"
-                            className={`w-full p-2 ${errors.email ? 'border-red-500' : ''}`}
-                            placeholder="Email"
-                            autoComplete='username'
-                        />
-                    </div>
-                    {errors.email && <p className="text-red-500 text-xs italic">{errors.email.message}</p>}
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" >
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                  Email address
+                </label>
+                <div className="mt-2">
+                  <input
+                    {...register('email', { required: 'Email is required.', pattern: { value: /^\S+@\S+$/i, message: 'Invalid email address.' } })}
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
                 </div>
+              </div>
 
-                {/* Password input */}
-                <div className="mb-4">
-                    <div className="flex border rounded">
-                        <span className="flex items-center bg-gray-100 border-r p-2">
-                            <FontAwesomeIcon icon={faLock} className="text-gray-500"/>
-                        </span>
-                        <input
-                            {...register('password', { required: 'Password is required.', minLength: { value: 6, message: 'Password must be at least 6 characters.' } })}
-                            type="password"
-                            id="password"
-                            className={`w-full p-2 ${errors.password ? 'border-red-500' : ''}`}
-                            placeholder="Password"
-                            autoComplete='current-password'
-                        />
-                    </div>
-                    {errors.password && <p className="text-red-500 text-xs italic">{errors.password.message}</p>}
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                  Password
+                </label>
+                <div className="mt-2">
+                  <input
+                    {...register('password', { required: 'Password is required.', minLength: { value: 6, message: 'Password must be at least 6 characters.' } })}
+                    id="password"
+                    name="password"
+                    type="password"
+                    autoComplete="current-password"
+                    required
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
                 </div>
+              </div>
 
-                {/* Submit Button */}
-                <button type="submit" className="text-white font-bold py-2 px-4 rounded w-full transition-colors duration-300 bg-green-500 hover:bg-green-600 mb-6">
-                    Log In
+              <div className="flex items-center justify-between">
+
+                {/* TODO implement 'Remember Me' */}
+                {/* <div className="flex items-center">
+                  <input
+                    id="remember-me"
+                    name="remember-me"
+                    type="checkbox"
+                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                  />
+                  <label htmlFor="remember-me" className="ml-3 block text-sm leading-6 text-gray-900">
+                    Remember me
+                  </label>
+                </div> */}
+
+                <div className="text-sm leading-6">
+                  <Link href="/forgot-password" className="font-semibold text-indigo-700 hover:text-indigo-500">
+                    Forgot password?
+                  </Link>
+                </div>
+              </div>
+
+              <div>
+                <button
+                  type="submit"
+                  className="flex w-full justify-center rounded-md bg-indigo-700 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-700"
+                >
+                  Sign in
                 </button>
-
+              </div>
             </form>
 
-            {/* Forgot Password Section */}
-            <div className='mb-4'>
-                <Link href='/forgot-password' className='text-sm text-blue-500 hover:text-blue-600'>
-                    Forgot your password?
-                </Link>
+            <div>
+              <div className="relative mt-10">
+                <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                  <div className="w-full border-t border-gray-200" />
+                </div>
+                <div className="relative flex justify-center text-sm font-medium leading-6">
+                  <span className="bg-white px-6 text-gray-900">Or continue with</span>
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <GoogleContinueButtonComponent />
+
+              </div>
             </div>
 
-            {/* Signup Redirect Section */}
-            <div className='mb-4'>
-                <p className='text-sm text-gray-500'>
-                    Don't have an account?{" "}
-                    <Link href='/signup' className='text-blue-500 hover:text-blue-600'>
-                        Sign up
-                    </Link>
-                </p>
-            </div>
+            <p className="mt-10 text-center text-sm text-gray-500">
+                Don't have an account?{' '}
+            <Link href="/signup" className="font-semibold leading-6 text-indigo-700 hover:text-indigo-600">
+              Sign Up
+            </Link>
+          </p>
+          </div>
 
         </div>
-    );
+      </div>
+    )
+
 }
 
 export default LoginFormComponent;
