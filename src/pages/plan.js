@@ -6,6 +6,7 @@ import { useAuth } from '@/context/auth.context';
 import apiRequest from '@/services/api-request';
 import PageHeaderComponent from '@/components/page-header';
 import ButtonPrimaryComponent from '@/components/button/button.primary.component';
+import { PlusIcon } from '@heroicons/react/24/outline';
 
 /**
  * Page to plan a lesson
@@ -281,7 +282,8 @@ const Plan = () => {
                                 isLoading ? (
                                     <LoadingSpinner />
                                 ) : (
-                                    <ButtonPrimaryComponent type='submit' >
+                                    <ButtonPrimaryComponent type='submit' style='inline-flex mt-6 items-center' >
+                                        <PlusIcon className='-ml-0.5 mr-1.5 h-6 w-6' />
                                         Create Plan
                                     </ButtonPrimaryComponent>
 

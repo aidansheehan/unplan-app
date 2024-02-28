@@ -1,7 +1,10 @@
 import ContentGridActivityContainer from '@/components/content-grid/content-grid.activity.container'
 import ContentGridLessonContainer from '@/components/content-grid/content-grid.lesson.container'
 import DashboardSection from '@/components/dashboard.section.component'
+import EmptyStateComponent from '@/components/empty-state.component'
+import LoadingSpinner from '@/components/loading-spinner'
 import PageHeaderComponent from '@/components/page-header'
+import WelcomeScreen from '@/components/welcome-screen.component'
 import { useAuth } from '@/context/auth.context'
 import ProtectedRoute from '@/hoc/protected-route.hoc'
 import apiRequest from '@/services/api-request'
@@ -55,11 +58,18 @@ const Home = () => {
 
     }, [ user, getToken ])
 
+    if (!isLoadingLessons && !isLoadingActivities && !recentLessons.length && !recentActivities.length) return (
+        <WelcomeScreen />
+    )
+
     return (
         <>
+
             <PageHeaderComponent text='Dashboard' />
+
             <DashboardSection 
               title='Recent Lessons' 
+              hideButtons={!recentLessons.length}
               link1={{
                   text: 'See all',
                   href: '/your-lessons'
@@ -69,10 +79,21 @@ const Home = () => {
                   href: '/plan'
               }}
             >
-              {isLoadingLessons ? <p>Loading...</p> : <ContentGridLessonContainer lessons={recentLessons} />}
+                {
+                    isLoadingLessons ? (
+                        <LoadingSpinner />
+                    ) : (
+                        recentLessons.length ? (
+                            <ContentGridLessonContainer lessons={recentLessons} />
+                        ) : (
+                            <EmptyStateComponent text="You haven't created any lessons yet." />
+                        )
+                    )
+                }
             </DashboardSection>
             <DashboardSection 
               title='Recent Activities'
+              hideButtons={!recentActivities || !recentActivities.length}
               link1={{
                 text: 'See all',
                 href: '/activities'
@@ -82,6 +103,17 @@ const Home = () => {
                 href: '/activities'
               }}
             >
+                {
+                    isLoadingActivities ? (
+                        <LoadingSpinner />
+                    ) : (
+                        recentActivities && recentActivities.length ? (
+                            <ContentGridActivityContainer activities={recentActivities} />
+                        ) : (
+                            <EmptyStateComponent text="You haven't created any classroom activity materials yet." href='/activities' />
+                        )
+                    )
+                }
                 { isLoadingActivities ? <p>Loading...</p> : <ContentGridActivityContainer activities={recentActivities} />}
             </DashboardSection>
         </>

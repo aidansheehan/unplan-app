@@ -3,6 +3,8 @@ import { useAuth } from "@/context/auth.context"
 import apiRequest from "@/services/api-request"
 import PageHeaderComponent from "@/components/page-header"
 import ContentGridActivityContainer from "@/components/content-grid/content-grid.activity.container"
+import LoadingSpinner from "@/components/loading-spinner"
+import EmptyStateComponent from "@/components/empty-state.component"
 
 const MyActivities = () => {
 
@@ -34,9 +36,16 @@ const MyActivities = () => {
 
                 {
                     isLoading ? (
-                        <p>Loading...</p>
+                        <LoadingSpinner />
                     ) : (
-                        <ContentGridActivityContainer activities={myActivities} />
+                        myActivities && myActivities.length ? (
+                            <ContentGridActivityContainer activities={myActivities} />
+                        ) : (
+                            <div className="min-h-full flex justify-center items-center py-32" >
+                                <EmptyStateComponent size='2x' text="It's time to create classroom materials in seconds." href="/activities" />
+                            </div>
+                        )
+                        
                     )
                 }
             </>
