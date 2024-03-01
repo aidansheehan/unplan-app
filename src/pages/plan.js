@@ -270,7 +270,7 @@ const Plan = () => {
                                         checked={formData.isOnline}
                                         onChange={handleChange}
                                         disabled={isLoading}
-                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                        className="h-4 w-4 rounded border-gray-300 text-buttonBg focus:ring-buttonBg"
                                     />
                                     </div>
                                 </div>

@@ -161,11 +161,12 @@ export default function AuthLayoutComponent({children}) {
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-sidebarBg px-6">
             <div className="flex h-16 shrink-0 items-center mt-8 mb-8">
-              <img
+              {/* <img
                 className="w-auto h-14"
                 src="/unplan_logo.svg"
                 alt="Unplan"
-              />
+              /> */}
+              <h2 className='font-heading text-5xl text-brand' >UNPLAN</h2>
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">

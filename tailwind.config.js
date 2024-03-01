@@ -23,15 +23,30 @@ module.exports = {
         'xl': '1440px'
       },
       colors: {
-        buttonBg: '#4338CA',
-        buttonHover: '#4F46E5',
+// Sidebar / Top Nav colors
+sidebarBg: '#F9D835', // A softened yellow, less bright, but still warm and inviting
+sidebarHover: '#E6C200', // A slightly darker yellow for hover effects
+sidebarHighlight: '#202020', // A very dark grey, almost black for contrast and emphasis
+sidebarInactiveText: '#4A4A4A', // A medium grey for inactive text, for better readability
 
-        // Sidebar / Top Nav colors
-        sidebarHover: '#29292b',
-        sidebarHighlight: '#fcd116',
-        sidebarBg: '#1c1c1e',
-        sidebarInactiveText: '#f5f5f5',
-        brand: '#db2b39',
+// Brand color
+brand: '#000',//'#F9D835', // Softened yellow to maintain brand consistency but less bright
+
+// Button colors
+buttonBg: '#3273DC', // Warm blue for primary action buttons
+buttonHover: '#2767B1', // A slightly darker shade of blue for button hover state
+
+// Additional UI colors
+textColor: '#4A4A4A', // Medium grey for main text, softer than black
+highlightText: '#F9D835', // Softened yellow for highlighted text or important UI elements
+cardBg: '#FFFFFF', // White for cards to keep the interface clean and modern
+cardShadow: '#000000', // Black for subtle shadows to give depth, at low opacity
+
+
+
+
+
+
       }
     },
   },
