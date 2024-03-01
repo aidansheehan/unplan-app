@@ -26,7 +26,7 @@ const UnauthLayout = ({children}) => {
                     {
                         pathname.includes('login') && (
                             <div >
-                                <span className='text-brandRed mr-4 text-lg font-heading hidden md:inline-block' >Don't have an account?{' '}</span>
+                                <span className='text-brand mr-4 text-lg font-heading hidden md:inline-block' >Don't have an account?{' '}</span>
 
                                 <ButtonLinkPrimaryComponent href='/signup' >
                                     Sign Up
@@ -38,7 +38,7 @@ const UnauthLayout = ({children}) => {
                     {
                         pathname.includes('signup') && (
                             <div >
-                                <span className='text-brandRed mr-4 text-lg font-heading hidden md:inline-block' >Already using UNPLAN?{' '}</span>
+                                <span className='text-brand mr-4 text-lg font-heading hidden md:inline-block' >Already using UNPLAN?{' '}</span>
 
                                 <ButtonLinkPrimaryComponent href='/login' >
                                     Login

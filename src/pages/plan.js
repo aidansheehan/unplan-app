@@ -148,7 +148,7 @@ const Plan = () => {
                                 <div className="flex">
                                     <button
                                         type="button"
-                                        className={`px-4 py-2 rounded-l-md w-1/2 md:w-auto ${!useCEFR ? 'bg-indigo-700 font-semibold text-white' : 'bg-white border border-indigo-200 hover:bg-indigo-50 text-gray-700'}`}
+                                        className={`px-4 py-2 rounded-l-md w-1/2 md:w-auto ${!useCEFR ? 'bg-buttonBg font-semibold text-white' : 'bg-white border border-indigo-200 hover:bg-indigo-50 text-gray-700'}`}
                                         disabled={isLoading}
                                         onClick={toggleCEFR}
                                     >
@@ -156,7 +156,7 @@ const Plan = () => {
                                     </button>
                                     <button
                                         type="button"
-                                        className={`px-4 py-2 rounded-r-md w-1/2 md:w-auto ${useCEFR ? 'bg-indigo-700 font-semibold text-white' : 'bg-white border border-indigo-200 hover:bg-indigo-50 text-gray-700'}`}
+                                        className={`px-4 py-2 rounded-r-md w-1/2 md:w-auto ${useCEFR ? 'bg-buttonBg font-semibold text-white' : 'bg-white border border-indigo-200 hover:bg-indigo-50 text-gray-700'}`}
                                         disabled={isLoading}
                                         onClick={toggleCEFR}
                                     >
@@ -204,15 +204,15 @@ const Plan = () => {
                                 />
 
                                 <button type="button" disabled={isLoading} onClick={() => setFormData({...formData, duration: 60})}
-                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 60 ? 'bg-indigo-700 font-semibold text-white' : 'border border-indigo-200 hover:bg-indigo-50' }`}>
+                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 60 ? 'bg-buttonBg font-semibold text-white' : 'border border-indigo-200 hover:bg-indigo-50' }`}>
                                 60 min
                                 </button>
                                 <button type="button" disabled={isLoading} onClick={() => setFormData({...formData, duration: 90})}
-                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 90 ? 'bg-indigo-700 font-semibold text-white' : 'border border-indigo-200 hover:bg-indigo-50' }`}>
+                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 90 ? 'bg-buttonBg font-semibold text-white' : 'border border-indigo-200 hover:bg-indigo-50' }`}>
                                 90 min
                                 </button>
                                 <button type="button" disabled={isLoading} onClick={() => setFormData({...formData, duration: 120})}
-                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 120 ? 'bg-indigo-700 font-semibold text-white' : 'border border-indigo-200 hover:bg-indigo-50' }`}>
+                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 120 ? 'bg-buttonBg font-semibold text-white' : 'border border-indigo-200 hover:bg-indigo-50' }`}>
                                 120 min
                                 </button>
                             </div>
@@ -250,7 +250,7 @@ const Plan = () => {
                                         checked={formData.isOneToOne}
                                         onChange={handleChange}
                                         disabled={isLoading}
-                                        className="h-4 w-4 rounded border-gray-300 text-indigo-700 focus:ring-indigo-700"
+                                        className="h-4 w-4 rounded border-gray-300 text-buttonBg focus:ring-buttonBg"
                                     />
                                     </div>
                                 </div>

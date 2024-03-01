@@ -62,7 +62,7 @@ export default function AuthLayoutComponent({children}) {
                     </div>
                   </Transition.Child>
                   {/* Sidebar component, swap this element with another sidebar if you like */}
-                  <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-charcoal px-6 pb-2">
+                  <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-sidebarBg px-6 pb-2">
                     <div className="flex h-16 shrink-0 items-center mb-8 mt-4">
                       <img
                         className="h-12 w-auto"
@@ -81,14 +81,14 @@ export default function AuthLayoutComponent({children}) {
                                         href={item.href}
                                         className={classNames(
                                             item.current
-                                            ? 'bg-hover text-highlight'
-                                            : 'text-softwhite hover:text-white hover:bg-hover',
+                                            ? 'bg-sidebarHover text-sidebarHighlight'
+                                            : 'text-sidebarInactiveText hover:text-white hover:bg-sidebarHover',
                                             'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
                                         )}
                                         >
                                         <item.icon
                                             className={classNames(
-                                            item.current ? 'text-highlight' : 'text-softwhite group-hover:text-white',
+                                            item.current ? 'text-sidebarHighlight' : 'text-sidebarInactiveText group-hover:text-white',
                                             'h-6 w-6 shrink-0'
                                             )}
                                             aria-hidden="true"
@@ -101,14 +101,14 @@ export default function AuthLayoutComponent({children}) {
                                             <>
                                             <Disclosure.Button
                                                 className={classNames(
-                                                item.current ? 'bg-hover text-highlight' : 'text-softwhite hover:text-white hover:bg-hover',
+                                                item.current ? 'bg-sidebarHover text-sidebarHighlight' : 'text-sidebarInactiveText hover:text-white hover:bg-sidebarHover',
                                                 'flex items-center w-full text-left rounded-md p-2 gap-x-3 text-sm leading-6 font-semibold text-gray-700'
                                                 )}
                                             >
                                                 <item.icon className={classNames(
                                                     item.current 
-                                                    ? 'text-highlight' 
-                                                    : 'text-softwhite group-hover:text-white',
+                                                    ? 'text-sidebarHighlight' 
+                                                    : 'text-sidebarInactiveText group-hover:text-white',
                                                     'h-6 w-6 shrink-0'
                                                 )} aria-hidden="true" />
                                                 {item.name}
@@ -128,7 +128,7 @@ export default function AuthLayoutComponent({children}) {
                                                         as={Link}
                                                         href={subItem.href}
                                                         className={classNames(
-                                                            subItem.current ? 'bg-hover text-highlight' : 'text-softwhite hover:text-white hover:bg-hover',
+                                                            subItem.current ? 'bg-sidebarHover text-sidebarHighlight' : 'text-sidebarInactiveText hover:text-white hover:bg-sidebarHover',
                                                             'block rounded-md py-2 pr-2 pl-9 text-sm leading-6 text-gray-700'
                                                         )}
                                                         >
@@ -159,7 +159,7 @@ export default function AuthLayoutComponent({children}) {
         {/* Static sidebar for desktop */}
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-custom-background px-6">
+          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-sidebarBg px-6">
             <div className="flex h-16 shrink-0 items-center mt-8 mb-8">
               <img
                 className="w-auto h-14"
@@ -178,14 +178,14 @@ export default function AuthLayoutComponent({children}) {
                                 href={item.href}
                                 className={classNames(
                                     item.current
-                                    ? 'bg-hover text-highlight'
-                                    : 'text-softwhite hover:text-white hover:bg-hover',
+                                    ? 'bg-sidebarHover text-sidebarHighlight'
+                                    : 'text-sidebarInactiveText hover:text-white hover:bg-sidebarHover',
                                     'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
                                 )}
                                 >
                                 <item.icon
                                     className={classNames(
-                                    item.current ? 'text-highlight' : 'text-softwhite group-hover:text-white',
+                                    item.current ? 'text-sidebarHighlight' : 'text-sidebarInactiveText group-hover:text-white',
                                     'h-6 w-6 shrink-0'
                                     )}
                                     aria-hidden="true"
@@ -199,15 +199,15 @@ export default function AuthLayoutComponent({children}) {
                                     <Disclosure.Button
                                         className={classNames(
                                             item.current
-                                                ? 'bg-hover text-highlight'
-                                                : 'text-softwhite hover:text-white hover:bg-hover',
+                                                ? 'bg-sidebarHover text-sidebarHighlight'
+                                                : 'text-sidebarInactiveText hover:text-white hover:bg-sidebarHover',
                                         'flex items-center w-full text-left rounded-md p-2 gap-x-3 text-sm leading-6 font-semibold text-gray-700'
                                         )}
                                     >
                                         <item.icon className={classNames(
                                                 item.current 
-                                                ? 'text-highlight' 
-                                                : 'text-softwhite group-hover:text-white',
+                                                ? 'text-sidebarHighlight' 
+                                                : 'text-sidebarInactiveText group-hover:text-white',
                                                 'h-6 w-6 shrink-0'
                                         )} aria-hidden="true" />
                                         {item.name}
@@ -228,8 +228,8 @@ export default function AuthLayoutComponent({children}) {
                                             href={subItem.href}
                                             className={classNames(
                                                 subItem.current
-                                                ? 'bg-hover text-highlight font-semibold'
-                                                : 'text-softwhite hover:text-white hover:bg-hover',
+                                                ? 'bg-sidebarHover text-sidebarHighlight font-semibold'
+                                                : 'text-sidebarInactiveText hover:text-white hover:bg-sidebarHover',
                                                 'block rounded-md py-2 pr-2 pl-9 text-sm leading-6 text-gray-700 my-1'
                                             )}
                                             >
@@ -257,14 +257,14 @@ export default function AuthLayoutComponent({children}) {
                             href={item.href}
                             className={classNames(
                                 item.current
-                                            ? 'bg-hover text-highlight'
-                                            : 'text-softwhite hover:text-white hover:bg-hover',
+                                            ? 'bg-sidebarHover text-sidebarHighlight'
+                                            : 'text-sidebarInactiveText hover:text-white hover:bg-sidebarHover',
                                             'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
                             )}
                           >
                             <item.icon
                                 className={classNames(
-                                    item.current ? 'text-highlight' : 'text-softwhite group-hover:text-white',
+                                    item.current ? 'text-sidebarHighlight' : 'text-sidebarInactiveText group-hover:text-white',
                                     'h-6 w-6 shrink-0'
                                 )}
                             />
@@ -280,8 +280,8 @@ export default function AuthLayoutComponent({children}) {
           </div>
         </div>
 
-        <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-charcoal px-4 py-4 shadow-sm sm:px-6 lg:hidden justify-between">
-          <button type="button" className="-m-2.5 p-2.5 text-softwhite lg:hidden" onClick={() => setSidebarOpen(true)}>
+        <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-sidebarBg px-4 py-4 shadow-sm sm:px-6 lg:hidden justify-between">
+          <button type="button" className="-m-2.5 p-2.5 text-sidebarInactiveText lg:hidden" onClick={() => setSidebarOpen(true)}>
             <span className="sr-only">Open sidebar</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>

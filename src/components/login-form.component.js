@@ -97,7 +97,7 @@ const LoginFormComponent = () => {
                 </div> */}
 
                 <div className="text-sm leading-6">
-                  <Link href="/forgot-password" className="font-semibold text-indigo-700 hover:text-indigo-500">
+                  <Link href="/forgot-password" className="font-semibold text-buttonBg hover:text-indigo-500">
                     Forgot password?
                   </Link>
                 </div>
@@ -106,7 +106,7 @@ const LoginFormComponent = () => {
               <div>
                 <button
                   type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-700 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-700"
+                  className="flex w-full justify-center rounded-md bg-buttonBg px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-buttonBg"
                 >
                   Log In
                 </button>
