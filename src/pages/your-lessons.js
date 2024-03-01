@@ -1,5 +1,6 @@
-import ContentGridLessonContainer from "@/components/content-grid/content-grid.lesson.container";
+import ContentGridComponent from "@/components/content-grid.component";
 import EmptyStateComponent from "@/components/empty-state.component";
+import LessonCard from "@/components/lesson-card.component";
 import LoadingSpinner from "@/components/loading-spinner";
 import PageHeaderComponent from "@/components/page-header";
 import SearchBarComponent from "@/components/search-bar.component";
@@ -37,7 +38,8 @@ const YourLessons = () => {
                     lessons.length ? (
                         <>
                             <SearchBarComponent searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-                            <ContentGridLessonContainer lessons={filteredLessons} />
+                            {/* <ContentGridLessonContainer lessons={filteredLessons} /> */}
+                            <ContentGridComponent contents={filteredLessons} CardComponent={<LessonCard />} />
                         </>
                     ) : (
                          <div className="min-h-full flex justify-center items-center py-32" >

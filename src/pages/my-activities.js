@@ -2,9 +2,10 @@ import { useEffect, useState } from "react"
 import { useAuth } from "@/context/auth.context"
 import apiRequest from "@/services/api-request"
 import PageHeaderComponent from "@/components/page-header"
-import ContentGridActivityContainer from "@/components/content-grid/content-grid.activity.container"
 import LoadingSpinner from "@/components/loading-spinner"
 import EmptyStateComponent from "@/components/empty-state.component"
+import ContentGridComponent from "@/components/content-grid.component"
+import ActivityCard from "@/components/activity-card.component"
 
 const MyActivities = () => {
 
@@ -39,7 +40,7 @@ const MyActivities = () => {
                         <LoadingSpinner />
                     ) : (
                         myActivities && myActivities.length ? (
-                            <ContentGridActivityContainer activities={myActivities} />
+                            <ContentGridComponent contents={myActivities} CardComponent={<ActivityCard />} />
                         ) : (
                             <div className="min-h-full flex justify-center items-center py-32" >
                                 <EmptyStateComponent size='2x' text="It's time to create classroom materials in seconds." href="/activities" />
