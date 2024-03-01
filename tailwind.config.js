@@ -27,7 +27,9 @@ module.exports = {
 sidebarBg: '#F9D835', // A softened yellow, less bright, but still warm and inviting
 sidebarHover: '#E6C200', // A slightly darker yellow for hover effects
 sidebarHighlight: '#202020', // A very dark grey, almost black for contrast and emphasis
-sidebarInactiveText: '#4A4A4A', // A medium grey for inactive text, for better readability
+sidebarInactiveText: '#2e2e2e',
+sidebarHoverText: '#4a4a4a',
+sidebarActiveText: '#1a1a1a',
 
 // Brand color
 brand: '#000',//'#F9D835', // Softened yellow to maintain brand consistency but less bright

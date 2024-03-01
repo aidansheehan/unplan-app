@@ -10,17 +10,18 @@ const UnauthLayout = ({children}) => {
     const { pathname }  = router
 
     return (
-        <div className='w-full h-full min-h-screen bg-white sm:bg-custom-background' >
+        <div className='w-full h-full min-h-screen bg-white sm:bg-sidebarBg' >
 
-            <div className="flex grow flex-col gap-y-5 overflow-y-auto px-6 bg-custom-background">
+            <div className="flex grow flex-col gap-y-5 overflow-y-auto px-6 bg-sidebarBg">
                 <div className='flex h-16 shrink-0 py-4 justify-between items-center'>
 
                     <a href='https://unplan.io' target='_blank' rel='noopener'>
-                        <img
+                        {/* <img
                                 className="h-10 w-auto"
                                 src="/unplan_logo.svg"
                                 alt="Unplan"
-                        />
+                        /> */}
+                        <h2 className='font-heading text-4xl text-brand' >UNPLAN</h2>
                     </a>
 
                     {
