@@ -1,6 +1,4 @@
-import FindSbWhoIconComponent from "@/components/activity-icons/findSbWho.icon.component"
-import GramVocabIconComponent from "@/components/activity-icons/gramVocab.icon.component"
-import ReadingComprehensionIconComponent from "@/components/activity-icons/readingComprehension.icon.component"
+import { faBookOpen, faFileAlt, faUsers } from "@fortawesome/free-solid-svg-icons"
 
 /**
  * Map activity keys to texts
@@ -14,7 +12,7 @@ const ACTIVITY_INFO = {
         to their classmates to find someone who matches each statement. For example, "Find someone 
         who has been to Europe" requires the student to ask their peers about their travel experiences. 
         It's a great way to get students speaking and to learn more about each other!`,
-        icon: FindSbWhoIconComponent
+        icon: faUsers
     },
     grammarVocab: {
         title: 'Grammar/Vocabulary Worksheet',
@@ -24,7 +22,7 @@ const ACTIVITY_INFO = {
         from controlled practice, where students focus on accuracy, to free practice, where they 
         can use the language more creatively. This worksheet is great for reinforcing new language 
         points and ensuring students feel confident using them in different contexts.`,
-        icon: GramVocabIconComponent
+        icon: faFileAlt
     },
     readingComprehension: {
         title: 'Reading Comprehension Worksheet',
@@ -34,7 +32,7 @@ const ACTIVITY_INFO = {
         thinking. The worksheet will be tailored to the specified level, length, and objectives, ensuring 
         that it aligns with the students' learning needs. This is an excellent tool for improving reading 
         comprehension and encouraging thoughtful engagement with the text.`,
-        icon: ReadingComprehensionIconComponent
+        icon: faBookOpen
     }
 
 }

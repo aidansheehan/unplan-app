@@ -294,7 +294,7 @@ export default function AuthLayoutComponent({children}) {
         </div>
 
         <main className="md:py-10 lg:pl-72">
-          <div className="md:px-4  lg:px-8 font-body">
+          <div className="px-4 md:px-4  lg:px-8 font-body">
               {children}
           </div>
         </main>

@@ -65,7 +65,7 @@ const SignupForm = () => {
 
                 <div>
                     <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
-                        Username
+                        Your Name
                     </label>
                     <div className="mt-2">
                 <input
@@ -164,11 +164,11 @@ const SignupForm = () => {
               </div>
             </div>
 
+          </div>
             {/* TODO link */}
-            <p className="mt-10 text-center text-sm text-gray-500">
+            <p className="mt-10 text-center text-sm text-gray-500 text-gray-100">
                 By clicking "Create Account" or "Continue with Google", you agree to our TOS and Privacy Policy.
             </p>
-          </div>
 
         </div>
       </div>

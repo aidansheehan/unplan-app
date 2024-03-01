@@ -1,7 +1,8 @@
-import ContentGridActivityContainer from '@/components/content-grid/content-grid.activity.container'
-import ContentGridLessonContainer from '@/components/content-grid/content-grid.lesson.container'
+import ActivityCard from '@/components/activity-card.component'
+import ContentGridComponent from '@/components/content-grid.component'
 import DashboardSection from '@/components/dashboard.section.component'
 import EmptyStateComponent from '@/components/empty-state.component'
+import LessonCard from '@/components/lesson-card.component'
 import LoadingSpinner from '@/components/loading-spinner'
 import PageHeaderComponent from '@/components/page-header'
 import WelcomeScreen from '@/components/welcome-screen.component'
@@ -68,7 +69,7 @@ const Home = () => {
             <PageHeaderComponent text='Dashboard' />
 
             <DashboardSection 
-              title='Recent Lessons' 
+              title='Recent Lesson Plans' 
               hideButtons={!recentLessons.length}
               link1={{
                   text: 'See all',
@@ -84,9 +85,9 @@ const Home = () => {
                         <LoadingSpinner />
                     ) : (
                         recentLessons.length ? (
-                            <ContentGridLessonContainer lessons={recentLessons} />
+                            <ContentGridComponent contents={recentLessons} CardComponent={<LessonCard />} />
                         ) : (
-                            <EmptyStateComponent text="You haven't created any lessons yet." />
+                            <EmptyStateComponent text="You haven't created any lessons yet." href='/plan' />
                         )
                     )
                 }
@@ -108,13 +109,13 @@ const Home = () => {
                         <LoadingSpinner />
                     ) : (
                         recentActivities && recentActivities.length ? (
-                            <ContentGridActivityContainer activities={recentActivities} />
+                            <ContentGridComponent contents={recentActivities} CardComponent={<ActivityCard />} />
                         ) : (
                             <EmptyStateComponent text="You haven't created any classroom activity materials yet." href='/activities' />
                         )
                     )
                 }
-                { isLoadingActivities ? <p>Loading...</p> : <ContentGridActivityContainer activities={recentActivities} />}
+
             </DashboardSection>
         </>
     )

@@ -1,4 +1,5 @@
-import ContentGridLessonContainer from "@/components/content-grid/content-grid.lesson.container"
+import ContentGridComponent from "@/components/content-grid.component"
+import LessonCard from "@/components/lesson-card.component"
 import LoadingSpinner from "@/components/loading-spinner"
 import PageHeaderComponent from "@/components/page-header"
 import SearchBarComponent from "@/components/search-bar.component"
@@ -24,7 +25,7 @@ const Library = () => {
         <div >
             <PageHeaderComponent text='Lesson Library' />
             <SearchBarComponent searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-            {isLoading ? <LoadingSpinner /> : <ContentGridLessonContainer lessons={filteredLessons} />}
+            {isLoading ? <LoadingSpinner /> : <ContentGridComponent contents={filteredLessons} CardComponent={<LessonCard />} />}
         </div>
     )
 
