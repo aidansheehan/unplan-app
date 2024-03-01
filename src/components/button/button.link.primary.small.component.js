@@ -6,7 +6,7 @@ const ButtonLinkPrimarySmallComponent = ({href, children}) => {
         <Link
             type="button"
             href={href}
-            className="ml-3 inline-flex items-center rounded-md bg-buttonBg px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 font-nav"
+            className="ml-3 inline-flex items-center rounded-md bg-buttonBg px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-buttonHover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-buttonHover font-nav"
         >
             {children}
         </Link>

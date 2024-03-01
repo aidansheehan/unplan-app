@@ -10,7 +10,7 @@ const EmptyStateComponent = ({ size = 'default', text, href }) => {
 
   return (
     <div className={`text-center ${size === '2x' ? 'space-y-4' : 'space-y-2'}`}>
-        <FolderIcon className={`mx-auto ${sizeClass} text-gray-400`}/>
+        <FolderIcon className={`mx-auto ${sizeClass} text-blue-100`}/>
 
       <h3 className={`mt-2 ${textSizeClass} font-semibold text-gray-900`}>Oops, nothing here yet!</h3>
       <p className={`mt-1 ${textSizeClass} text-gray-500`}>{text}</p>

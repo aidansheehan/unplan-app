@@ -75,7 +75,7 @@ const SignupForm = () => {
                         type="text" // Changed to text as it's a username
                         autoComplete="username"
                         required
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-buttonHover sm:text-sm sm:leading-6"
                     />
                     </div>
                     {errors.username && <p className="text-red-500 text-xs italic">{errors.username.message}</p>}
@@ -94,7 +94,7 @@ const SignupForm = () => {
                     type="email"
                     autoComplete="email"
                     required
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-buttonHover sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -111,7 +111,7 @@ const SignupForm = () => {
                     type="password"
                     autoComplete="new-password"
                     required
-                    className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ${errors.password ? 'border-red-500' : ''}`}
+                    className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-buttonHover sm:text-sm sm:leading-6 ${errors.password ? 'border-red-500' : ''}`}
                   />
                 </div>
                 {errors.password && <p className="text-red-500 text-xs italic">{errors.password.message}</p>}
@@ -125,7 +125,7 @@ const SignupForm = () => {
                         aria-describedby="mailingList-description"
                         name="mailingList"
                         type="checkbox"
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                        className="h-4 w-4 rounded border-gray-300 text-buttonHover focus:ring-buttonHover"
                         />
                     </div>
                     <div className="ml-3 text-sm leading-6">
@@ -141,7 +141,7 @@ const SignupForm = () => {
               <div>
                 <button
                   type="submit"
-                  className="font-nav flex w-full justify-center rounded-md bg-buttonBg px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-buttonBg"
+                  className="font-nav flex w-full justify-center rounded-md bg-buttonBg px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-buttonHover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-buttonBg"
                 >
                   Sign up
                 </button>

@@ -259,14 +259,14 @@ export default function AuthLayoutComponent({children}) {
                             href={item.href}
                             className={classNames(
                                 item.current
-                                            ? 'bg-sidebarHover text-sidebarHighlight'
-                                            : 'text-sidebarInactiveText hover:text-white hover:bg-sidebarHover',
+                                            ? 'bg-sidebarHover text-sidebarActiveText'
+                                            : 'text-sidebarInactiveText hover:text-sidebarHoverText hover:bg-sidebarHover',
                                             'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
                             )}
                           >
                             <item.icon
                                 className={classNames(
-                                    item.current ? 'text-sidebarHighlight' : 'text-sidebarInactiveText group-hover:text-white',
+                                    item.current ? 'text-sidebarActiveText' : 'text-sidebarInactiveText group-hover:text-sidebarHoverText',
                                     'h-6 w-6 shrink-0'
                                 )}
                             />

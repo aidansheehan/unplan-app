@@ -1,4 +1,3 @@
-import { Fragment } from "react"
 import Link from "next/link"
 import { PlusCircleIcon, AcademicCapIcon, BookOpenIcon } from "@heroicons/react/24/outline"
 import PageHeaderComponent from "./page-header"
@@ -12,7 +11,7 @@ const WelcomeScreen = () => {
         <div className="flex flex-col items-center justify-center h-full p-4 text-center">
           {/* <h2 className="mb-2 text-2xl font-semibold text-gray-800">Welcome to UnPlan!</h2> */}
           <PageHeaderComponent text='Welcome to UnPlan!' />
-          <p className="mb-6 text-gray-600">Start creating engaging lesson plans and classroom materials.</p>
+          <p className="mb-6 text-gray-600">Start creating engaging ESL lesson plans and classroom activity materials.</p>
           <div className="space-y-4">
             <Link href="/plan" className="flex items-center justify-center gap-2 px-6 py-3 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                 <PlusCircleIcon className="w-6 h-6" />

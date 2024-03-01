@@ -29,7 +29,7 @@ const YourLessons = () => {
 
     return (
         <div className="flex flex-col" >
-            <PageHeaderComponent text='My Lessons' />
+            <PageHeaderComponent text='My Lesson Plans' />
 
             {
                 isLoading ? (
