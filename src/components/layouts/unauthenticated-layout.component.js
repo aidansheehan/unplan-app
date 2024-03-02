@@ -10,9 +10,9 @@ const UnauthLayout = ({children}) => {
     const { pathname }  = router
 
     return (
-        <div className='w-full h-full min-h-screen bg-white sm:bg-sidebarBg' >
+        <div className='w-full h-full min-h-screen bg-white sm:bg-primary' >
 
-            <div className="flex grow flex-col gap-y-5 overflow-y-auto px-6 bg-sidebarBg">
+            <div className="flex grow flex-col gap-y-5 overflow-y-auto px-6 bg-primary">
                 <div className='flex h-16 shrink-0 py-4 justify-between items-center'>
 
                     <a href='https://unplan.io' target='_blank' rel='noopener'>
@@ -21,13 +21,13 @@ const UnauthLayout = ({children}) => {
                                 src="/unplan_logo.svg"
                                 alt="Unplan"
                         /> */}
-                        <h2 className='font-heading text-4xl text-brand' >UNPLAN</h2>
+                        <h2 className='font-heading text-4xl text-primaryText' >UNPLAN</h2>
                     </a>
 
                     {
                         pathname.includes('login') && (
                             <div >
-                                <span className='text-brand mr-4 text-lg font-heading hidden md:inline-block' >Don't have an account?{' '}</span>
+                                <span className='text-primaryText mr-4 text-lg font-heading hidden md:inline-block' >Don't have an account?{' '}</span>
 
                                 <ButtonLinkPrimaryComponent href='/signup' >
                                     Sign Up
@@ -39,7 +39,7 @@ const UnauthLayout = ({children}) => {
                     {
                         pathname.includes('signup') && (
                             <div >
-                                <span className='text-brand mr-4 text-lg font-heading hidden md:inline-block' >Already using UNPLAN?{' '}</span>
+                                <span className='text-primaryText mr-4 text-lg font-heading hidden md:inline-block' >Already using UNPLAN?{' '}</span>
 
                                 <ButtonLinkPrimaryComponent href='/login' >
                                     Login

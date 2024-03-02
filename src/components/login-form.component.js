@@ -34,21 +34,21 @@ const LoginFormComponent = () => {
     }
 
     return (
-        <div className="flex min-h-full flex-1 flex-col justify-center py-6 sm:py-12 sm:px-6 lg:px-8">
+        <div className="flex min-h-full flex-1 flex-col justify-center py-6 sm:py-12 sm:px-6 lg:px-8 text-primaryText">
 
         <div className="sm:mx-auto sm:w-full sm:max-w-[480px]">
         
           <div className="bg-white px-6 py-6 md:py-12 shadow sm:rounded-lg sm:px-12">
 
             {/* <div className="sm:mx-auto sm:w-full sm:max-w-md mb-8 "> */}
-                <h2 className="mb-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-700 font-heading">
+                <h2 className="mb-6 text-center text-2xl font-bold leading-9 tracking-tight font-heading">
                     Welcome Back!
                 </h2>
             {/* </div> */}
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" >
               <div>
-                <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                <label htmlFor="email" className="block text-sm font-medium leading-6">
                   Email address
                 </label>
                 <div className="mt-2">
@@ -59,13 +59,13 @@ const LoginFormComponent = () => {
                     type="email"
                     autoComplete="email"
                     required
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-buttonHover sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-divider placeholder:text-secondaryText focus:ring-2 focus:ring-inset focus:ring-accent sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                <label htmlFor="password" className="block text-sm font-medium leading-6">
                   Password
                 </label>
                 <div className="mt-2">
@@ -76,7 +76,7 @@ const LoginFormComponent = () => {
                     type="password"
                     autoComplete="current-password"
                     required
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-buttonHover sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-divider placeholder:text-secondaryText focus:ring-2 focus:ring-inset focus:ring-accent sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -89,7 +89,7 @@ const LoginFormComponent = () => {
                     id="remember-me"
                     name="remember-me"
                     type="checkbox"
-                    className="h-4 w-4 rounded border-gray-300 text-buttonHover focus:ring-buttonHover"
+                    className="h-4 w-4 rounded border-gray-300 text-accent focus:ring-accent"
                   />
                   <label htmlFor="remember-me" className="ml-3 block text-sm leading-6 text-gray-900">
                     Remember me
@@ -97,7 +97,7 @@ const LoginFormComponent = () => {
                 </div> */}
 
                 <div className="text-sm leading-6">
-                  <Link href="/forgot-password" className="font-semibold text-buttonBg hover:text-indigo-500">
+                  <Link href="/forgot-password" className="font-semibold text-primaryText hover:text-accent">
                     Forgot password?
                   </Link>
                 </div>
@@ -106,7 +106,7 @@ const LoginFormComponent = () => {
               <div>
                 <button
                   type="submit"
-                  className="flex w-full justify-center rounded-md bg-buttonBg px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-buttonHover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-buttonBg"
+                  className="flex w-full justify-center rounded-md bg-primaryText px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primaryText"
                 >
                   Log In
                 </button>
