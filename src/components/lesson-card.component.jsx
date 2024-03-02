@@ -11,7 +11,7 @@ const LessonCard = ({ id, topic, level, ageGroup, duration }) => {
     return (
         <Link
             href={href}
-            className="relative rounded-lg border border-blue-50 bg-white px-6 py-5 shadow-lg hover:shadow-xl transition-shadow duration-200 ease-in-out focus-within:ring-2 focus-within:ring-blue-100 focus-within:ring-offset-2 hover:border-blue-100 cursor-pointer"
+            className="relative rounded-lg border border-gray-200 bg-white px-6 py-5 shadow-lg hover:shadow-xl transition-shadow duration-200 ease-in-out focus-within:ring-2 focus-within:ring-blue-100 focus-within:ring-offset-2 hover:border-yellow-200 cursor-pointer"
         >
             <h2 className='text-xl font-semibold text-gray-900 mb-4'>{topic}</h2>
             <div className="flex items-center space-x-4">

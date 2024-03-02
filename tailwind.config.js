@@ -23,31 +23,27 @@ module.exports = {
         'xl': '1440px'
       },
       colors: {
+
 // Sidebar / Top Nav colors
-sidebarBg: '#F9D835', // A softened yellow, less bright, but still warm and inviting
-sidebarHover: '#E6C200', // A slightly darker yellow for hover effects
-sidebarHighlight: '#202020', // A very dark grey, almost black for contrast and emphasis
-sidebarInactiveText: '#2e2e2e',
-sidebarHoverText: '#4a4a4a',
-sidebarActiveText: '#1a1a1a',
+sidebarBg: '#FFB300', // A vibrant amber that balances brightness with depth.
+sidebarHover: '#FFA000', // A golden poppy that maintains energy during interaction.
+sidebarHighlight: '#262626', // A charcoal grey for strong contrast and emphasis.
+sidebarInactiveText: '#404040',
+sidebarHoverText: '#363636',
+sidebarActiveText: '#202020',
 
 // Brand color
-brand: '#000',//'#F9D835', // Softened yellow to maintain brand consistency but less bright
+brand: '#262626', // Charcoal grey to create a grounded and authoritative look.
 
 // Button colors
-buttonBg: '#3273DC', // Warm blue for primary action buttons
-buttonHover: '#2767B1', // A slightly darker shade of blue for button hover state
+buttonBg: '#262626',//'#E64A19', // A bold vermilion that stands out and invites user engagement.
+buttonHover: '#D84315', // A slightly deeper shade for a subtle yet noticeable hover effect.
 
 // Additional UI colors
-textColor: '#4A4A4A', // Medium grey for main text, softer than black
-highlightText: '#F9D835', // Softened yellow for highlighted text or important UI elements
-cardBg: '#FFFFFF', // White for cards to keep the interface clean and modern
-cardShadow: '#000000', // Black for subtle shadows to give depth, at low opacity
-
-
-
-
-
+textColor: '#565656', // A grey that reduces glare and increases legibility.
+highlightText: '#FFB300', // The vibrant amber for key highlights and to draw attention.
+cardBg: '#FFFFFF', // Pure white to keep the focus on the content and action elements.
+cardShadow: 'rgba(0, 0, 0, 0.2)', // A darker shadow for pronounced depth, accentuating the cards.
 
       }
     },
