@@ -1,4 +1,3 @@
-// import Layout from "@/components/layout"
 import { useErrorHandling } from "@/hooks/use-error-handling.hook"
 
 const { useState } = require("react")
@@ -53,7 +52,6 @@ const Mailing = () => {
     }
 
     return (
-        // <Layout >
             <div className="w-full h-full p-4 flex justify-center items-center">
                 <div className="bg-blue-100 rounded-lg p-6 shadow-lg w-full max-w-md leading-7 ">
                     <h2 className="text-2xl font-bold text-blue-900 mb-4 font-bree">Join Our Mailing List</h2>
@@ -120,7 +118,6 @@ const Mailing = () => {
         </div>
         </div>
         </div>
-        // </Layout>
 
     )
 }

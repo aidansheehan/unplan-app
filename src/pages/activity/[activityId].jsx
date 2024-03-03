@@ -1,5 +1,3 @@
-import Layout from "@/components/layout"
-import TextContentPresentationComponent from "@/components/text-content-presentation/text-content-presentation.component"
 import { faFrownOpen } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { doc, getDoc } from "firebase/firestore"
@@ -50,7 +48,6 @@ const ViewActivity = ({worksheetUrl, activity, topic, activityId, error}) => {
     //Handle error
     if (error) {
         return (
-            <Layout title="Activity Not Found">
                 <div className="w-full h-full p-4 text-center">
                     <FontAwesomeIcon icon={faFrownOpen} size="3x" className="text-orange-500 mb-4" />
                     <h2 className="text-2xl font-bold text-blue-900 mb-4">Oops! Activity not found.</h2>
@@ -61,7 +58,6 @@ const ViewActivity = ({worksheetUrl, activity, topic, activityId, error}) => {
                             Go Back to Home
                     </Link>
                 </div>
-            </Layout>
         )
     }
 
