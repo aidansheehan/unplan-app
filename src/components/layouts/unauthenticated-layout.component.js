@@ -6,8 +6,10 @@ import ButtonLinkPrimaryComponent from "../button/button.link.primary.component"
  */
 const UnauthLayout = ({children}) => {
 
-    const router        = useRouter()
-    const { pathname }  = router
+    const router                = useRouter()
+    const { pathname, query }   = router
+
+    const { redirect } = query
 
     return (
         <div className='w-full h-full min-h-screen bg-white sm:bg-primary' >
@@ -29,7 +31,7 @@ const UnauthLayout = ({children}) => {
                             <div >
                                 <span className='text-primaryText mr-4 text-lg font-heading hidden md:inline-block' >Don't have an account?{' '}</span>
 
-                                <ButtonLinkPrimaryComponent href='/signup' >
+                                <ButtonLinkPrimaryComponent href={redirect ? `/signup?redirect-${encodeURIComponent(redirect)}` : '/signup'} >
                                     Sign Up
                                 </ButtonLinkPrimaryComponent>
                             </div>
@@ -41,7 +43,7 @@ const UnauthLayout = ({children}) => {
                             <div >
                                 <span className='text-primaryText mr-4 text-lg font-heading hidden md:inline-block' >Already using UNPLAN?{' '}</span>
 
-                                <ButtonLinkPrimaryComponent href='/login' >
+                                <ButtonLinkPrimaryComponent href={redirect ? `/login?redirect=${encodeURIComponent(redirect)}` : '/login'}  >
                                     Login
                                 </ButtonLinkPrimaryComponent>
 

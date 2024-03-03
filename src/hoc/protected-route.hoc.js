@@ -16,12 +16,8 @@ const ProtectedRoute = (Component) => {
             // Loading finished and user not authenticated
             if (!loading && !user) {
 
-                // User is not authenticated
-                if (!user) {
-
-                    // Redirect to login
-                    router.push('/login')
-                }
+                // Redirect to sign up with current path as query parameter
+                router.push(router.asPath === '/' ? '/signup' : `/signup?redirect=${encodeURIComponent(router.asPath)}`)
 
             }
 

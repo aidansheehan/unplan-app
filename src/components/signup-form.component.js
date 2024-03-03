@@ -11,10 +11,10 @@ const SignupForm = () => {
     const { register, handleSubmit, formState: { errors } } = useForm()
 
     const router = useRouter()
+    
+    const { redirect } = router.query
 
     const onSubmit = async (data) => {
-
-        console.log('DATA: ', data)
 
         // TODO handle mailing list signup
         const { email, password, username/*, mailingList*/ } = data

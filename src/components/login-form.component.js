@@ -13,6 +13,8 @@ const LoginFormComponent = () => {
 
     const router = useRouter()
 
+    const { redirect } = router.query
+
     //Handle login (email + password) submit
     const onSubmit = async (data) => {
 
@@ -20,7 +22,7 @@ const LoginFormComponent = () => {
 
         try {
             await signInWithEmailAndPassword(auth, email, password)
-            // router.push('/')
+
         } catch (error) {
 
             console.error(error)

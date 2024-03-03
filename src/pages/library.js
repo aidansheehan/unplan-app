@@ -3,6 +3,7 @@ import LessonCard from "@/components/lesson-card.component"
 import LoadingSpinner from "@/components/loading-spinner"
 import PageHeaderComponent from "@/components/page-header"
 import SearchBarComponent from "@/components/search-bar.component"
+import ProtectedRoute from "@/hoc/protected-route.hoc"
 import useLessons from "@/hooks/use-lessons.hook"
 import apiRequest from "@/services/api-request"
 
@@ -32,4 +33,4 @@ const Library = () => {
 }
 
 
-export default Library
+export default ProtectedRoute(Library)

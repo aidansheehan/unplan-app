@@ -10,6 +10,7 @@ import ActivityInstructionsComponent from "@/components/activity-instructions.co
 import { useEffect, useState } from "react"
 import LoadingSpinner from "@/components/loading-spinner"
 import TinyMceEditor from "@/components/tinymce-editor.component"
+import ProtectedRoute from "@/hoc/protected-route.hoc"
 import PageHeaderComponent from "@/components/page-header"
 
 /**
@@ -123,4 +124,4 @@ export async function getServerSideProps(context) {
     }
 }
 
-export default ViewActivity
+export default ProtectedRoute(ViewActivity)
