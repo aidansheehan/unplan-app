@@ -6,6 +6,9 @@ import { faKey, faTrashAlt, faUserCog } from "@fortawesome/free-solid-svg-icons"
 import SignOutButtonComponent from "@/components/sign-out.button.component"
 import ChangePasswordModal from "@/components/modal/change-password.modal.component"
 import { useState, useEffect } from "react"
+import PageHeaderComponent from "@/components/page-header"
+import { useAuth } from "@/context/auth.context"
+
 
 /**
  * Settings page for account management
@@ -14,6 +17,8 @@ const SettingsPage = () => {
     const [ isChangePasswordModalOpen, setIsChangePasswordModalOpen ]   = useState(false)
     const [ isDeleteAccountModalOpen, setIsDeleteAccountModalOpen ]     = useState(false)
     const [ showChangePassword, setShowChangePassword ]                 = useState(false)
+
+    const { user } = useAuth()
 
     useEffect(() => {
         const user = auth.currentUser
@@ -26,35 +31,87 @@ const SettingsPage = () => {
     }, [])
 
     return (
+        <div  >
+            <PageHeaderComponent text={'Settings'} />
 
-        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <h1 className="text-xl font-bold text-gray-700 mb-4 flex items-center justify-start">
-                <FontAwesomeIcon icon={faUserCog} className="mr-2" />
-                Account Settings
-            </h1>
+            <div>
 
-            {showChangePassword && (
-                <button
-                    onClick={() => setIsChangePasswordModalOpen(true)}
-                    className="text-blue-500 hover:text-blue-700 transition-colors duration-200 text-sm flex items-center justify-start mb-3"
-                >
-                    <FontAwesomeIcon icon={faKey} className="mr-2" />
-                    Change Password
-                </button>
-            )}
+              <dl className="mt-6 space-y-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
+                { user.displayName && (
+                    <div className="pt-6 sm:flex">
+                  <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Full name</dt>
+                  <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
+                    <div className="text-gray-900">{user.displayName}</div>
+                    {/* <button type="button" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                      Update
+                    </button> */}
+                  </dd>
+                </div>
+                )}
+                <div className="pt-6 sm:flex">
+                  <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Email address</dt>
+                  <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
+                    <div className="text-gray-900">{user.email}</div>
+                    {/* <button type="button" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                      Update
+                    </button> */}
+                  </dd>
+                </div>
+                <div className="pt-6 sm:flex">
+                  <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Sign Out</dt>
+                  <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
+                    <SignOutButtonComponent />
+                    {/* <button type="button" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                      Update
+                    </button> */}
+                  </dd>
+                </div>
 
-            <SignOutButtonComponent />
+                {/* Change Password */}
+                {
+                    showChangePassword || true && (
+                        <div className="pt-6 sm:flex">
+                            <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">
+                                <h2>Change Password</h2>
+                                <p className="text-sm text-gray-400">Recieve an email with insturctions to update your password.</p>
+                            </dt>
+                            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
+                                <button
+                                    onClick={() => setIsChangePasswordModalOpen(true)}
+                                    className="text-blue-500 hover:text-blue-700 transition-colors duration-200 text-sm flex items-center justify-start mb-3"
+                                >
+                                    <FontAwesomeIcon icon={faKey} className="mr-2" />
+                                    Change Password
+                                </button>
+                            </dd>
+                        </div>
+                    )
+                }
 
-            <button
-                onClick={() => setIsDeleteAccountModalOpen(true)}
-                className="text-red-500 hover:text-red-700 transition-colors duration-200 text-sm flex items-center justify-start"
-            >
-                <FontAwesomeIcon icon={faTrashAlt} className="mr-2" />
-                Delete Account
-            </button>
+                <div className="pt-6 sm:flex">
+                        <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">
+                            <h2>Delete Account</h2>
+                            <p className="text-sm text-gray-400">
+                            No longer want to use our service? You can delete your account here. This action is not reversible.
+                    All information related to this account will be deleted permanently.
+                            </p>
+                        </dt>
+                        <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
+                            <button
+                                onClick={() => setIsDeleteAccountModalOpen(true)}
+                                className="text-red-500 hover:text-red-700 transition-colors duration-200 text-sm flex items-center justify-start"
+                            >
+                                <FontAwesomeIcon icon={faTrashAlt} className="mr-2" />
+                                Delete Account
+                            </button>
+                        </dd>
+                    </div>
+              </dl>
+            </div>
+
 
             {/* Modals */}
-            {showChangePassword && (
+            {showChangePassword || true&& (
                 <ChangePasswordModal
                     isOpen={isChangePasswordModalOpen}
                     onClose={() => setIsChangePasswordModalOpen(false)}
@@ -64,9 +121,10 @@ const SettingsPage = () => {
                 isOpen={isDeleteAccountModalOpen}
                 onClose={() => setIsDeleteAccountModalOpen(false)}
             />
-        </div>
 
+        </div>
     )
+
 }
 
 export default ProtectedRoute(SettingsPage)
