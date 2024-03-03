@@ -77,6 +77,16 @@
         [x] Individual Activities / Lessons - allow users to share with each other but not edit each others shit, routes not protected so new users can see (also for library!)
     [ ] Test live
 
+## Redesign
+    [ ] Sidebar
+        [x] Add, customize to our data
+        [x] Fix local emulators
+        [x] Add signout to settings page
+        [x] Follow exact nav as before for now
+        [x] Dashboard
+        [x] Activities follow lessons (1 page for creation, 1 page for storage)
+        [ ] Empty states CTA (dashboard + my unplan pages)
+
 ## Feedback
 [x] Remove kindy
     [x] From form

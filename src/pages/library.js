@@ -1,6 +1,7 @@
-import Layout from "@/components/layout"
-import LessonsGrid from "@/components/lessons-grid.component"
+import ContentGridComponent from "@/components/content-grid.component"
+import LessonCard from "@/components/lesson-card.component"
 import LoadingSpinner from "@/components/loading-spinner"
+import PageHeaderComponent from "@/components/page-header"
 import SearchBarComponent from "@/components/search-bar.component"
 import ProtectedRoute from "@/hoc/protected-route.hoc"
 import useLessons from "@/hooks/use-lessons.hook"
@@ -22,12 +23,11 @@ const Library = () => {
     const { isLoading, searchTerm, setSearchTerm, filteredLessons } = useLessons(fetchlibraryLessons)
 
     return (
-        <Layout title='Lesson Library' >
-            <div className="p-8 w-full flex-grow flex flex-col" >
-                <SearchBarComponent searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-                {isLoading ? <LoadingSpinner /> : <LessonsGrid lessons={filteredLessons} />}
-            </div>
-        </Layout>
+        <div >
+            <PageHeaderComponent text='Lesson Library' />
+            <SearchBarComponent searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+            {isLoading ? <LoadingSpinner /> : <ContentGridComponent contents={filteredLessons} CardComponent={<LessonCard />} />}
+        </div>
     )
 
 }

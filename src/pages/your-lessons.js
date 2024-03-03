@@ -1,16 +1,16 @@
-import Layout from "@/components/layout";
-import LessonsGrid from "@/components/lessons-grid.component";
+import ContentGridComponent from "@/components/content-grid.component";
+import EmptyStateComponent from "@/components/empty-state.component";
+import LessonCard from "@/components/lesson-card.component";
 import LoadingSpinner from "@/components/loading-spinner";
+import PageHeaderComponent from "@/components/page-header";
 import SearchBarComponent from "@/components/search-bar.component";
 import { useAuth } from "@/context/auth.context";
-import { useErrorHandling } from "@/hooks/use-error-handling.hook";
 import ProtectedRoute from "@/hoc/protected-route.hoc";
 import useLessons from "@/hooks/use-lessons.hook";
 import apiRequest from "@/services/api-request";
 
 const YourLessons = () => {
 
-    const { handleError }   = useErrorHandling()
     const { getToken }      = useAuth()
 
     //Function to fetch user's lessons
@@ -25,16 +25,31 @@ const YourLessons = () => {
         return lessons;
     }
 
-    const { isLoading, searchTerm, setSearchTerm, filteredLessons } = useLessons(fetchYourLessons)
+    const { isLoading, searchTerm, setSearchTerm, filteredLessons, lessons } = useLessons(fetchYourLessons)
 
     return (
-        <Layout title='Your Lessons'>
-            <div className="p-8 w-full flex-grow flex flex-col" >
-                <SearchBarComponent searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-                {isLoading ? <LoadingSpinner /> : <LessonsGrid lessons={filteredLessons} />}
-            </div>
+        <div className="flex flex-col" >
+            <PageHeaderComponent text='My Lesson Plans' />
 
-        </Layout>
+            {
+                isLoading ? (
+                    <LoadingSpinner />
+                ) : (
+                    lessons.length ? (
+                        <>
+                            <SearchBarComponent searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+                            {/* <ContentGridLessonContainer lessons={filteredLessons} /> */}
+                            <ContentGridComponent contents={filteredLessons} CardComponent={<LessonCard />} />
+                        </>
+                    ) : (
+                         <div className="min-h-full flex justify-center items-center py-32" >
+                            <EmptyStateComponent size='2x' text="Time to create your first masterpiece." href="/plan" />
+                        </div>
+                    )
+                )
+            }
+
+        </div>
     )
 
 }

@@ -1,10 +1,7 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons'
-import Link from 'next/link'
-import GoogleContinueButtonComponent from './google-continue-button/google-continue-button.component'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
+import GoogleContinueButtonComponent from './google-continue-button.component'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { useRouter } from 'next/router'
 import { auth } from '../../firebaseConfig'
 import { AUTH_ERROR_MESSAGES } from '@/constants/auth-error-messages.constant'
@@ -20,10 +17,20 @@ const SignupForm = () => {
     const onSubmit = async (data) => {
 
         // TODO handle mailing list signup
-        const { email, password/*, mailingList*/ } = data
+        const { email, password, username/*, mailingList*/ } = data
 
         try {
-            await createUserWithEmailAndPassword(auth, email, password)     // Create the user
+
+            // Create the user
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+
+            // Update the user's profile with their name
+            if (userCredential.user) {
+                await updateProfile(userCredential.user, {
+                    displayName: username
+                })
+            }
+
             await signInWithEmailAndPassword(auth, email, password)         // Sign the new user in
 
         } catch (error) {
@@ -41,93 +48,127 @@ const SignupForm = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center bg-white p-10 rounded-lg md:shadow-md md:max-w-md text-sm text-center my-4">
+        <div className="flex min-h-full flex-1 flex-col justify-center py-6 sm:py-12 sm:px-6 lg:px-8 text-primaryText">
 
-            <h2 className="text-2xl font-bold text-gray-800 mb-8">Sign up for Easy Plan ESL</h2>
+        <div className="sm:mx-auto sm:w-full sm:max-w-[480px]">
+        
+          <div className="bg-white px-6 py-6 md:py-12 shadow sm:rounded-lg sm:px-12">
 
-            {/* Google Sign-in Button */}
-            <GoogleContinueButtonComponent />
+            <h2 className="mb-6 text-center text-2xl font-bold leading-9 tracking-tight font-heading">
+                Let's Go!
+            </h2>
 
-            {/* Email/Password Form */}
-            <form onSubmit={handleSubmit(onSubmit)} className='w-full'>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" >
 
-                {/* Email input */}
-                <div className="mb-4 w-full">
-                    <div className="flex border rounded w-full">
-                        <span className="flex items-center bg-gray-100 border-r p-2">
-                            <FontAwesomeIcon icon={faEnvelope} className="text-gray-500"/>
-                        </span>
-                        <input
-                            {...register('email', { required: 'Email is required.', pattern: { value: /^\S+@\S+$/i, message: 'Invalid email address.' } })}
-                            type="email"
-                            id="email"
-                            className={`w-full p-2 ${errors.email ? 'border-red-500' : ''}`}
-                            placeholder="Email"
-                            autoComplete='email'
-                        />
+                <div>
+                    <label htmlFor="username" className="block text-sm font-medium leading-6">
+                        Your Name
+                    </label>
+                    <div className="mt-2">
+                <input
+                        {...register('username', { required: 'Username is required.', minLength: { value: 4 } })}
+                        id="username"
+                        name="username"
+                        type="text" // Changed to text as it's a username
+                        autoComplete="name"
+                        required
+                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-divider placeholder:text-secondaryText focus:ring-2 focus:ring-inset focus:ring-accent sm:text-sm sm:leading-6"
+                    />
                     </div>
-                    {errors.email && <p className="text-red-500 text-xs italic">{errors.email.message}</p>}
+                    {errors.username && <p className="text-red-500 text-xs italic">{errors.username.message}</p>}
                 </div>
 
-                {/* Password input */}
-                <div className="mb-4">
 
-                <div className="flex border rounded">
-                <span className="flex items-center bg-gray-100 border-r p-2">
-                    <FontAwesomeIcon icon={faLock} className="text-gray-500"/>
-                </span>
-                <input
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium leading-6">
+                  Email address
+                </label>
+                <div className="mt-2">
+                  <input
+                    {...register('email', { required: 'Email is required.', pattern: { value: /^\S+@\S+$/i, message: 'Invalid email address.' } })}
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-divider placeholder:text-secondaryText focus:ring-2 focus:ring-inset focus:ring-accent sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium leading-6">
+                  Password
+                </label>
+                <div className="mt-2">
+                  <input
                     {...register('password', { required: 'Password is required.', minLength: { value: 6, message: 'Password must be at least 6 characters.' } })}
-                    type="password"
                     id="password"
-                    className={`w-full p-2 ${errors.password ? 'border-red-500' : ''}`}
-                    placeholder="Password"
-                    autoComplete='new-password'
-                />
+                    name="password"
+                    type="password"
+                    autoComplete="new-password"
+                    required
+                    className={`block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-divider placeholder:text-secondaryText focus:ring-2 focus:ring-inset focus:ring-accent sm:text-sm sm:leading-6 ${errors.password ? 'border-red-500' : ''}`}
+                  />
                 </div>
                 {errors.password && <p className="text-red-500 text-xs italic">{errors.password.message}</p>}
-                </div>
+              </div>
 
-                {/* Mailing List Input */}
-                {/* TODO how will google users sign up for mailing list? */}
-                <div className="flex items-center justify-between mb-4">
-                <label className="flex items-center">
-                    <input 
+              <div className="relative flex items-start">
+                    <div className="flex h-6 items-center">
+                        <input
                         {...register('mailingList')}
-                        type="checkbox" 
                         id="mailingList"
-                        className="form-checkbox cursor-pointer" 
-                    />
-                    <span className="ml-2 text-sm text-gray-600">I agree to join Easy Plan ESL's mailing list</span>
-                </label>
-                </div>
+                        aria-describedby="mailingList-description"
+                        name="mailingList"
+                        type="checkbox"
+                        className="h-4 w-4 rounded border-divider text-accent focus:ring-accent text-accent"
+                        />
+                    </div>
+                    <div className="ml-3 text-sm leading-6">
+                        <label htmlFor="mailingList" className="font-medium">
+                            Join Mailing List
+                        </label>
+                        <p id="mailingList-description" className="text-secondaryText">
+                            Get exclusive access to the latest updates and news
+                        </p>
+                    </div>
+              </div>
 
-                {/* Submit Button */}
-                <button type="submit" className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full transition-colors duration-300 mb-6">
-                    Create Account
+              <div>
+                <button
+                  type="submit"
+                  className="font-nav flex w-full justify-center rounded-md bg-primaryText px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primaryText"
+                >
+                  Sign up
                 </button>
-
+              </div>
             </form>
 
-            {/* Agreement Section */}
-            <p className='text-xs text-gray-400 mb-4' >
-                By clicking "Create Account" or "Continue with Google", you agree to the Easy Plan ESL TOS and Privacy Policy.
-            </p>
+            <div>
+              <div className="relative mt-10">
+                <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                  <div className="w-full border-t border-divider" />
+                </div>
+                <div className="relative flex justify-center text-sm font-medium leading-6">
+                  <span className="bg-white px-6 text-secondaryText">Or continue with</span>
+                </div>
+              </div>
 
+              <div className="mt-6">
+                <GoogleContinueButtonComponent />
 
-            {/* Login Redirect Section */}
-            <div className='mb-4'>
-                <p className='text-sm text-gray-500'>
-                    Already have an account?{" "}
-                    <Link href={redirect ? `/login?redirect=${encodeURIComponent(redirect)}` : '/login'} className='text-blue-500 hover:text-blue-600'>
-                        Log in
-                    </Link>
-                </p>
+              </div>
             </div>
 
-
+          </div>
+            {/* TODO link */}
+            <p className="mt-10 text-center text-sm text-secondaryText">
+                By clicking "Create Account" or "Continue with Google", you agree to our TOS and Privacy Policy.
+            </p>
 
         </div>
+      </div>
     )
 
 }

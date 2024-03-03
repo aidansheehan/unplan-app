@@ -1,5 +1,4 @@
 import { useState } from "react"
-import Layout from "@/components/layout"
 import Link from "next/link"
 
 /**
@@ -33,8 +32,8 @@ const Feedback = () => {
     }
 
     if (isSent) return (
-        <Layout title='Feedback'>
-            <div className="flex flex-col items-center justify-center w-full h-full">
+
+            <div className="flex flex-col items-center justify-center min-h-screen">
                 <div className="w-full max-w-md p-6 mx-auto bg-white rounded shadow-md">
                     <h2 className="text-lg font-semibold text-center">Thank You!</h2>
                     <p className="text-sm text-center mt-4">Your feedback is invaluable to us. We're constantly listening to our users and implementing your ideas to improve our platform.</p>
@@ -52,12 +51,12 @@ const Feedback = () => {
                     </Link>
                 </div>
         </div>
-    </Layout>
+
     )
 
     return (
-        <Layout >
-            <div className="flex flex-col items-center justify-center w-full h-full">
+
+            <div className="flex flex-col items-center justify-center min-h-screen">
                 <form 
                     onSubmit={handleSubmit}
                     className="w-full max-w-md p-6 mx-auto bg-white rounded shadow-md space-y-4"
@@ -80,7 +79,7 @@ const Feedback = () => {
                     </button>
                 </form>
             </div>
-        </Layout>
+
     )
 
 }

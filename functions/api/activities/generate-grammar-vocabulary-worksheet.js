@@ -7,6 +7,7 @@ const { v4: uuidv4 } = require('uuid')
 const admin = require('firebase-admin')
 const authenticateRequestMiddleware = require('../../middleware/authenticate-request.middleware')
 const { renderMarkdown } = require('../../utils/custom-marked-renderer')
+const { FieldValue } = require('firebase-admin/firestore')
 
 const storage = admin.storage()
 
@@ -63,12 +64,17 @@ const generateGrammarVocabularyWorksheet = functions.https.onRequest(async (req,
     
                     // Save generated Markdown content
                     await contentRef.save(htmlContent, { contentType: 'text/html' })
+
+                    // Get current timestamp
+                    const timestamp = FieldValue.serverTimestamp()
     
                     // Save metadata to firestore and get doc ref
                     const docRef = await admin.firestore().collection('activities').add({
                         topic, level, length, targetWords, targetGrammar, activity: 'grammarVocab',
                         worksheetUrl: worksheetPath,
-                        uid
+                        uid,
+                        createdAt: timestamp,
+                        updatedAt: timestamp
                     })
     
                     return res.status(200).json({ worksheetId: docRef.id })

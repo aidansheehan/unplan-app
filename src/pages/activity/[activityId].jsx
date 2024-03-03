@@ -11,6 +11,7 @@ import { useEffect, useState } from "react"
 import LoadingSpinner from "@/components/loading-spinner"
 import TinyMceEditor from "@/components/tinymce-editor.component"
 import ProtectedRoute from "@/hoc/protected-route.hoc"
+import PageHeaderComponent from "@/components/page-header"
 
 /**
  * Page to view & print a generated activity
@@ -65,7 +66,9 @@ const ViewActivity = ({worksheetUrl, activity, topic, activityId, error}) => {
     }
 
     return (
-        <Layout title={`${ACTIVITY_INFO[activity].title} - ${topic}`} >
+        <>
+
+            <PageHeaderComponent text={`${ACTIVITY_INFO[activity].title} - ${topic}`} />
 
             <ActivityInstructionsComponent instructionText={ACTIVITY_INFO[activity].instructions} />
 
@@ -80,7 +83,7 @@ const ViewActivity = ({worksheetUrl, activity, topic, activityId, error}) => {
                 )
             }
 
-        </Layout>
+        </>
     )
 }
 

@@ -27,7 +27,9 @@ const ProtectedRoute = (Component) => {
         if (loading || !user) return null
 
         // User is authenticated, render the intended component
-        return <Component {...props} />
+        return (
+            <Component {...props} />
+        )
 
     }
 }

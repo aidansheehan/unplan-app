@@ -1,4 +1,4 @@
-import Layout from "@/components/layout"
+
 
 /**
  * Terms of use page
@@ -6,7 +6,7 @@ import Layout from "@/components/layout"
 const Terms = () => {
 
     return (
-        <Layout title='Terms of Use' >
+
             <div className="w-full min-h-full p-6" >
             <section className="mb-4">
         <h2 className="text-lg font-semibold mb-2">Welcome to Easy Plan ESL!</h2>
@@ -57,7 +57,7 @@ const Terms = () => {
         <p>Happy teaching!</p>
       </section>
             </div>
-        </Layout>
+
     )
 }
 

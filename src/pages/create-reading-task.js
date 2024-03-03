@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import Layout from "@/components/layout";
 import FullPageLoading from "@/components/full-page.loading.component";
 import ActivityInstructionsComponent from "@/components/activity-instructions.component";
 import ACTIVITY_INFO from "@/constants/activity-info.constant";
 import ProtectedRoute from "@/hoc/protected-route.hoc";
 import { useAuth } from "@/context/auth.context";
 import apiRequest from "@/services/api-request";
+import ButtonPrimaryComponent from "@/components/button/button.primary.component";
+import PageHeaderComponent from "@/components/page-header";
 
 const ReadingComprehension = () => {
     const [formData, setFormData] = useState({
@@ -57,7 +58,8 @@ const ReadingComprehension = () => {
     };
 
     return (
-        <Layout title={isLoading ? '' : "Create Reading Comprehension Worksheet"}>
+        <>
+            <PageHeaderComponent text='Create a Reading Task' />
             {isLoading ? <FullPageLoading message='Creating Your Reading Comprehension Task...' /> : (
                 <div className='w-full h-full p-4'>
                     <ActivityInstructionsComponent instructionText={ACTIVITY_INFO.readingComprehension.instructions} />
@@ -178,15 +180,15 @@ const ReadingComprehension = () => {
                         </div>
 
                         <div className="text-center">
-                            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            <ButtonPrimaryComponent type='submit' >
                                 Create Activity
-                            </button>
+                            </ButtonPrimaryComponent>
                         </div>
                         
                     </form>
                 </div>
             )}
-        </Layout>
+        </>
     );
 };
 

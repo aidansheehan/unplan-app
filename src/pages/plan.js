@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import Layout from '@/components/layout';
 import { useRouter } from 'next/router';
 import LoadingSpinner from '@/components/loading-spinner';
 import ProtectedRoute from '@/hoc/protected-route.hoc';
 import { useAuth } from '@/context/auth.context';
 import apiRequest from '@/services/api-request';
+import PageHeaderComponent from '@/components/page-header';
+import ButtonPrimaryComponent from '@/components/button/button.primary.component';
+import { PlusIcon } from '@heroicons/react/24/outline';
 
 /**
  * Page to plan a lesson
@@ -90,20 +92,21 @@ const Plan = () => {
     }
 
     return (
-    <Layout title='Create Your Lesson Plan'>
 
-        <div className='w-full h-full p-4 flex-grow'>
+        <div className='flex-grow bg-white'>
+
+            <PageHeaderComponent text='Create a Lesson Plan' />
             
-                    <form onSubmit={handleSubmit} className="max-w-xl mx-auto space-y-4">
+                    <form onSubmit={handleSubmit} className="max-w-xl mx-auto space-y-4 px-4 py-5 sm:px-6">
                         <div>
-                        <label htmlFor="topic" className="block text-sm font-medium text-gray-700">Topic</label>
+                        <label htmlFor="topic" className="block text-sm font-medium text-primaryText">Topic</label>
                         <input
                             type="text"
                             name="topic"
                             id="topic"
                             value={formData.topic}
                             onChange={handleChange}
-                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+                            className="mt-1 block w-full p-2 border border-divider rounded-md shadow-sm"
                             placeholder="e.g., Irregular Verbs, Food Vocabulary, Past Tense"
                             required
                             maxLength={50}
@@ -112,7 +115,7 @@ const Plan = () => {
                         </div>
 
                         <div >
-                            <label htmlFor='level' className="block text-sm font-medium text-gray-700">Student Level</label>
+                            <label htmlFor='level' className="block text-sm font-medium text-primaryText">Student Level</label>
 
                             <div className='flex flex-col-reverse md:flex-row md:flex-wrap gap-2 mt-1' >
                                 <select
@@ -121,7 +124,7 @@ const Plan = () => {
                                     value={formData.level}
                                     onChange={handleChange}
                                     disabled={isLoading}
-                                    className='p-2 border border-gray-300 rounded-md shadow-sm flex-grow'
+                                    className='p-2 border border-divider rounded-md shadow-sm flex-grow'
                                     required
                                     >
                                     <option value="" disabled={formData.level !== ""}>Select a level</option>
@@ -142,10 +145,10 @@ const Plan = () => {
                                         </>
                                     )}
                                 </select>
-                                <div className="flex">
+                                <div className="flex font-nav">
                                     <button
                                         type="button"
-                                        className={`px-4 py-2 rounded-l-md w-1/2 md:w-auto ${!useCEFR ? 'bg-blue-500 text-white font-semibold' : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100'}`}
+                                        className={`px-4 py-2 rounded-l-md w-1/2 md:w-auto border-divider ${!useCEFR ? 'bg-accent font-semibold text-white' : 'bg-white border border-divider hover:bg-lightPrimary'}`}
                                         disabled={isLoading}
                                         onClick={toggleCEFR}
                                     >
@@ -153,7 +156,7 @@ const Plan = () => {
                                     </button>
                                     <button
                                         type="button"
-                                        className={`px-4 py-2 rounded-r-md w-1/2 md:w-auto ${useCEFR ? 'bg-blue-500 text-white font-semibold' : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100'}`}
+                                        className={`px-4 py-2 rounded-r-md w-1/2 md:w-auto ${useCEFR ? 'bg-accent font-semibold text-white' : 'bg-white border border-divider hover:bg-lightPrimary'}`}
                                         disabled={isLoading}
                                         onClick={toggleCEFR}
                                     >
@@ -164,13 +167,13 @@ const Plan = () => {
                         </div>
                         
                         <div>
-                            <label htmlFor="ageGroup" className="block text-sm font-medium text-gray-700">Student Age Group</label>
+                            <label htmlFor="ageGroup" className="block text-sm font-medium text-primaryText">Student Age Group</label>
                             <select
                                 name="ageGroup"
                                 id="ageGroup"
                                 value={formData.ageGroup}
                                 onChange={handleChange}
-                                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+                                className="mt-1 block w-full p-2 border border-divider rounded-md shadow-sm"
                                 disabled={isLoading}
                                 required
                             >
@@ -182,7 +185,7 @@ const Plan = () => {
                         </div>
 
                         <div>
-                            <label htmlFor="duration" className="block text-sm font-medium text-gray-700">
+                            <label htmlFor="duration" className="block text-sm font-medium text-primaryText">
                                 Duration (minutes)
                             </label>
                             <div className="flex flex-wrap items-center gap-2 mt-1">
@@ -192,7 +195,7 @@ const Plan = () => {
                                 id="duration"
                                 value={formData.duration}
                                 onChange={handleChange}
-                                className="p-2 border border-gray-300 rounded-md shadow-sm portrait:w-full md:w-auto"
+                                className="p-2 border border-divider rounded-md shadow-sm portrait:w-full md:w-auto"
                                 placeholder="e.g., 60"
                                 min="5"
                                 step="5"
@@ -201,28 +204,28 @@ const Plan = () => {
                                 />
 
                                 <button type="button" disabled={isLoading} onClick={() => setFormData({...formData, duration: 60})}
-                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 60 ? 'bg-blue-500 text-white font-semibold' : 'border border-gray-300 hover:bg-gray-100' }`}>
+                                        className={`p-2 rounded-md shadow-sm font-nav ${formData.duration == 60 ? 'bg-accent font-semibold text-white' : 'border border-divider hover:bg-lightPrimary' }`}>
                                 60 min
                                 </button>
                                 <button type="button" disabled={isLoading} onClick={() => setFormData({...formData, duration: 90})}
-                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 90 ? 'bg-blue-500 text-white font-semibold' : 'border border-gray-300 hover:bg-gray-100' }`}>
+                                        className={`p-2 rounded-md shadow-sm font-nav ${formData.duration == 90 ? 'bg-accent font-semibold text-white' : 'border border-divider hover:bg-lightPrimary' }`}>
                                 90 min
                                 </button>
                                 <button type="button" disabled={isLoading} onClick={() => setFormData({...formData, duration: 120})}
-                                        className={`p-2 rounded-md shadow-sm ${formData.duration == 120 ? 'bg-blue-500 text-white font-semibold' : 'border border-gray-300 hover:bg-gray-100' }`}>
+                                        className={`p-2 rounded-md shadow-sm font-nav ${formData.duration == 120 ? 'bg-accent font-semibold text-white' : 'border border-divider hover:bg-lightPrimary' }`}>
                                 120 min
                                 </button>
                             </div>
                         </div>
 
                         <div>
-                        <label htmlFor="objectives" className="block text-sm font-medium text-gray-700">Objectives</label>
+                        <label htmlFor="objectives" className="block text-sm font-medium text-primaryText">Objectives</label>
                         <textarea
                             name="objectives"
                             id="objectives"
                             value={formData.objectives}
                             onChange={handleChange}
-                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+                            className="mt-1 block w-full p-2 border border-divider rounded-md shadow-sm"
                             placeholder="e.g., Students can understand the use of present perfect tense, Students can order food in a restaurant"
                             required
                             disabled={isLoading}
@@ -230,50 +233,60 @@ const Plan = () => {
                         />
                         </div>
 
-                        <div className='flex flex-col space-y-4 mt-4 mx-8'>
+                        <div className="mt-4 divide-y text-secondaryText">
 
-                            <div className="flex items-center justify-between">
-                                <label htmlFor="isOneToOne" className="text-sm font-medium text-gray-700">
-                                    1-to-1 Class?
-                                </label>
-                                <input
-                                    type="checkbox"
-                                    name="isOneToOne"
-                                    id="isOneToOne"
-                                    checked={formData.isOneToOne}
-                                    onChange={handleChange}
-                                    disabled={isLoading}
-                                    className="form-checkbox h-5 w-5 text-blue-600 cursor-pointer"
-                                />
-                            </div>
+                                {/* oneToOne Input */}
+                                <div className="relative flex items-start py-4">
+                                    <div className="min-w-0 flex-1 text-sm leading-6">
+                                    <label htmlFor='isOneToOne' className="select-none font-medium">
+                                        1-to-1 Class
+                                    </label>
+                                    </div>
+                                    <div className="ml-3 flex h-6 items-center">
+                                    <input
+                                        id='isOneToOne'
+                                        name='isOneToOne'
+                                        type="checkbox"
+                                        checked={formData.isOneToOne}
+                                        onChange={handleChange}
+                                        disabled={isLoading}
+                                        className="h-4 w-4 rounded border-divider text-accent focus:ring-accent"
+                                    />
+                                    </div>
+                                </div>
 
-                            <div className="flex items-center justify-between">
-                                <label htmlFor="isOnline" className="text-sm font-medium text-gray-700">
-                                    Online Class?
-                                </label>
-                                <input
-                                    type="checkbox"
-                                    name="isOnline"
-                                    id="isOnline"
-                                    checked={formData.isOnline}
-                                    onChange={handleChange}
-                                    disabled={isLoading}
-                                    className="form-checkbox h-5 w-5 text-blue-600 cursor-pointer"
-                                />
-                            </div>
+                                {/* Online Class Input */}
+                                <div className="relative flex items-start py-4">
+                                    <div className="min-w-0 flex-1 text-sm leading-6">
+                                    <label htmlFor='isOnline' className="select-none font-medium">
+                                        Online Class
+                                    </label>
+                                    </div>
+                                    <div className="ml-3 flex h-6 items-center">
+                                    <input
+                                        id='isOnline'
+                                        name='isOnline'
+                                        type="checkbox"
+                                        checked={formData.isOnline}
+                                        onChange={handleChange}
+                                        disabled={isLoading}
+                                        className="h-4 w-4 rounded border-divider text-accent focus:ring-accent"
+                                    />
+                                    </div>
+                                </div>
 
                         </div>
-
-
-
+                        
                         <div className="text-center">
                             {
                                 isLoading ? (
                                     <LoadingSpinner />
                                 ) : (
-                                    <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                        Submit Plan
-                                    </button>
+                                    <ButtonPrimaryComponent type='submit' style='inline-flex mt-6 items-center' >
+                                        <PlusIcon className='-ml-0.5 mr-1.5 h-6 w-6' />
+                                        Create Plan
+                                    </ButtonPrimaryComponent>
+
                                 )
                             }
 
@@ -282,7 +295,6 @@ const Plan = () => {
 
         </div>
 
-    </Layout>
     )
 }
 

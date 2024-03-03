@@ -30,13 +30,18 @@ const createLessonPlan = functions.https.onRequest(async (req, res) => {
                         res.status(400).send('Invalid input parameters');
                         return;
                     }
+
+
+                    // Get current timestamp
+                    const timestamp = FieldValue.serverTimestamp()
             
                     //Create firestore document
                     const docRef = await db.collection('lessons').add({
                         topic, level, duration, objectives, ageGroup, isOneToOne, isOnline, uid,
                         contentRef: {},
                         status: 'pending',
-                        createdAt: FieldValue.serverTimestamp()
+                        createdAt: timestamp,
+                        updatedAt: timestamp
                     })
             
                     res.status(200).json({ lessonId: docRef.id })

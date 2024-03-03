@@ -7,6 +7,7 @@ const { v4: uuidv4 } = require('uuid')
 const admin = require('firebase-admin')
 const authenticateRequestMiddleware = require('../../middleware/authenticate-request.middleware')
 const { renderMarkdown } = require('../../utils/custom-marked-renderer')
+const { FieldValue } = require('firebase-admin/firestore')
 
 const storage = admin.storage()
 
@@ -94,12 +95,17 @@ const generateReadingComprehensionWorksheet = functions.https.onRequest(async (r
     
                     // Save generated content as markdown
                     await contentRef.save(htmlContent, { contentType: 'text/html' });
+
+                    // Get current timestamp
+                    const timestamp = FieldValue.serverTimestamp()
     
                     // Save metadata to firestore and get doc ref
                     const docRef = await admin.firestore().collection('activities').add({
                         textComplexityLevel, textLength, topic: topicGenre, numberOfActivities, /*activityTypes,*/ learningObjectives, ageGroup, timeAllocation, activity: 'readingComprehension',
                         worksheetUrl: worksheetPath,
-                        uid
+                        uid,
+                        createdAt: timestamp,
+                        updatedAt: timestamp
                     });
     
                     res.status(200).json({ worksheetId: docRef.id })

@@ -1,6 +1,7 @@
 import ActivityInstructionsComponent from "@/components/activity-instructions.component";
+import ButtonPrimaryComponent from "@/components/button/button.primary.component";
 import FullPageLoading from "@/components/full-page.loading.component";
-import Layout from "@/components/layout";
+import PageHeaderComponent from "@/components/page-header";
 import TagInputComponent from "@/components/tag-input.component";
 import ACTIVITY_INSTRUCTIONS from "@/constants/activity-info.constant";
 import { useAuth } from "@/context/auth.context";
@@ -63,7 +64,8 @@ const GrammarVocabWorksheet = () => {
     };
 
     return (
-        <Layout title={isLoading ? '' : "Create Grammar/Vocabulary Worksheet"}>
+        <>
+            <PageHeaderComponent text='Create a Worksheet' />
             {
                 isLoading ? (
                     <FullPageLoading message="Creating Your Worksheet..." />
@@ -138,15 +140,17 @@ const GrammarVocabWorksheet = () => {
                             />
 
                             <div className="text-center">
-                                <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+
+                                <ButtonPrimaryComponent type='submit' >
                                     Create Worksheet
-                                </button>
+                                </ButtonPrimaryComponent>
+
                             </div>
                         </form>
                     </div>
                 )
             }
-        </Layout>
+        </>
     )
 }
 
