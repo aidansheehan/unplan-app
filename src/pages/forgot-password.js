@@ -1,5 +1,4 @@
 import ForgotPasswordFormComponent from "@/components/forgot-password-form.component"
-// import Layout from "@/components/layout"
 
 /**
  * Forgot password page
@@ -7,9 +6,7 @@ import ForgotPasswordFormComponent from "@/components/forgot-password-form.compo
 const ForgotPassword = () => {
 
     return (
-        // <Layout >
             <ForgotPasswordFormComponent />
-        // </Layout>
     )
 }
 
