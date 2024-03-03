@@ -23,15 +23,14 @@ module.exports = {
         'xl': '1440px'
       },
       colors: {
-        buttonBg: '#4338CA',
-        buttonHover: '#4F46E5',
-
-        // Sidebar / Top Nav colors
-        sidebarHover: '#29292b',
-        sidebarHighlight: '#fcd116',
-        sidebarBg: '#1c1c1e',
-        sidebarInactiveText: '#f5f5f5',
-        brand: '#db2b39',
+          /** Material palette colors generated with https://www.materialpalette.com/amber/amber */
+          darkPrimary: '#FFA000',
+          lightPrimary: '#FFECB3',
+          primary: '#FFC107',
+          primaryText: '#212121', // This is also for icons, could be different icons
+          secondaryText: '#757575',
+          divider: '#BDBDBD',
+          accent: '#448AFF',
       }
     },
   },

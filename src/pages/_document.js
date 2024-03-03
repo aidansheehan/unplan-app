@@ -7,6 +7,7 @@ export default function Document() {
           <link href="https://fonts.googleapis.com/css2?family=Changa+One&display=swap" rel="stylesheet" />
           <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
           <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet" />
+          <title>Unplan</title>
       </Head>
       <body className='h-full'>
         <Main />
