@@ -1,8 +1,8 @@
 import { faBookOpen, faFileAlt, faUsers } from "@fortawesome/free-solid-svg-icons"
-import Layout from "@/components/layout"
 import ActivityLinkComponent from "@/components/activity-link.component"
 import Link from "next/link"
-import UserActivitiesComponent from "@/components/user-activities.component"
+import ProtectedRoute from "@/hoc/protected-route.hoc"
+import PageHeaderComponent from "@/components/page-header"
 
 /**
  * TODO should maybe be part of ACTIVITY_INFO constant
@@ -40,11 +40,12 @@ const ACTIVITIES = [
 const Activities = () => {
 
     return (
-        <Layout >
-<div className="p-4 lg:p-8 flex-grow">
+
+<div>
+
+        <PageHeaderComponent text='ESL Activity Creator' />
 
 <div className="text-center mb-12">
-    <h2 className="text-2xl font-bold mb-2">ESL Activity Creator</h2>
     <p className="text-md text-gray-600">Choose an activity type to create tailored exercises for your ESL classroom.</p>
   </div>
 
@@ -72,8 +73,6 @@ const Activities = () => {
 
   </div>
 
-            <UserActivitiesComponent />
-
             <div className="mt-4 text-center px-8">
                     <h2 className="text-2xl font-bold mb-4 text-blue-800">Looking for something else, Teach?</h2>
                     <p className="text-md text-gray-600 mb-6">Missing the perfect activity for your class? Let us know what you need, and we'll aim to add it to our creation tools!</p>
@@ -84,8 +83,8 @@ const Activities = () => {
 
             </div>
 
-        </Layout>
+
     )
 }
 
-export default Activities
+export default ProtectedRoute(Activities)

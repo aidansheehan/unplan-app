@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import Layout from "@/components/layout";
 import FullPageLoading from "@/components/full-page.loading.component";
 import ActivityInstructionsComponent from "@/components/activity-instructions.component";
 import ACTIVITY_INFO from "@/constants/activity-info.constant";
-import { useError } from "@/context/error.context";
+import ProtectedRoute from "@/hoc/protected-route.hoc";
+import { useAuth } from "@/context/auth.context";
+import apiRequest from "@/services/api-request";
+import ButtonPrimaryComponent from "@/components/button/button.primary.component";
+import PageHeaderComponent from "@/components/page-header";
 
 const ReadingComprehension = () => {
     const [formData, setFormData] = useState({
@@ -18,45 +21,45 @@ const ReadingComprehension = () => {
     });
     const [isLoading, setIsLoading] = useState(false);
 
-    const router = useRouter();
-    const { handleError } = useError();
+    const router            = useRouter()
+    const { getToken }      = useAuth()
 
+    // Handle form input change
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
-    };
+    }
 
+    // Handle form submission
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
+        e.preventDefault()
+        setIsLoading(true)
 
-        try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}generateReadingComprehensionWorksheet`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({...formData, numberOfActivities: +formData.numberOfActivities, timeAllocation: +formData.timeAllocation})
-            });
+        const authToken = await getToken()
 
-            if (!response.ok) throw new Error('Failed to generate activity');
+        // Generate the Reading Task
+        const response = await apiRequest('generateReadingComprehensionWorksheet', {
+            method: 'POST',
+            authToken,
+            headers: { 'Content-Type': 'application/json' },
+            body: { ...formData, numberOfActivities: +formData.numberOfActivities, timeAllocation: +formData.timeAllocation }
+        })
 
-            const data = await response.json();
-
-            //Store worksheet / Activity ID in local storage
-            const storedActivityIds = JSON.parse(localStorage.getItem('activityIds')) || []
-            storedActivityIds.push(data.worksheetId)
-            localStorage.setItem('activityIds', JSON.stringify(storedActivityIds))
-
-            router.push(`/activity/${data.worksheetId}`);
-            
-        } catch (error) {
-            console.error(error);
-            setIsLoading(false);
-            handleError(error);
+        // If response ok
+        if (response && response.worksheetId) {
+            router.push(`/activity/${response.worksheetId}`)
         }
+
+        // Response not ok
+        else {
+            setIsLoading(false)
+        }
+
     };
 
     return (
-        <Layout title={isLoading ? '' : "Create Reading Comprehension Worksheet"}>
+        <>
+            <PageHeaderComponent text='Create a Reading Task' />
             {isLoading ? <FullPageLoading message='Creating Your Reading Comprehension Task...' /> : (
                 <div className='w-full h-full p-4'>
                     <ActivityInstructionsComponent instructionText={ACTIVITY_INFO.readingComprehension.instructions} />
@@ -177,16 +180,16 @@ const ReadingComprehension = () => {
                         </div>
 
                         <div className="text-center">
-                            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            <ButtonPrimaryComponent type='submit' >
                                 Create Activity
-                            </button>
+                            </ButtonPrimaryComponent>
                         </div>
                         
                     </form>
                 </div>
             )}
-        </Layout>
+        </>
     );
 };
 
-export default ReadingComprehension;
+export default ProtectedRoute(ReadingComprehension);

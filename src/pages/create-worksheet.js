@@ -1,11 +1,15 @@
 import ActivityInstructionsComponent from "@/components/activity-instructions.component";
+import ButtonPrimaryComponent from "@/components/button/button.primary.component";
 import FullPageLoading from "@/components/full-page.loading.component";
-import Layout from "@/components/layout";
+import PageHeaderComponent from "@/components/page-header";
 import TagInputComponent from "@/components/tag-input.component";
 import ACTIVITY_INSTRUCTIONS from "@/constants/activity-info.constant";
-import { useError } from "@/context/error.context";
+import { useAuth } from "@/context/auth.context";
+import ProtectedRoute from "@/hoc/protected-route.hoc";
+import apiRequest from "@/services/api-request";
 import { useRouter } from "next/router";
 import { useState } from "react";
+// import { useErrorHandling } from "@/hooks/use-error-handling.hook";
 
 const GrammarVocabWorksheet = () => {
     const [formData, setFormData] = useState({
@@ -17,8 +21,9 @@ const GrammarVocabWorksheet = () => {
     const [ targetGrammar, setTargetGrammar ]   = useState([])
     const [isLoading, setIsLoading]             = useState(false)
 
-    const router = useRouter();
-    const { handleError } = useError();
+    const router            = useRouter()
+    // const { handleError }   = useErrorHandling()
+    const { getToken }      = useAuth()
 
 
     const handleChange = (e) => {
@@ -30,37 +35,37 @@ const GrammarVocabWorksheet = () => {
         e.preventDefault();
         setIsLoading(true);
 
-        try {
+        // Get user auth token
+        const authToken = await getToken()
 
-            //Construct request data
-            const requestData = {...formData, targetWords: targetWords.map(tW => tW.text), targetGrammar: targetGrammar.map(tG => tG.text)}
+        // Construct request data
+        const requestData = {...formData, targetWords: targetWords.map(tW => tW.text), targetGrammar: targetGrammar.map(tG => tG.text)}
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}generateGrammarVocabularyWorksheet`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(requestData)
-            });
+        // Generate the worksheet
+        const response = await apiRequest('generateGrammarVocabularyWorksheet', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            authToken,
+            body: requestData
+        })
 
-            if (!response.ok) throw new Error('Failed to generate worksheet');
+        // If response ok
+        if (response && response.worksheetId) {
 
-            const data = await response.json();
-
-            //Store worksheet / Activity ID in local storage
-            const storedActivityIds = JSON.parse(localStorage.getItem('activityIds')) || []
-            storedActivityIds.push(data.worksheetId)
-            localStorage.setItem('activityIds', JSON.stringify(storedActivityIds))
-
-            router.push(`/activity/${data.worksheetId}`);
-
-        } catch (error) {
-            console.error(error);
-            setIsLoading(false);
-            handleError(error);
+            // Redirect to view page with activity ID
+            router.push(`/activity/${response.worksheetId}`)
         }
+
+        // Response not ok
+        else {
+            setIsLoading(false)
+        }
+
     };
 
     return (
-        <Layout title={isLoading ? '' : "Create Grammar/Vocabulary Worksheet"}>
+        <>
+            <PageHeaderComponent text='Create a Worksheet' />
             {
                 isLoading ? (
                     <FullPageLoading message="Creating Your Worksheet..." />
@@ -135,16 +140,18 @@ const GrammarVocabWorksheet = () => {
                             />
 
                             <div className="text-center">
-                                <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+
+                                <ButtonPrimaryComponent type='submit' >
                                     Create Worksheet
-                                </button>
+                                </ButtonPrimaryComponent>
+
                             </div>
                         </form>
                     </div>
                 )
             }
-        </Layout>
+        </>
     )
 }
 
-export default GrammarVocabWorksheet
+export default ProtectedRoute(GrammarVocabWorksheet)

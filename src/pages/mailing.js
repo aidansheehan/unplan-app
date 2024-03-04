@@ -1,9 +1,8 @@
-import Layout from "@/components/layout"
-import { useError } from "@/context/error.context"
+import { useErrorHandling } from "@/hooks/use-error-handling.hook"
 
 const { useState } = require("react")
 
-const Signup = () => {
+const Mailing = () => {
 
     const [ email, setEmail ]                       = useState('')      //Email state
     const [ success, setSuccess ]                   = useState(false)   //Success state
@@ -11,7 +10,7 @@ const Signup = () => {
     const [ duplicateUser, setDuplicateUser ]       = useState(false)   //Duplicate user state
     const [ isPledgeVisible, setIsPledgeVisible ]   = useState(false)   //Privacy pledge visible state
 
-    const { handleError } = useError()
+    const { handleError } = useErrorHandling()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -39,7 +38,7 @@ const Signup = () => {
                     setSuccess(true)        //Set attempt successful
                     setDuplicateUser(true)  //Set duplicate user state
                 } else {
-                    throw new Error(`There was an error adding the user to the mailing list`)
+                    handleError('There was an error adding the user to the mailing list')
                 }
 
             }
@@ -53,7 +52,6 @@ const Signup = () => {
     }
 
     return (
-        <Layout >
             <div className="w-full h-full p-4 flex justify-center items-center">
                 <div className="bg-blue-100 rounded-lg p-6 shadow-lg w-full max-w-md leading-7 ">
                     <h2 className="text-2xl font-bold text-blue-900 mb-4 font-bree">Join Our Mailing List</h2>
@@ -120,9 +118,8 @@ const Signup = () => {
         </div>
         </div>
         </div>
-        </Layout>
 
     )
 }
 
-export default Signup
+export default Mailing

@@ -8,13 +8,12 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'custom-background': "url('/background_image-98.jpg')"
       },
       fontFamily: {
-        'permanent-marker': [ 'Permanent Marker', 'monospace'],
-        'bree': ['Bree Serif', 'serif']
+        heading: ['"Changa One"', 'cursive', 'sans-serif'],
+        nav: ['Roboto', 'sans-serif'],
+        body: ['Roboto Slab', 'serif']
 
       },
       boxShadow: {
@@ -22,8 +21,20 @@ module.exports = {
       },
       screens: {
         'xl': '1440px'
+      },
+      colors: {
+          /** Material palette colors generated with https://www.materialpalette.com/amber/amber */
+          darkPrimary: '#FFA000',
+          lightPrimary: '#FFECB3',
+          primary: '#FFC107',
+          primaryText: '#212121', // This is also for icons, could be different icons
+          secondaryText: '#757575',
+          divider: '#BDBDBD',
+          accent: '#448AFF',
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms')
+  ],
 }

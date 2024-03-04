@@ -1,72 +1,125 @@
-import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLaptopCode, faClock, faPrint, faPencilRuler } from '@fortawesome/free-solid-svg-icons';
-import Layout from '@/components/layout';
+import ActivityCard from '@/components/activity-card.component'
+import ContentGridComponent from '@/components/content-grid.component'
+import DashboardSection from '@/components/dashboard.section.component'
+import EmptyStateComponent from '@/components/empty-state.component'
+import LessonCard from '@/components/lesson-card.component'
+import LoadingSpinner from '@/components/loading-spinner'
+import PageHeaderComponent from '@/components/page-header'
+import WelcomeScreen from '@/components/welcome-screen.component'
+import { useAuth } from '@/context/auth.context'
+import ProtectedRoute from '@/hoc/protected-route.hoc'
+import apiRequest from '@/services/api-request'
+import { useEffect, useState } from 'react'
 
-export default function Home() {
+const CONTENT_LIMIT = 3
 
-  return (
-    <Layout>
-<section className="bg-blue-100 text-gray-800 px-4 py-12 md:py-24 w-full">
-  <div className="max-w-4xl mx-auto">
-    <h2 className="text-4xl md:text-5xl xl:text-6xl font-bold text-center leading-tight text-blue-900 font-bree">
-      Free, Custom Lesson Plans & Activity Materials for ESL Teachers
-    </h2>
-    <p className="mt-8 md:mt-12 text-lg md:text-xl text-center text-blue-700">
-      Effortlessly create tailored lesson plans and engaging activity handouts in seconds.
-    </p>
-    <div className="mt-8 text-center space-y-4 md:space-y-0 md:space-x-4">
-      <Link href="/plan" className="inline-block w-full md:w-auto bg-orange-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors duration-300 mb-2 md:mb-0">
-        Create A Lesson Plan
-      </Link>
-      <Link href="/activities" className="inline-block w-full md:w-auto bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-600 transition-colors duration-300">
-        Generate Activity Materials
-      </Link>
-    </div>
-  </div>
-</section>
-      {/* Features Section */}
-      <section className="flex-grow flex flex-col justify-center items-center bg-blue-50 w-full">
-        <div className="text-center py-8 px-4">
-          <h2 className="text-2xl font-semibold text-blue-700 mb-4 font-bree">Why Choose <span className='font-bold font-permanent-marker' >EASY PLAN ESL</span>?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {FeatureCard(faLaptopCode, 'Quick Lesson Generation', 'Generate custom lesson plans quickly with just a few clicks.', 'bg-yellow-100', 'text-yellow-500')}
-            {  FeatureCard(
-                faPencilRuler,
-                'Engaging Class Handouts',
-                'Generate creative and interactive handouts for your classroom activities.',
-                'bg-purple-100',
-                'text-purple-500'
-              )}
-            {FeatureCard(faClock, 'Save Time', 'Streamline your planning process to save time and enhance your teaching experience.', 'bg-orange-100', 'text-orange-500')}
-            {FeatureCard(faPrint, 'Easy Printing', 'Effortlessly print your lesson materials ready for the classroom.', 'bg-green-100', 'text-green-500')}
-  
-          </div>
-        </div>
+const Home = () => {
 
-        {/* Library Section */}
-        <div className="w-full text-center py-8 bg-blue-200 px-4">
-          <h3 className="text-2xl font-semibold text-blue-800 mb-4 font-bree">Explore Our Lesson Library</h3>
-          <p className="mb-4 text-blue-700">Browse through a curated selection of ready-to-use lesson plans.</p>
-          <Link href="/library" className="inline-block bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition-colors duration-300">
-              Visit Library
-          </Link>
-        </div>
-      </section>
-    </Layout>
-  );
+    const { user, getToken } = useAuth()
+    const [ recentLessons, setRecentLessons ] = useState([])
+    const [ recentActivities, setRecentActivities ] = useState([])
+    const [ isLoadingLessons, setIsLoadingLessons ] = useState(true)
+    const [ isLoadingActivities, setIsLoadingActivities ] = useState(true)
+    // const [ isLoading, setIsLoading ] = useState(true)
+
+    useEffect(() => {
+
+        const fetchRecentLessons = async () => {
+            const authToken = await getToken()
+
+            // Build the query parameters string based on whether a limit is provided
+            const queryParams = `?limit=${CONTENT_LIMIT}`
+
+            const lessons = await apiRequest(`getUserLessons${queryParams}`, { authToken })
+
+            setRecentLessons(lessons)
+        }
+
+        const fetchRecentActivities = async () => {
+
+            // Get auth token
+            const authToken = await getToken()
+
+            // Build the query parameters string based on whether a limit is provided
+            const queryParams = `?limit=${CONTENT_LIMIT}`
+
+            const activities = await apiRequest(`getActivities${queryParams}`, { authToken })
+
+            setRecentActivities(activities)
+
+        }
+
+        fetchRecentLessons().then(() => {
+            setIsLoadingLessons(false)
+        })
+
+        fetchRecentActivities().then(() => {
+            setIsLoadingActivities(false)
+        })
+
+    }, [ user, getToken ])
+
+    if (!isLoadingLessons && !isLoadingActivities && !recentLessons.length && !recentActivities.length) return (
+        <WelcomeScreen />
+    )
+
+    return (
+        <>
+
+            <PageHeaderComponent text='Dashboard' />
+
+            <DashboardSection 
+              title='Recent Lesson Plans' 
+              hideButtons={!recentLessons.length}
+              link1={{
+                  text: 'See all',
+                  href: '/your-lessons'
+              }} 
+              link2={{
+                  text: 'Create',
+                  href: '/plan'
+              }}
+            >
+                {
+                    isLoadingLessons ? (
+                        <LoadingSpinner />
+                    ) : (
+                        recentLessons.length ? (
+                            <ContentGridComponent contents={recentLessons} CardComponent={<LessonCard />} />
+                        ) : (
+                            <EmptyStateComponent text="You haven't created any lessons yet." href='/plan' />
+                        )
+                    )
+                }
+            </DashboardSection>
+            <DashboardSection 
+              title='Recent Activities'
+              hideButtons={!recentActivities || !recentActivities.length}
+              link1={{
+                text: 'See all',
+                href: '/activities'
+              }}
+              link2={{
+                text: 'Create',
+                href: '/activities'
+              }}
+            >
+                {
+                    isLoadingActivities ? (
+                        <LoadingSpinner />
+                    ) : (
+                        recentActivities && recentActivities.length ? (
+                            <ContentGridComponent contents={recentActivities} CardComponent={<ActivityCard />} />
+                        ) : (
+                            <EmptyStateComponent text="You haven't created any classroom activity materials yet." href='/activities' />
+                        )
+                    )
+                }
+
+            </DashboardSection>
+        </>
+    )
+
 }
 
-function FeatureCard(icon, title, description, bgColor, iconColor) {
-  return (
-    <div className={`rounded-xl p-6 shadow-lg bg-white`}>
-      <div className={`p-4 inline-flex rounded-full ${bgColor} mb-4`}>
-        <FontAwesomeIcon icon={icon} className={iconColor} size="2x" />
-      </div>
-      <h4 className="mb-2 font-semibold text-lg text-gray-800 font-bree">{title}</h4>
-      <p className="text-gray-600">{description}</p>
-    </div>
-  );
-}
-
-
+export default ProtectedRoute(Home)

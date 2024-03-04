@@ -32,7 +32,7 @@ const useLessons = ( fetchLessonsFunction, initialLessons = []) => {
     useEffect(() => {
 
         const lowercasedSearchTerm = searchTerm.toLowerCase()
-        const filtered = lessons.filter(lesson => 
+        const filtered = lessons?.filter(lesson => 
             lesson.topic.toLowerCase().includes(lowercasedSearchTerm) || 
             lesson.level.toLowerCase().includes(lowercasedSearchTerm) || 
             (lesson.ageGroup && lesson.ageGroup.toLowerCase().includes(lowercasedSearchTerm))

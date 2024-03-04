@@ -1,38 +1,57 @@
-import Layout from "@/components/layout";
-import LessonsGrid from "@/components/lessons-grid.component";
+import ContentGridComponent from "@/components/content-grid.component";
+import EmptyStateComponent from "@/components/empty-state.component";
+import LessonCard from "@/components/lesson-card.component";
 import LoadingSpinner from "@/components/loading-spinner";
+import PageHeaderComponent from "@/components/page-header";
 import SearchBarComponent from "@/components/search-bar.component";
-import { useError } from "@/context/error.context";
+import { useAuth } from "@/context/auth.context";
+import ProtectedRoute from "@/hoc/protected-route.hoc";
 import useLessons from "@/hooks/use-lessons.hook";
+import apiRequest from "@/services/api-request";
 
 const YourLessons = () => {
 
-    const { handleError } = useError()
+    const { getToken }      = useAuth()
 
     //Function to fetch user's lessons
     const fetchYourLessons = async () => {
-        const storedLessonIds = JSON.parse(localStorage.getItem('lessonIds')) || []
-        const lessonIdsQuery = storedLessonIds.join(',')
-        const res = await fetch(`${process.env.NEXT_PUBLIC_FIREBASE_URL}getLessons?ids=${lessonIdsQuery}`)
-        if (!res.ok) {
-            handleError(res.status)
-            throw new Error(`Failed to fetch lessons, status: ${res.status}`)
-        }
-        return res.json()
+
+        const authToken = await getToken()
+
+        // Get user lessons
+        const lessons = await apiRequest('getUserLessons', { authToken })
+
+        // Return the lessons
+        return lessons;
     }
 
-    const { isLoading, searchTerm, setSearchTerm, filteredLessons } = useLessons(fetchYourLessons)
+    const { isLoading, searchTerm, setSearchTerm, filteredLessons, lessons } = useLessons(fetchYourLessons)
 
     return (
-        <Layout title='Your Lessons'>
-            <div className="p-8 w-full flex-grow flex flex-col" >
-                <SearchBarComponent searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-                {isLoading ? <LoadingSpinner /> : <LessonsGrid lessons={filteredLessons} />}
-            </div>
+        <div className="flex flex-col" >
+            <PageHeaderComponent text='My Lesson Plans' />
 
-        </Layout>
+            {
+                isLoading ? (
+                    <LoadingSpinner />
+                ) : (
+                    lessons.length ? (
+                        <>
+                            <SearchBarComponent searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+                            {/* <ContentGridLessonContainer lessons={filteredLessons} /> */}
+                            <ContentGridComponent contents={filteredLessons} CardComponent={<LessonCard />} />
+                        </>
+                    ) : (
+                         <div className="min-h-full flex justify-center items-center py-32" >
+                            <EmptyStateComponent size='2x' text="Time to create your first masterpiece." href="/plan" />
+                        </div>
+                    )
+                )
+            }
+
+        </div>
     )
 
 }
 
-export default YourLessons
+export default ProtectedRoute(YourLessons)

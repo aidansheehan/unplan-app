@@ -1,5 +1,3 @@
-import Layout from "@/components/layout"
-import TextContentPresentationComponent from "@/components/text-content-presentation/text-content-presentation.component"
 import { faFrownOpen } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { doc, getDoc } from "firebase/firestore"
@@ -10,6 +8,8 @@ import ActivityInstructionsComponent from "@/components/activity-instructions.co
 import { useEffect, useState } from "react"
 import LoadingSpinner from "@/components/loading-spinner"
 import TinyMceEditor from "@/components/tinymce-editor.component"
+import ProtectedRoute from "@/hoc/protected-route.hoc"
+import PageHeaderComponent from "@/components/page-header"
 
 /**
  * Page to view & print a generated activity
@@ -48,7 +48,6 @@ const ViewActivity = ({worksheetUrl, activity, topic, activityId, error}) => {
     //Handle error
     if (error) {
         return (
-            <Layout title="Activity Not Found">
                 <div className="w-full h-full p-4 text-center">
                     <FontAwesomeIcon icon={faFrownOpen} size="3x" className="text-orange-500 mb-4" />
                     <h2 className="text-2xl font-bold text-blue-900 mb-4">Oops! Activity not found.</h2>
@@ -59,12 +58,13 @@ const ViewActivity = ({worksheetUrl, activity, topic, activityId, error}) => {
                             Go Back to Home
                     </Link>
                 </div>
-            </Layout>
         )
     }
 
     return (
-        <Layout title={`${ACTIVITY_INFO[activity].title} - ${topic}`} >
+        <>
+
+            <PageHeaderComponent text={`${ACTIVITY_INFO[activity].title} - ${topic}`} />
 
             <ActivityInstructionsComponent instructionText={ACTIVITY_INFO[activity].instructions} />
 
@@ -79,7 +79,7 @@ const ViewActivity = ({worksheetUrl, activity, topic, activityId, error}) => {
                 )
             }
 
-        </Layout>
+        </>
     )
 }
 
@@ -120,4 +120,4 @@ export async function getServerSideProps(context) {
     }
 }
 
-export default ViewActivity
+export default ProtectedRoute(ViewActivity)
