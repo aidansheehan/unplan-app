@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Transition, Disclosure } from '@headlessui/react'
 import Link from 'next/link'
 import {
@@ -7,6 +7,7 @@ import {
   ChevronRightIcon,
 } from '@heroicons/react/24/outline'
 import useNavigationWithCurrentPath from '@/hooks/use-navigation-with-current-path'
+import { useRouter } from 'next/router'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -15,7 +16,27 @@ function classNames(...classes) {
 export default function AuthLayoutComponent({children}) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
-  const navigation = useNavigationWithCurrentPath()
+  const router      = useRouter()
+  const navigation  = useNavigationWithCurrentPath()
+
+  // Subscribe to router event changes - NB may cause unintentional close, may need to look into adding click handlers to links as appropriate
+  useEffect(() => {
+
+    // Function to handle route change
+    const handleRouteChange = () => {
+      // Close the sidebar
+      setSidebarOpen(false)
+    }
+
+    // Listen for route changes to close the sidebar
+    router.events.on('routeChangeStart', handleRouteChange)
+
+    // Cleanup listener on component unmount
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange)
+    }
+
+  }, [router.events])
 
   return (
     <>
