@@ -17,7 +17,7 @@ const SignupForm = () => {
     const onSubmit = async (data) => {
 
         // TODO handle mailing list signup
-        const { email, password, username/*, mailingList*/ } = data
+        const { email, password, username, mailingList } = data
 
         try {
 
@@ -28,6 +28,19 @@ const SignupForm = () => {
             if (userCredential.user) {
                 await updateProfile(userCredential.user, {
                     displayName: username
+                })
+            }
+
+            // If user wants to sign up to mailingList
+            if (mailingList) {
+
+                // Sign user up to mailing list without awaiting completion TODO error handling
+                fetch('/api/subscribe', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 })
             }
 
