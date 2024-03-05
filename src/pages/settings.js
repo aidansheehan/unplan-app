@@ -69,7 +69,7 @@ const SettingsPage = () => {
 
                 {/* Change Password */}
                 {
-                    showChangePassword || true && (
+                    showChangePassword && (
                         <div className="pt-6 sm:flex">
                             <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">
                                 <h2>Change Password</h2>
@@ -111,7 +111,7 @@ const SettingsPage = () => {
 
 
             {/* Modals */}
-            {showChangePassword || true&& (
+            {showChangePassword && (
                 <ChangePasswordModal
                     isOpen={isChangePasswordModalOpen}
                     onClose={() => setIsChangePasswordModalOpen(false)}
