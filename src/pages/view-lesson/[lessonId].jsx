@@ -285,10 +285,8 @@ export async function getServerSideProps(context) {
 
         const lessonData = lessonDoc.data() //Get lessonData
 
-        lessonData.createdAt = lessonData.createdAt.toDate().toISOString()
-        lessonData.updatedAt = lessonData.updatedAt.toDate().toISOString()
-
-        
+        if (lessonData.createdAt) lessonData.createdAt = lessonData.createdAt.toDate().toISOString()
+        if (lessonData.updatedAt) lessonData.updatedAt = lessonData.updatedAt.toDate().toISOString()        
 
         return {
             props: {
