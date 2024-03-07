@@ -5,9 +5,11 @@ import {
   Bars3Icon,
   XMarkIcon,
   ChevronRightIcon,
+  ArrowLeftStartOnRectangleIcon,
 } from '@heroicons/react/24/outline'
 import useNavigationWithCurrentPath from '@/hooks/use-navigation-with-current-path'
 import { useRouter } from 'next/router'
+import { useAuth } from '@/context/auth.context'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -18,6 +20,16 @@ export default function AuthLayoutComponent({children}) {
 
   const router      = useRouter()
   const navigation  = useNavigationWithCurrentPath()
+  const { logout }  = useAuth()
+
+  // Function to handle Sign Out
+  const handleSignOut = async () => {
+    try {
+        await logout()  // Log user out
+    } catch (error) {
+        console.error('Failed to sign out: ', error)
+    }
+  }
 
   // Subscribe to router event changes - NB may cause unintentional close, may need to look into adding click handlers to links as appropriate
   useEffect(() => {
@@ -166,6 +178,18 @@ export default function AuthLayoutComponent({children}) {
 
                               </li>
                             ))}
+
+                            <li >
+                              <button 
+                                  onClick={handleSignOut}
+                                  className="group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold hover:bg-darkPrimary hover:text-primaryText w-full"
+                              >
+                                <ArrowLeftStartOnRectangleIcon className='text-primaryText group-hover:text-primaryText h-6 w-6 shrink-0' />
+                                <span className="sr-only" >Log Out</span>
+                                <span aria-hidden="true">Log Out</span>
+                              </button>
+                            </li>
+
                           </ul>
                         </li>
 
@@ -297,6 +321,17 @@ export default function AuthLayoutComponent({children}) {
                         </li>
                     ))
                 }
+
+                <li className="-mx-6" >
+                  <button 
+                      onClick={handleSignOut}
+                      className="group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold hover:bg-darkPrimary hover:text-primaryText w-full"
+                  >
+                    <ArrowLeftStartOnRectangleIcon className='text-primaryText group-hover:text-primaryText h-6 w-6 shrink-0' />
+                    <span className="sr-only" >Log Out</span>
+                    <span aria-hidden="true">Log Out</span>
+                  </button>
+                </li>
 
               </ul>
             </nav>
