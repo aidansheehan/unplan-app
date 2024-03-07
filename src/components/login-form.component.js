@@ -40,7 +40,7 @@ const LoginFormComponent = () => {
 
         <div className="sm:mx-auto sm:w-full sm:max-w-[480px]">
         
-          <div className="bg-white px-6 py-6 md:py-12 shadow sm:rounded-lg sm:px-12">
+          <div className="bg-white px-6 py-6 md:py-12 sm:shadow sm:rounded-lg sm:px-12">
 
             {/* <div className="sm:mx-auto sm:w-full sm:max-w-md mb-8 "> */}
                 <h2 className="mb-6 text-center text-2xl font-bold leading-9 tracking-tight font-heading">

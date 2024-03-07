@@ -65,7 +65,7 @@ const SignupForm = () => {
 
         <div className="sm:mx-auto sm:w-full sm:max-w-[480px]">
         
-          <div className="bg-white px-6 py-6 md:py-12 shadow sm:rounded-lg sm:px-12">
+          <div className="bg-white px-6 py-6 md:py-12 sm:shadow sm:rounded-lg sm:px-12">
 
             <h2 className="mb-6 text-center text-2xl font-bold leading-9 tracking-tight font-heading">
                 Let's Go!
@@ -135,7 +135,7 @@ const SignupForm = () => {
                         aria-describedby="mailingList-description"
                         name="mailingList"
                         type="checkbox"
-                        className="h-4 w-4 rounded border-divider text-accent focus:ring-accent text-accent"
+                        className="h-4 w-4 rounded border-divider focus:ring-accent text-accent"
                         />
                     </div>
                     <div className="ml-3 text-sm leading-6">
@@ -177,7 +177,7 @@ const SignupForm = () => {
           </div>
             {/* TODO link */}
             <p className="mt-10 text-center text-sm text-secondaryText">
-                By clicking "Create Account" or "Continue with Google", you agree to our TOS and Privacy Policy.
+                By clicking "Create Account" or "Continue with Google", you agree to our <a href='https://assets-global.website-files.com/65e5a3a5d547e0db23df6a87/65e9c5007c2d96bf2e2a7741_unplan-terms-of-service.pdf' className="font-semibold hover:text-accent" target='_blank' >TOS</a> and <a href='https://assets-global.website-files.com/65e5a3a5d547e0db23df6a87/65e9c50092b6f28749fd2d1c_unplan-privacy-policy.pdf' className="font-semibold hover:text-accent" target='_blank'>Privacy Policy</a>.
             </p>
 
         </div>
