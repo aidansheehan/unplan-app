@@ -2,8 +2,7 @@ import DeleteAccountModal from "@/components/modal/delete-account.modal.componen
 import { auth } from "../../firebaseConfig"
 import ProtectedRoute from "@/hoc/protected-route.hoc"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faKey, faTrashAlt, faUserCog } from "@fortawesome/free-solid-svg-icons"
-import SignOutButtonComponent from "@/components/sign-out.button.component"
+import { faKey, faTrashAlt } from "@fortawesome/free-solid-svg-icons"
 import ChangePasswordModal from "@/components/modal/change-password.modal.component"
 import { useState, useEffect } from "react"
 import PageHeaderComponent from "@/components/page-header"
@@ -52,15 +51,6 @@ const SettingsPage = () => {
                   <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Email address</dt>
                   <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
                     <div className="text-gray-900">{user.email}</div>
-                    {/* <button type="button" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                      Update
-                    </button> */}
-                  </dd>
-                </div>
-                <div className="pt-6 sm:flex">
-                  <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Sign Out</dt>
-                  <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                    <SignOutButtonComponent />
                     {/* <button type="button" className="font-semibold text-indigo-600 hover:text-indigo-500">
                       Update
                     </button> */}
