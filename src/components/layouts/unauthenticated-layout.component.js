@@ -23,7 +23,7 @@ const UnauthLayout = ({children}) => {
                                 src="/unplan_logo.svg"
                                 alt="Unplan"
                         /> */}
-                        <h2 className='font-heading text-4xl text-primaryText' >UNPLAN</h2>
+                        <h2 className='font-heading text-4xl text-primaryText' >UNPLAN.</h2>
                     </a>
 
                     {

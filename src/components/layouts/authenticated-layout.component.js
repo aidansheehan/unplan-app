@@ -90,7 +90,7 @@ export default function AuthLayoutComponent({children}) {
                         src="/unplan_logo.svg"
                         alt="Unplan"
                       /> */}
-                      <h2 className='font-heading text-4xl text-primaryText' >UNPLAN</h2>
+                      <h2 className='font-heading text-4xl text-primaryText' >UNPLAN.</h2>
                     </div>
                     <nav className="flex flex-1 flex-col">
                       <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -188,7 +188,7 @@ export default function AuthLayoutComponent({children}) {
                 src="/unplan_logo.svg"
                 alt="Unplan"
               /> */}
-              <h2 className='font-heading text-5xl text-primaryText' >UNPLAN</h2>
+              <h2 className='font-heading text-5xl text-primaryText' >UNPLAN.</h2>
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -313,7 +313,7 @@ export default function AuthLayoutComponent({children}) {
               className={`-m-2.5 lg:hidden shrink-0 h-8 mr-0.5 ${sidebarOpen && 'hidden'}`}
               src="/unplan_logo.svg"
           /> */}
-            <h2 className='font-heading text-primaryText' >UNPLAN</h2>
+            <h2 className='font-heading text-primaryText' >UNPLAN.</h2>
 
 
         </div>
