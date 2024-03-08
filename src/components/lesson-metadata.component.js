@@ -1,6 +1,5 @@
 // import formatDate from "@/functions/format-date.function";
-import { faClock } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ClockIcon } from '@heroicons/react/24/outline'
 import _ from 'lodash'
 
 /**
@@ -38,8 +37,8 @@ const LessonMetadataComponent = ({ lessonData }) => {
 
                     </div>
 
-                    <div className="bg-blue-600 text-white rounded-lg p-3 text-center flex flex-col">
-                        <FontAwesomeIcon icon={faClock} className="text-white mb-2" size='lg'/>
+                    <div className="bg-accent text-white rounded-lg p-3 text-center flex flex-col">
+                        <ClockIcon />
                         <div>
                         <span className="text-lg">{duration}&nbsp;</span>
                         <span className="text-sm">min</span>

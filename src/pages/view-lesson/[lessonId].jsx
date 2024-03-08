@@ -221,47 +221,55 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                     )
                 }
 
-                {/* Handout */}
-                <LessonSectionTitle title='Student Handout' />
                 {
-                    handoutLoading ? (
-                        handoutGenerating ? (
-                            <InlineLoadingComponent />
-                        ) : (<p>Loading...</p>)
-                    ) : (
-                        handoutContent ? (
-                            //TODO should take actual content as prop to prevent double loading
-                            !isOwner ? (
-                                <HtmlContentPresentationComponent htmlContent={handoutContent} title={`Handout - ${lessonData.topic}`} />
-                            ) : (
-                                <TinyMceEditor value={handoutContent} setValue={setHandoutContent} contentUrl={handoutUrl} id={lessonId} title='Student Handout' />
-                            )
-                            
-                        ) : (
-                            <div >
-                                <button disabled={!lessonPlanContent || planLoading} onClick={generateHandout} className="block md:w-auto bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-600 transition-colors duration-300 m-auto" >
-                                    Generate Handout
-                                </button>
+                    isOwner ? (
+                        <>
+                            {/* Handout */}
+                            <LessonSectionTitle title='Student Handout' />
+                            {
+                                handoutLoading ? (
+                                    handoutGenerating ? (
+                                        <InlineLoadingComponent />
+                                    ) : (<p>Loading...</p>)
+                                ) : (
+                                    handoutContent ? (
+                                        //TODO should take actual content as prop to prevent double loading
+                                        !isOwner ? (
+                                            <HtmlContentPresentationComponent htmlContent={handoutContent} title={`Handout - ${lessonData.topic}`} />
+                                        ) : (
+                                            <TinyMceEditor value={handoutContent} setValue={setHandoutContent} contentUrl={handoutUrl} id={lessonId} title='Student Handout' />
+                                        )
+                                        
+                                    ) : (
+                                        <div >
+                                            <button disabled={!lessonPlanContent || planLoading} onClick={generateHandout} className="block md:w-auto bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-600 transition-colors duration-300 m-auto" >
+                                                Generate Handout
+                                            </button>
+                                        </div>
+                                    )
+                                )
+                            }
+
+                            <LessonSectionTitle title='Media' isComingSoon />
+                            <div className="bg-blue-50 p-6 rounded-lg shadow-md text-sm">
+                                <p className='text-gray-700 mb-4 font-semibold'>
+                                    Get ready to bring your lessons to life with multimedia!
+                                </p>
+                                <p className="text-gray-700 mb-4">
+                                    Soon, you'll be able to create audio files for listening activities and enrich your lessons with engaging images.
+                                </p>
+                                <div className='mt-2 w-full flex justify-center'>
+                                    <Link href="/mailing" className="bg-orange-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-600 transition-colors duration-300 w-fit">
+                                        Sign Up for Updates
+                                    </Link>
+                                </div>
+
                             </div>
-                        )
+                        </>
+                    ) : (
+                        <></>
                     )
                 }
-
-                <LessonSectionTitle title='Media' isComingSoon />
-                <div className="bg-blue-50 p-6 rounded-lg shadow-md text-sm">
-                    <p className='text-gray-700 mb-4 font-semibold'>
-                        Get ready to bring your lessons to life with multimedia!
-                    </p>
-                    <p className="text-gray-700 mb-4">
-                        Soon, you'll be able to create audio files for listening activities and enrich your lessons with engaging images.
-                    </p>
-                    <div className='mt-2 w-full flex justify-center'>
-                        <Link href="/mailing" className="bg-orange-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-600 transition-colors duration-300 w-fit">
-                            Sign Up for Updates
-                        </Link>
-                    </div>
-
-                </div>
                 
             </div>
 
