@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPrint, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
 import 'react-loading-skeleton/dist/skeleton.css'
 import styles from './markdown.module.scss'
+import { PrinterIcon } from "@heroicons/react/24/outline"
+import ButtonAltComponent from "../button/button.alt.component"
 
 const HtmlContentPresentationComponent = ({htmlContent, title}) => {
 
@@ -88,18 +90,24 @@ const HtmlContentPresentationComponent = ({htmlContent, title}) => {
         }
     }
 
+    const printBtnJsx = (
+        <div className="inline-flex items-center align-middle">
+            <PrinterIcon className="h-6" />
+            <span className="ml-2">Print</span>
+        </div>
+    )
+
     return (
         <div className="relative border p-4 rounded-md shadow-sm bg-white mb-7">
 
                 {isCollapsed && (
                     <div className="text-center mt-4 absolute bottom-4 right-8">
-                    <button 
-                        onClick={openForPrint}
-                        className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-full shadow-lg focus:outline-none focus:ring focus:ring-green-300 inline-flex items-center"
+                        <ButtonAltComponent
+                            onClick={openForPrint}
+                            style='bg-accent rounded-lg'
                         >
-                            <FontAwesomeIcon icon={faPrint} />
-                            <span className="ml-2">Print</span>
-                        </button>
+                            {printBtnJsx}
+                        </ButtonAltComponent>
                     </div>
                 )}
                 
@@ -109,19 +117,17 @@ const HtmlContentPresentationComponent = ({htmlContent, title}) => {
                 
                 {!isCollapsed && (
                     <div className="text-center mt-4">
-                        <button 
+                    <ButtonAltComponent 
                             onClick={openForPrint}
-                            className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-full shadow-lg focus:outline-none focus:ring focus:ring-green-300 inline-flex items-center"
                         >
-                            <FontAwesomeIcon icon={faPrint} />
-                                <span className="ml-2">Print</span>
-                            </button>
+                            {printBtnJsx}
+                        </ButtonAltComponent>
                         </div>
                 )}
 
                 <button 
                 onClick={toggleCollapse}
-                className="mt-2 text-blue-500 hover:text-blue-700"
+                className="mt-2 text-accent hover:text-darkPrimary"
                 >
                     {isCollapsed ? <FontAwesomeIcon icon={faChevronDown} /> : <FontAwesomeIcon icon={faChevronUp} />}
                 </button>

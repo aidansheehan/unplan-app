@@ -1,4 +1,7 @@
 
+/**
+ * Primary button component
+ */
 const ButtonPrimaryComponent = ({onClick, type, children, style}) => {
 
     return (

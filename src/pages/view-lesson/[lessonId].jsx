@@ -14,6 +14,7 @@ import LoadingSpinner from '@/components/loading-spinner'
 import apiRequest from '@/services/api-request'
 import { useAuth } from '@/context/auth.context'
 import ProtectedRoute from '@/hoc/protected-route.hoc'
+import ButtonSecondaryComponent from '@/components/button/button.secondary.component'
 
 
 const ViewLesson = ({lessonData, lessonId, error}) => {
@@ -241,30 +242,17 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
                                         )
                                         
                                     ) : (
-                                        <div >
-                                            <button disabled={!lessonPlanContent || planLoading} onClick={generateHandout} className="block md:w-auto bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-600 transition-colors duration-300 m-auto" >
-                                                Generate Handout
-                                            </button>
-                                        </div>
+                                            <ButtonSecondaryComponent 
+                                                disabled={!lessonPlanContent || planLoading}
+                                                onClick={generateHandout}
+                                                style='w-full'
+                                            >
+                                                Generate a Student Handout (Experimental)
+                                            </ButtonSecondaryComponent>
                                     )
                                 )
                             }
 
-                            <LessonSectionTitle title='Media' isComingSoon />
-                            <div className="bg-blue-50 p-6 rounded-lg shadow-md text-sm">
-                                <p className='text-gray-700 mb-4 font-semibold'>
-                                    Get ready to bring your lessons to life with multimedia!
-                                </p>
-                                <p className="text-gray-700 mb-4">
-                                    Soon, you'll be able to create audio files for listening activities and enrich your lessons with engaging images.
-                                </p>
-                                <div className='mt-2 w-full flex justify-center'>
-                                    <Link href="/mailing" className="bg-orange-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-600 transition-colors duration-300 w-fit">
-                                        Sign Up for Updates
-                                    </Link>
-                                </div>
-
-                            </div>
                         </>
                     ) : (
                         <></>

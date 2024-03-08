@@ -71,7 +71,7 @@ const TagInputComponent = ({tags, setTags, label, placeholder, tagLimit}) => {
          <button 
              type="button"
              onClick={addTag}
-             className={`flex-shrink-0 p-2 text-sm bg-blue-500 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 absolute bottom-3 right-2 ${isDisabled ? 'bg-gray-200 && cursor-not-allowed' : 'hover:bg-blue-600 '}`}
+             className={`flex-shrink-0 p-2 text-sm bg-accent text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 absolute bottom-3 right-2 ${isDisabled ? 'bg-gray-200 && cursor-not-allowed' : 'hover:bg-blue-600 '}`}
              aria-label="Add word"
              disabled={isDisabled}
          >
