@@ -63,7 +63,7 @@ const SettingsPage = () => {
                         <div className="pt-6 sm:flex">
                             <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">
                                 <h2>Change Password</h2>
-                                <p className="text-sm text-gray-400">Recieve an email with insturctions to update your password.</p>
+                                <p className="text-sm text-gray-400">Recieve an email with instructions to update your password.</p>
                             </dt>
                             <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
                                 <button
