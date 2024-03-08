@@ -30,89 +30,74 @@ const SettingsPage = () => {
     }, [])
 
     return (
-        <div  >
-            <PageHeaderComponent text={'Settings'} />
+        <div>
+          <PageHeaderComponent text={'Settings'} />
 
-            <div>
+          <div className="py-10 px-6">
+            <dl className="space-y-6 divide-y divide-gray-200 text-sm leading-6">
+              { user.displayName && (
+                <div className="py-6">
+                  <dt className="font-semibold text-gray-600">Full name</dt>
+                  <dd className="mt-1 text-gray-700">{user.displayName}</dd>
+                </div>
+              )}
+              
+              <div className="py-6">
+                <dt className="font-semibold text-gray-600">Email address</dt>
+                <dd className="mt-1 text-gray-700">{user.email}</dd>
+              </div>
 
-              <dl className="mt-6 space-y-6 divide-y divide-gray-100 border-t border-gray-200 text-sm leading-6">
-                { user.displayName && (
-                    <div className="pt-6 sm:flex">
-                  <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Full name</dt>
-                  <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                    <div className="text-gray-900">{user.displayName}</div>
-                    {/* <button type="button" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                      Update
-                    </button> */}
+              { showChangePassword && (
+                <div className="py-6">
+                  <dt className="font-semibold text-gray-600">
+                    <h2 className="text-lg">Change Password</h2>
+                    <p className="text-sm text-gray-500">Receive an email with instructions to update your password.</p>
+                  </dt>
+                  <dd className="mt-1">
+                    <button
+                      onClick={() => setIsChangePasswordModalOpen(true)}
+                      className="bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors duration-200 text-sm px-4 py-2 rounded flex items-center"
+                    >
+                      <FontAwesomeIcon icon={faKey} className="mr-2" />
+                      Change Password
+                    </button>
                   </dd>
                 </div>
-                )}
-                <div className="pt-6 sm:flex">
-                  <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Email address</dt>
-                  <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                    <div className="text-gray-900">{user.email}</div>
-                    {/* <button type="button" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                      Update
-                    </button> */}
-                  </dd>
-                </div>
+              )}
 
-                {/* Change Password */}
-                {
-                    showChangePassword && (
-                        <div className="pt-6 sm:flex">
-                            <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">
-                                <h2>Change Password</h2>
-                                <p className="text-sm text-gray-400">Recieve an email with instructions to update your password.</p>
-                            </dt>
-                            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                                <button
-                                    onClick={() => setIsChangePasswordModalOpen(true)}
-                                    className="text-blue-500 hover:text-blue-700 transition-colors duration-200 text-sm flex items-center justify-start mb-3"
-                                >
-                                    <FontAwesomeIcon icon={faKey} className="mr-2" />
-                                    Change Password
-                                </button>
-                            </dd>
-                        </div>
-                    )
-                }
-
-                <div className="pt-6 sm:flex">
-                        <dt className="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">
-                            <h2>Delete Account</h2>
-                            <p className="text-sm text-gray-400">
-                            No longer want to use our service? You can delete your account here. This action is not reversible.
+              <div className="py-6">
+                <dt className="font-semibold text-gray-600">
+                  <h2 className="text-lg">Delete Account</h2>
+                  <p className="text-sm text-gray-500">
+                    No longer want to use our service? You can delete your account here. This action is not reversible.
                     All information related to this account will be deleted permanently.
-                            </p>
-                        </dt>
-                        <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                            <button
-                                onClick={() => setIsDeleteAccountModalOpen(true)}
-                                className="text-red-500 hover:text-red-700 transition-colors duration-200 text-sm flex items-center justify-start"
-                            >
-                                <FontAwesomeIcon icon={faTrashAlt} className="mr-2" />
-                                Delete Account
-                            </button>
-                        </dd>
-                    </div>
-              </dl>
-            </div>
-
-
-            {/* Modals */}
-            {showChangePassword && (
-                <ChangePasswordModal
-                    isOpen={isChangePasswordModalOpen}
-                    onClose={() => setIsChangePasswordModalOpen(false)}
-                />
-            )}
-            <DeleteAccountModal
-                isOpen={isDeleteAccountModalOpen}
-                onClose={() => setIsDeleteAccountModalOpen(false)}
-            />
-
+                  </p>
+                </dt>
+                <dd className="mt-1">
+                  <button
+                    onClick={() => setIsDeleteAccountModalOpen(true)}
+                    className="bg-red-100 text-red-600 hover:bg-red-200 transition-colors duration-200 text-sm px-4 py-2 rounded flex items-center"
+                  >
+                    <FontAwesomeIcon icon={faTrashAlt} className="mr-2" />
+                    Delete Account
+                  </button>
+                </dd>
+              </div>
+            </dl>
+          </div>
+                      {/* Modals */}
+                      {showChangePassword && (
+                      <ChangePasswordModal
+                          isOpen={isChangePasswordModalOpen}
+                          onClose={() => setIsChangePasswordModalOpen(false)}
+                      />
+                  )}
+                  <DeleteAccountModal
+                      isOpen={isDeleteAccountModalOpen}
+                      onClose={() => setIsDeleteAccountModalOpen(false)}
+                  />
         </div>
+
     )
 
 }
