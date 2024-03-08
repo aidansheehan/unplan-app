@@ -1,3 +1,4 @@
+import { LightBulbIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
 
 const eslTeachingTips = [
@@ -59,7 +60,7 @@ const FullPageLoading = ({message}) => {
     <div className="fixed inset-0 bg-white bg-opacity-90 z-50 flex flex-col items-center justify-center">
       <div className="w-full max-w-lg px-4">
         <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
-          <div className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style={{ width: `${progress}%` }}>{extendedLoading ? "We're still working on it..." : 'Loading...'}</div>
+          <div className="bg-accent text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style={{ width: `${progress}%` }}>{extendedLoading ? "We're still working on it..." : 'Loading...'}</div>
         </div>
         <h2 className="text-lg font-semibold text-center mt-4">
             {extendedLoading ? "Almost there, just finalizing a few things!" : message}
@@ -67,8 +68,9 @@ const FullPageLoading = ({message}) => {
         <p className="mt-2 text-gray-600 text-center">
             {extendedLoading ? "Thanks for your patience." : "This may take around 20 seconds. Please don't close this page."}
         </p>
-        <div className="mt-4 p-4 bg-blue-100 rounded-md shadow-lg">
-          <p className="text-sm text-gray-700 italic">{tip}</p>
+        <div className="mt-4 p-4 bg-lightPrimary rounded-md shadow-lg inline-flex">
+          <LightBulbIcon className='h-8 mr-4' />
+          <p className="text-sm text-secondaryText italic">{tip}</p>
         </div>
       </div>
     </div>
