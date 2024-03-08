@@ -1,5 +1,6 @@
 import { useState } from "react"
 import Link from "next/link"
+import ButtonPrimaryComponent from "@/components/button/button.primary.component"
 
 /**
  * Page to give feedback
@@ -40,7 +41,7 @@ const Feedback = () => {
                     <p className="text-sm text-center mt-2">Sign up for our mailing list to see how your suggestions are shaping our future updates!</p>
 
                     <div className="mt-6 text-center">
-                        <Link href="/mailing" className="inline-block bg-orange-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors duration-300">
+                        <Link href="/mailing" className="inline-block bg-darkPrimary text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors duration-300">
                             Sign Up for Updates
                         </Link>
                     </div>
@@ -71,12 +72,13 @@ const Feedback = () => {
                         onChange={(e) => setFeedback(e.target.value)}
                         placeholder="Type your feedback here..."
                     />
-                    <button
-                        type="submit"
-                        className="w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                    <ButtonPrimaryComponent 
+                        type='submit'
+                        style='w-full'
                     >
                         Submit Feedback
-                    </button>
+                    </ButtonPrimaryComponent>
+
                 </form>
             </div>
 

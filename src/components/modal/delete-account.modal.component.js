@@ -62,7 +62,7 @@ const DeleteAccountModal = ({ isOpen, onClose }) => {
         <ModalComponent isOpen={isOpen} onClose={onClose}>
             <div className="p-4 text-center">
                 <h3 className="font-bold text-lg mb-2">Delete Account</h3>
-                <p className="mb-4">Are you sure you want to delete your account? This action cannot be undone.</p>
+                <p className="mb-4">Are you sure you want to delete your account?</p>
                 <button
                     onClick={confirmDeleteAccount}
                     className="bg-red-600 text-white p-2 rounded hover:bg-red-700 mr-2"

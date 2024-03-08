@@ -38,7 +38,7 @@ const LessonMetadataComponent = ({ lessonData }) => {
                     </div>
 
                     <div className="bg-accent text-white rounded-lg p-3 text-center flex flex-col">
-                        <ClockIcon />
+                        <ClockIcon className='h-8' />
                         <div>
                         <span className="text-lg">{duration}&nbsp;</span>
                         <span className="text-sm">min</span>
