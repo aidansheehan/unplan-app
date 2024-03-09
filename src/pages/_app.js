@@ -11,6 +11,9 @@ import LayoutComponent from '@/components/layouts/layout.component'
 import Head from 'next/head'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import { Analytics } from "@vercel/analytics/react"
+import { LessonsProvider } from '@/context/lessons.context'
+import { ActivitiesProvider } from '@/context/activities.context'
+import { LessonsLibraryProvider } from '@/context/lessons-library.context'
 
 config.autoAddCss = false
 
@@ -21,9 +24,15 @@ export default function App({ Component, pageProps }) {
         <title>Unplan</title>
       </Head>
       <AuthContextProvider >
-          <LayoutComponent>
-              <Component {...pageProps} />
-          </LayoutComponent>
+        <LessonsProvider>
+          <ActivitiesProvider>
+            <LessonsLibraryProvider >
+              <LayoutComponent>
+                  <Component {...pageProps} />
+              </LayoutComponent>
+            </LessonsLibraryProvider>
+          </ActivitiesProvider>
+        </LessonsProvider>
           
           <Toaster 
             position='top-right'
