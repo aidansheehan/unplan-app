@@ -34,7 +34,7 @@ export const LessonsProvider = ({ children }) => {
         });
         
         return () => unsubscribe()
-    }, [user])
+    }, [user, authLoading])
 
     return (
         <LessonsContext.Provider value={{ lessons, isLoading }} >

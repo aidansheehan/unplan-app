@@ -34,7 +34,7 @@ export const ActivitiesProvider = ({ children }) => {
         })
 
         return () => unsubscribe()
-    }, [user])
+    }, [user, authLoading])
 
     return (
         <ActivitiesContext.Provider value={{ activities, isLoading }} >

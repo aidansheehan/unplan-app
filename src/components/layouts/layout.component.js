@@ -5,6 +5,7 @@ import { useLessons } from "@/context/lessons.context"
 import { useActivities } from "@/context/activities.context"
 import { useLessonsLibrary } from "@/context/lessons-library.context"
 import { useEffect, useState } from "react"
+import PreloaderComponent from "../preloader.component"
 
 /**
  * Layout component responsible for rendering appropriate layout based on auth state
@@ -12,37 +13,38 @@ import { useEffect, useState } from "react"
 const LayoutComponent = ({children}) => {
 
     const [ preloadFinished, setPreloadFinished ] = useState(false)
+    const [ appLoaded, setAppLoaded ]             = useState(false)
 
     const { user, loading: isAuthLoading }    = useAuth()
-    const { lessons, isLoading: isLessonsLoading }     = useLessons()
-    const { activities, isLoading: isActivitiesLoading }  = useActivities()
+    const { isLoading: isLessonsLoading }     = useLessons()
+    const { isLoading: isActivitiesLoading }  = useActivities()
     const { isLoading: isLibraryLoading }     = useLessonsLibrary()
 
     useEffect(() => {
 
         // If loaded all resources
         if (!isAuthLoading && !isLessonsLoading && !isActivitiesLoading && !isLibraryLoading) {
-          setPreloadFinished(true)
+          setAppLoaded(true)
         }
     }, [isAuthLoading, isLessonsLoading, isActivitiesLoading, isLibraryLoading])
 
-    // TODO preloader
-    if (!preloadFinished) return (
-      <></>
-    )
+    return (
+      <>
+        {!preloadFinished ? <PreloaderComponent appLoaded={appLoaded} setPreloadFinished={setPreloadFinished} /> : null}
 
+        {appLoaded ? (
+            !user ? (
+              <UnauthLayout >
+                  {children}
+              </UnauthLayout>
+            ) : (
+              <AuthLayoutComponent >
+                {children}
+              </AuthLayoutComponent>
+            )
+        ) : <></>}
 
-
-    if (!user) return (
-      <UnauthLayout >
-          {children}
-      </UnauthLayout>
-    )
-
-    else return (
-      <AuthLayoutComponent >
-          {children}
-      </AuthLayoutComponent>
+      </>
     )
 }
 

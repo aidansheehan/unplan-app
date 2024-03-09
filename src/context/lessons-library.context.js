@@ -38,7 +38,7 @@ export const LessonsLibraryProvider = ({ children }) => {
         });
         
         return () => unsubscribe()
-    }, [user])
+    }, [user, authLoading])
 
     return (
         <LessonsLibraryContext.Provider value={{ lessons, isLoading }} >
