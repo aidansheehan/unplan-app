@@ -5,27 +5,30 @@ import LoadingSpinner from "@/components/loading-spinner";
 import PageHeaderComponent from "@/components/page-header";
 import SearchBarComponent from "@/components/search-bar.component";
 import { useAuth } from "@/context/auth.context";
+import { useLessons } from "@/context/lessons.context";
 import ProtectedRoute from "@/hoc/protected-route.hoc";
-import useLessons from "@/hooks/use-lessons.hook";
+// import useLessons from "@/hooks/use-lessons.hook";
 import apiRequest from "@/services/api-request";
 
 const YourLessons = () => {
 
     const { getToken }      = useAuth()
 
-    //Function to fetch user's lessons
-    const fetchYourLessons = async () => {
+    const { lessons, isLoading } = useLessons()
 
-        const authToken = await getToken()
+    // //Function to fetch user's lessons
+    // const fetchYourLessons = async () => {
 
-        // Get user lessons
-        const lessons = await apiRequest('getUserLessons', { authToken })
+    //     const authToken = await getToken()
 
-        // Return the lessons
-        return lessons;
-    }
+    //     // Get user lessons
+    //     const lessons = await apiRequest('getUserLessons', { authToken })
 
-    const { isLoading, searchTerm, setSearchTerm, filteredLessons, lessons } = useLessons(fetchYourLessons)
+    //     // Return the lessons
+    //     return lessons;
+    // }
+
+    // const { isLoading, searchTerm, setSearchTerm, filteredLessons, lessons } = useLessons(fetchYourLessons)
 
     return (
         <div className="flex flex-col" >
@@ -35,11 +38,11 @@ const YourLessons = () => {
                 isLoading ? (
                     <LoadingSpinner />
                 ) : (
-                    lessons.length ? (
+                    lessons.length || true? (
                         <>
-                            <SearchBarComponent searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+                            {/* <SearchBarComponent searchTerm={searchTerm} setSearchTerm={setSearchTerm} /> */}
                             {/* <ContentGridLessonContainer lessons={filteredLessons} /> */}
-                            <ContentGridComponent contents={filteredLessons} CardComponent={<LessonCard />} />
+                            <ContentGridComponent contents={lessons/*filteredLessons*/} CardComponent={<LessonCard />} />
                         </>
                     ) : (
                          <div className="min-h-full flex justify-center items-center py-32" >
