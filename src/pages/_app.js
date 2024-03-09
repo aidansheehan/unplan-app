@@ -12,6 +12,7 @@ import Head from 'next/head'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import { Analytics } from "@vercel/analytics/react"
 import { LessonsProvider } from '@/context/lessons.context'
+import { ActivitiesProvider } from '@/context/activities.context'
 
 config.autoAddCss = false
 
@@ -23,9 +24,11 @@ export default function App({ Component, pageProps }) {
       </Head>
       <AuthContextProvider >
         <LessonsProvider>
-          <LayoutComponent>
+          <ActivitiesProvider>
+            <LayoutComponent>
                 <Component {...pageProps} />
             </LayoutComponent>
+          </ActivitiesProvider>
         </LessonsProvider>
           
           <Toaster 

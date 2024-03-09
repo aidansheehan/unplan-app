@@ -6,65 +6,18 @@ import LessonCard from '@/components/lesson-card.component'
 import LoadingSpinner from '@/components/loading-spinner'
 import PageHeaderComponent from '@/components/page-header'
 import WelcomeScreen from '@/components/welcome-screen.component'
-import { useAuth } from '@/context/auth.context'
+import { useActivities } from '@/context/activities.context'
 import { useLessons } from '@/context/lessons.context'
 import ProtectedRoute from '@/hoc/protected-route.hoc'
-import apiRequest from '@/services/api-request'
-import { useEffect, useState } from 'react'
-
-const CONTENT_LIMIT = 3
 
 const Home = () => {
 
-    const { user, getToken } = useAuth()
-    // const [ recentLessons, setRecentLessons ] = useState([])
-    // const { lessons, isLoading: isLoadingLessons } = useState([])
     const { lessons, isLoading: isLoadingLessons } = useLessons()
-    const [ recentActivities, setRecentActivities ] = useState([])
-    // const [ isLoadingLessons, setIsLoadingLessons ] = useState(true)
-    const [ isLoadingActivities, setIsLoadingActivities ] = useState(true)
-    // const [ isLoading, setIsLoading ] = useState(true)
+    const { activities, isLoading: isLoadingActivities } = useActivities()
 
-    const recentLessons = lessons.slice(0, 2)
+    const recentLessons     = lessons.slice(0, 2)       // Take most recent two lessons for display
+    const recentActivities  = activities.slice(0, 2)    // Take most recent two activities for display
 
-    // const recentLessons = lessons ? lessons.slice(0, 3) : []
-
-    useEffect(() => {
-
-        // const fetchRecentLessons = async () => {
-        //     const authToken = await getToken()
-
-        //     // Build the query parameters string based on whether a limit is provided
-        //     const queryParams = `?limit=${CONTENT_LIMIT}`
-
-        //     const lessons = await apiRequest(`getUserLessons${queryParams}`, { authToken })
-
-        //     setRecentLessons(lessons)
-        // }
-
-        const fetchRecentActivities = async () => {
-
-            // Get auth token
-            const authToken = await getToken()
-
-            // Build the query parameters string based on whether a limit is provided
-            const queryParams = `?limit=${CONTENT_LIMIT}`
-
-            const activities = await apiRequest(`getActivities${queryParams}`, { authToken })
-
-            setRecentActivities(activities)
-
-        }
-
-        // fetchRecentLessons().then(() => {
-        //     setIsLoadingLessons(false)
-        // })
-
-        fetchRecentActivities().then(() => {
-            setIsLoadingActivities(false)
-        })
-
-    }, [ user, getToken ])
 
     if (!isLoadingLessons && !isLoadingActivities && !recentLessons.length && !recentActivities.length) return (
         <WelcomeScreen />

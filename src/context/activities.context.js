@@ -3,11 +3,11 @@ import { useAuth } from './auth.context'
 import { db } from '../../firebaseConfig'
 import { collection, query, where, orderBy, onSnapshot } from 'firebase/firestore'
 
-const LessonsContext = createContext()
+const ActivitiesContext = createContext()
 
-export const LessonsProvider = ({ children }) => {
+export const ActivitiesProvider = ({ children }) => {
 
-    const [ lessons, setLessons ]       = useState([])
+    const [ activities, setActivities ] = useState([])
     const [ isLoading, setIsLoading ]   = useState(true)
     const { user }                      = useAuth()
 
@@ -17,22 +17,22 @@ export const LessonsProvider = ({ children }) => {
             return
         }
 
-        const q = query(collection(db, 'lessons'), where('uid', '==', user.uid), orderBy('updatedAt', 'desc'));
+        const q = query(collection(db, 'activities'), where('uid', '==', user.uid), orderBy('updatedAt', 'desc'))
 
         const unsubscribe = onSnapshot(q, (snapshot) => {
-            const lessonsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            setLessons(lessonsData);
+            const activitiesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+            setActivities(activitiesData)
             setIsLoading(false)
-        });
-        
+        })
+
         return () => unsubscribe()
     }, [user])
 
     return (
-        <LessonsContext.Provider value={{ lessons, isLoading }} >
+        <ActivitiesContext.Provider value={{ activities, isLoading }} >
             {children}
-        </LessonsContext.Provider>
+        </ActivitiesContext.Provider>
     )
 }
 
-export const useLessons = () => useContext(LessonsContext)
+export const useActivities = () => useContext(ActivitiesContext)
