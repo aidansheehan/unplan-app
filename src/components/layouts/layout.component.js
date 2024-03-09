@@ -32,7 +32,7 @@ const LayoutComponent = ({children}) => {
       <>
         {!preloadFinished ? <PreloaderComponent appLoaded={appLoaded} setPreloadFinished={setPreloadFinished} /> : null}
 
-        {appLoaded ? (
+        {preloadFinished ? (
             !user ? (
               <UnauthLayout >
                   {children}
