@@ -1,32 +1,40 @@
 import ContentGridComponent from "@/components/content-grid.component"
 import LessonCard from "@/components/lesson-card.component"
-import LoadingSpinner from "@/components/loading-spinner"
 import PageHeaderComponent from "@/components/page-header"
 import SearchBarComponent from "@/components/search-bar.component"
+import { useLessonsLibrary } from "@/context/lessons-library.context"
 import ProtectedRoute from "@/hoc/protected-route.hoc"
-import useLessons from "@/hooks/use-lessons.hook"
-import apiRequest from "@/services/api-request"
+import { useEffect, useState } from "react"
 
 /**
  * Page to display lesson library
  */
 const Library = () => {
 
-    //Function to fetch library lessons
-    const fetchlibraryLessons = async () => {
+    const { lessons } = useLessonsLibrary()
 
-        const res = await apiRequest('getLessons?public=true')
+    const [ filteredLessons, setFilteredLessons ]   = useState(lessons)
+    const [ searchTerm, setSearchTerm ]             = useState('')
 
-        return res
-    }
+    useEffect(() => {
+        const lowercasedSearchTerm = searchTerm.toLowerCase()   // Parse search term to lower case
 
-    const { isLoading, searchTerm, setSearchTerm, filteredLessons } = useLessons(fetchlibraryLessons)
+        // Find lessons matching search term
+        const filtered = lessons.filter(lesson => 
+            lesson.topic.toLowerCase().includes(lowercasedSearchTerm) || 
+            lesson.level.toLowerCase().includes(lowercasedSearchTerm) || 
+            (lesson.ageGroup && lesson.ageGroup.toLowerCase().includes(lowercasedSearchTerm))
+            )
+            
+        // Set filtered lessons state
+        setFilteredLessons(filtered)
+    }, [searchTerm, lessons])
 
     return (
         <div >
             <PageHeaderComponent text='Lesson Library' />
             <SearchBarComponent searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-            {isLoading ? <LoadingSpinner /> : <ContentGridComponent contents={filteredLessons} CardComponent={<LessonCard />} />}
+            <ContentGridComponent contents={filteredLessons} CardComponent={<LessonCard />} />
         </div>
     )
 

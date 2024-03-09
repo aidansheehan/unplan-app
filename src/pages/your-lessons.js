@@ -1,7 +1,6 @@
 import ContentGridComponent from "@/components/content-grid.component";
 import EmptyStateComponent from "@/components/empty-state.component";
 import LessonCard from "@/components/lesson-card.component";
-import LoadingSpinner from "@/components/loading-spinner";
 import PageHeaderComponent from "@/components/page-header";
 import SearchBarComponent from "@/components/search-bar.component";
 import { useLessons } from "@/context/lessons.context";
@@ -10,7 +9,7 @@ import { useEffect, useState } from "react";
 
 const YourLessons = () => {
 
-    const { lessons, isLoading } = useLessons()
+    const { lessons } = useLessons()
 
     const [ filteredLessons, setFilteredLessons ]   = useState(lessons)
     const [ searchTerm, setSearchTerm ]             = useState('')
@@ -35,20 +34,15 @@ const YourLessons = () => {
             <PageHeaderComponent text='My Lesson Plans' />
 
             {
-                isLoading ? (
-                    <LoadingSpinner />
+                lessons.length ? (
+                    <>
+                        <SearchBarComponent searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+                        <ContentGridComponent contents={filteredLessons} CardComponent={<LessonCard />} />
+                    </>
                 ) : (
-                    lessons.length || true? (
-                        <>
-                            <SearchBarComponent searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-                            {/* <ContentGridLessonContainer lessons={filteredLessons} /> */}
-                            <ContentGridComponent contents={filteredLessons} CardComponent={<LessonCard />} />
-                        </>
-                    ) : (
-                         <div className="min-h-full flex justify-center items-center py-32" >
-                            <EmptyStateComponent size='2x' text="Time to create your first masterpiece." href="/plan" />
-                        </div>
-                    )
+                     <div className="min-h-full flex justify-center items-center py-32" >
+                        <EmptyStateComponent size='2x' text="Time to create your first masterpiece." href="/plan" />
+                    </div>
                 )
             }
 

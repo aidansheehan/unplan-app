@@ -1,11 +1,15 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useAuth } from './auth.context'
+import { collection, onSnapshot, query, where } from 'firebase/firestore'
 import { db } from '../../firebaseConfig'
-import { collection, query, where, orderBy, onSnapshot } from 'firebase/firestore'
 
-const LessonsContext = createContext()
+/**
+ * Library context
+ * TODO - remove after static library implemented
+ */
+const LessonsLibraryContext = createContext()
 
-export const LessonsProvider = ({ children }) => {
+export const LessonsLibraryProvider = ({ children }) => {
 
     const [ lessons, setLessons ]           = useState([])
     const [ isLoading, setIsLoading ]       = useState(true)
@@ -16,16 +20,16 @@ export const LessonsProvider = ({ children }) => {
         // If no user
         if (!user) {
 
-            // If auth finished loading
+            // If auth state finished loading
             if (!authLoading) {
-                setIsLoading(false) // Finish loading lessons (no lessons to load)
+                setIsLoading(false)  // Finish loading library (no lessons to load)
             }
-
+            
             // Return early
             return
         }
 
-        const q = query(collection(db, 'lessons'), where('uid', '==', user.uid), orderBy('updatedAt', 'desc'));
+        const q = query(collection(db, 'lessons'), where('public', '==', true))
 
         const unsubscribe = onSnapshot(q, (snapshot) => {
             const lessonsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -37,10 +41,10 @@ export const LessonsProvider = ({ children }) => {
     }, [user])
 
     return (
-        <LessonsContext.Provider value={{ lessons, isLoading }} >
+        <LessonsLibraryContext.Provider value={{ lessons, isLoading }} >
             {children}
-        </LessonsContext.Provider>
+        </LessonsLibraryContext.Provider>
     )
 }
 
-export const useLessons = () => useContext(LessonsContext)
+export const useLessonsLibrary = () => useContext(LessonsLibraryContext)
