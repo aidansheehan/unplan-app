@@ -9,6 +9,8 @@ import { Toaster } from 'react-hot-toast'
 import GlobalErrorHandlerComponent from '@/components/global-error-handler.component'
 import LayoutComponent from '@/components/layouts/layout.component'
 import Head from 'next/head'
+import { SpeedInsights } from '@vercel/speed-insights/react'
+import { Analytics } from "@vercel/analytics/react"
 
 config.autoAddCss = false
 
@@ -31,6 +33,8 @@ export default function App({ Component, pageProps }) {
       </AuthContextProvider>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID} />
       <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_CONTAINER_ID} />
+      <SpeedInsights />
+      <Analytics />
     </>
   )
 }
