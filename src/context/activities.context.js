@@ -7,13 +7,21 @@ const ActivitiesContext = createContext()
 
 export const ActivitiesProvider = ({ children }) => {
 
-    const [ activities, setActivities ] = useState([])
-    const [ isLoading, setIsLoading ]   = useState(true)
-    const { user }                      = useAuth()
+    const [ activities, setActivities ]     = useState([])
+    const [ isLoading, setIsLoading ]       = useState(true)
+    const { user, loading: authLoading }    = useAuth()
 
     useEffect(() => {
+
+        // If no user
         if (!user) {
-            setIsLoading(false)
+
+            // If auth finished loading
+            if (!authLoading) {
+                setIsLoading(false) // Finish loading activities (no activities to load)
+            }
+
+            // Return early
             return
         }
 
