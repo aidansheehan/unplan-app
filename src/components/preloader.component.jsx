@@ -5,9 +5,6 @@ import { useEffect } from "react"
  */
 const PreloaderComponent = ({ appLoaded, setPreloadFinished }) => {
 
-    // const []r
-    const FADE_OUT_TIMER = 1000
-
     useEffect(() => {
 
         // If resources loaded
@@ -17,7 +14,7 @@ const PreloaderComponent = ({ appLoaded, setPreloadFinished }) => {
             const timer = setTimeout(() => {
                 // Set preload state finished to remove component from the DOM
                 setPreloadFinished(true)
-            }, FADE_OUT_TIMER)
+            }, 700)
 
             return () => clearTimeout(timer)
         }
@@ -26,7 +23,7 @@ const PreloaderComponent = ({ appLoaded, setPreloadFinished }) => {
 
     return (
         <div className="absolute flex items-center justify-center w-full h-screen bg-primary z-100">
-            <div className={`transition-opacity duration-${FADE_OUT_TIMER} ${appLoaded ? 'opacity-0' : 'opacity-100'}`} >
+            <div className={`transition-opacity duration-700 ${appLoaded ? 'opacity-0' : 'opacity-100'}`} >
             <h1 className="text-5xl font-bold text-primaryText font-heading animate-pulse">UNPLAN.</h1> 
             </div>
           
