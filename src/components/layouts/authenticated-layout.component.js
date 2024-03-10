@@ -10,6 +10,7 @@ import {
 import useNavigationWithCurrentPath from '@/hooks/use-navigation-with-current-path'
 import { useRouter } from 'next/router'
 import { useAuth } from '@/context/auth.context'
+import ChatComponent from '../chat.component'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -356,6 +357,7 @@ export default function AuthLayoutComponent({children}) {
         <main className="md:py-10 lg:pl-72">
           <div className="px-4 md:px-4  lg:px-8 font-body">
               {children}
+              <ChatComponent />
           </div>
         </main>
       </div>
