@@ -14,6 +14,7 @@ import { Analytics } from "@vercel/analytics/react"
 import { LessonsProvider } from '@/context/lessons.context'
 import { ActivitiesProvider } from '@/context/activities.context'
 import { LessonsLibraryProvider } from '@/context/lessons-library.context'
+import Script from 'next/script'
 
 config.autoAddCss = false
 
@@ -22,6 +23,10 @@ export default function App({ Component, pageProps }) {
     <>
       <Head>
         <title>Unplan</title>
+        <Script 
+          src='https://cdn-cookieyes.com/client_data/06486cd6cdfdc119dfec2fd4/script.js'
+          strategy='beforeInteractive'
+        />
       </Head>
       <AuthContextProvider >
         <LessonsProvider>
