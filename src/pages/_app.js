@@ -23,10 +23,11 @@ export default function App({ Component, pageProps }) {
     <>
       <Head>
         <title>Unplan</title>
-        <Script 
+        <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/06486cd6cdfdc119dfec2fd4/script.js"></script>
+        {/* <Script 
           src='https://cdn-cookieyes.com/client_data/06486cd6cdfdc119dfec2fd4/script.js'
           strategy='beforeInteractive'
-        />
+        /> */}
       </Head>
       <AuthContextProvider >
         <LessonsProvider>
