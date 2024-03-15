@@ -24,11 +24,9 @@ export default function App({ Component, pageProps }) {
       <Head>
         <title>Unplan</title>
         <Script 
-          src={`https://cdn-cookieyes.com/client_data/06486cd6cdfdc119dfec2fd4/script.js`}
+          src='https://cdn-cookieyes.com/client_data/06486cd6cdfdc119dfec2fd4/script.js'
           strategy='beforeInteractive'
-          id='cookieyes'
-          type='text/javascript'
-        ></Script>
+        />
       </Head>
       <AuthContextProvider >
         <LessonsProvider>
@@ -47,10 +45,10 @@ export default function App({ Component, pageProps }) {
           />
           <GlobalErrorHandlerComponent />
       </AuthContextProvider>
-      {/* <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID} />
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID} />
       <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_CONTAINER_ID} />
       <SpeedInsights />
-      <Analytics /> */}
+      <Analytics />
     </>
   )
 }
