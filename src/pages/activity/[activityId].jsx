@@ -1,5 +1,3 @@
-import { doc, getDoc } from "firebase/firestore"
-import { db } from "../../../firebaseConfig"
 import ACTIVITY_INFO from "@/constants/activity-info.constant"
 import ActivityInstructionsComponent from "@/components/activity-instructions.component"
 import { useEffect, useState } from "react"
@@ -21,6 +19,7 @@ const ViewActivity = ({activityId}) => {
 
     if (!activityData) {
         router.replace('/not-found')
+        return <></>
     }
 
     const { worksheetUrl, activity, topic } = activityData
@@ -87,36 +86,6 @@ export async function getServerSideProps(context) {
         }
     }
 
-    try {
-
-        //Fetch activity data from firestore
-        const activityDocRef    = doc(db, 'activities', activityId)
-        const activityDoc       = await getDoc(activityDocRef)
-
-        //Activity doc not found
-        if (!activityDoc.exists()) {
-            throw new Error('Activity not found')
-        }
-
-        //Get activityData
-        const activityData = activityDoc.data()
-
-        //Destructure activityData
-        const { worksheetUrl, activity, topic } = activityData
-
-        return {
-            props: {
-                worksheetUrl,
-                activity,
-                topic,
-                activityId
-            }
-        }
-    } catch (error) {
-        return {
-            props: { error: error.message }
-        }
-    }
 }
 
 export default ProtectedRoute(ViewActivity)

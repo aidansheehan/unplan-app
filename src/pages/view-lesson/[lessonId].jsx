@@ -25,6 +25,7 @@ const ViewLesson = ({lessonId}) => {
     // If lessonData not found
     if (!lessonData) {
         router.replace('/not-found')
+        return <></>
     }
 
     const { contentRef, level, uid }       = lessonData   //Destructure lessonData
