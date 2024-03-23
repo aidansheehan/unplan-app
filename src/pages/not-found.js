@@ -1,20 +1,27 @@
-import { faFrownOpen } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import Link from "next/link"
+import ButtonLinkPrimaryComponent from "@/components/button/button.link.primary.component";
 
-const NotFound = () => {
+export default function NotFound() {
     return (
-        <div className="w-full h-full p-4 text-center">
-            <FontAwesomeIcon icon={faFrownOpen} size="3x" className="text-orange-500 mb-4" />
-            <h2 className="text-2xl font-bold text-blue-900 mb-4">Oops!</h2>
-            <p className="text-lg text-blue-700 mb-6">
-                We couldn't find the document you're looking for. It might have been removed or the link could be incorrect.
-            </p>
-            <Link href="/" className="bg-orange-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors duration-300">
-                    Go Back to Home
-            </Link>
+      <>
+
+        <div className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
+          <div className="text-center">
+            <p className="text-base font-semibold text-accent">404</p>
+            <h1 className="mt-4 text-3xl font-bold tracking-tight text-primaryText sm:text-5xl">Page not found</h1>
+            <p className="mt-6 text-base leading-7 text-secondaryText">Sorry, we couldn’t find the page you’re looking for.</p>
+            <div className="mt-10 flex items-center justify-center gap-x-6">
+                <ButtonLinkPrimaryComponent 
+                    href='/'
+                >
+                    Go back home
+                </ButtonLinkPrimaryComponent>
+{/* TODO
+              <a href="#" className="text-sm font-semibold text-gray-900">
+                Contact support <span aria-hidden="true">&rarr;</span>
+              </a> */}
+            </div>
+          </div>
         </div>
+      </>
     )
 }
-
-export default NotFound
