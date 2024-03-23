@@ -14,9 +14,20 @@ import { Analytics } from "@vercel/analytics/react"
 import { LessonsProvider } from '@/context/lessons.context'
 import { ActivitiesProvider } from '@/context/activities.context'
 import { LessonsLibraryProvider } from '@/context/lessons-library.context'
-import Script from 'next/script'
+import posthog from 'posthog-js'
+import { PostHogProvider } from 'posthog-js/react'
+
 
 config.autoAddCss = false
+
+if (typeof window !== 'undefined') { // checks that we are client-side
+  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
+    api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://app.posthog.com',
+    loaded: (posthog) => {
+      if (process.env.NODE_ENV === 'development') posthog.debug() // debug mode in development
+    },
+  })
+}
 
 export default function App({ Component, pageProps }) {
   return (
@@ -29,23 +40,25 @@ export default function App({ Component, pageProps }) {
           strategy='beforeInteractive'
         /> */}
       </Head>
-      <AuthContextProvider >
-        <LessonsProvider>
-          <ActivitiesProvider>
-            <LessonsLibraryProvider >
-              <LayoutComponent>
-                  <Component {...pageProps} />
-              </LayoutComponent>
-            </LessonsLibraryProvider>
-          </ActivitiesProvider>
-        </LessonsProvider>
-          
-          <Toaster 
-            position='top-right'
-            reverseOrder={false}
-          />
-          <GlobalErrorHandlerComponent />
-      </AuthContextProvider>
+        <PostHogProvider client={posthog}>
+          <AuthContextProvider >
+              <LessonsProvider>
+                <ActivitiesProvider>
+                  <LessonsLibraryProvider >
+                    <LayoutComponent>
+                        <Component {...pageProps} />
+                    </LayoutComponent>
+                  </LessonsLibraryProvider>
+                </ActivitiesProvider>
+              </LessonsProvider>
+                
+                <Toaster 
+                  position='top-right'
+                  reverseOrder={false}
+                />
+                <GlobalErrorHandlerComponent />
+            </AuthContextProvider>
+        </PostHogProvider>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID} />
       <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_CONTAINER_ID} />
       <SpeedInsights />

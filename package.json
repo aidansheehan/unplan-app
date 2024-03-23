@@ -25,6 +25,7 @@
     "marked": "^11.1.0",
     "next": "14.0.4",
     "nodemailer": "^6.9.8",
+    "posthog-js": "^1.116.4",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.50.1",
