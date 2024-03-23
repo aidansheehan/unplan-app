@@ -1,8 +1,5 @@
 import { db } from '../../../firebaseConfig'
-import { doc, getDoc, onSnapshot } from 'firebase/firestore'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFrownOpen } from '@fortawesome/free-solid-svg-icons'
-import Link from 'next/link'
+import { doc, onSnapshot } from 'firebase/firestore'
 import LessonMetadataComponent from '@/components/lesson-metadata.component'
 import LessonSectionTitle from '@/components/lesson-section-title.component'
 import { useEffect, useState } from 'react'
@@ -15,9 +12,20 @@ import apiRequest from '@/services/api-request'
 import { useAuth } from '@/context/auth.context'
 import ProtectedRoute from '@/hoc/protected-route.hoc'
 import ButtonSecondaryComponent from '@/components/button/button.secondary.component'
+import { useLessons } from '@/context/lessons.context'
+import { useRouter } from 'next/router'
 
 
-const ViewLesson = ({lessonData, lessonId, error}) => {
+const ViewLesson = ({lessonId}) => {
+
+    const { lessons }   = useLessons()                          // Get lessons 
+    const router = useRouter()
+    const lessonData    = lessons.find(l => l.id == lessonId)   // Get lessonData for this lesson
+
+    // If lessonData not found
+    if (!lessonData) {
+        router.replace('/not-found')
+    }
 
     const { contentRef, level, uid }       = lessonData   //Destructure lessonData
     const { handout: handoutUrl }          = contentRef   //Destructure contentRef
@@ -178,21 +186,6 @@ const ViewLesson = ({lessonData, lessonId, error}) => {
 
     }, [lessonId, user])
 
-    if (error) {
-        return (
-                <div className="w-full h-full p-4 text-center">
-                    <FontAwesomeIcon icon={faFrownOpen} size="3x" className="text-orange-500 mb-4" />
-                    <h2 className="text-2xl font-bold text-blue-900 mb-4">Oops! Lesson not found.</h2>
-                    <p className="text-lg text-blue-700 mb-6">
-                        We couldn't find the lesson you're looking for. It might have been removed or the link could be incorrect.
-                    </p>
-                    <Link href="/your-lessons" className="bg-orange-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors duration-300">
-                            Go Back to Your Lessons
-                    </Link>
-                </div>
-        )
-    }
-
     if (loading) {
         return (
             <p>
@@ -269,33 +262,11 @@ export async function getServerSideProps(context) {
     //Get lessonId from params
     const { lessonId } = context.params
 
-    try {
-        //Fetch lesson data from firestore
-        const lessonDocRef  = doc(db, 'lessons', lessonId)
-        const lessonDoc     = await getDoc(lessonDocRef)
-
-        //lessonDoc not found
-        if (!lessonDoc.exists()) {
-            throw new Error('Lesson not found')
-        }
-
-        const lessonData = lessonDoc.data() //Get lessonData
-
-        if (lessonData.createdAt) lessonData.createdAt = lessonData.createdAt.toDate().toISOString()
-        if (lessonData.updatedAt) lessonData.updatedAt = lessonData.updatedAt.toDate().toISOString()        
-
-        return {
-            props: {
-                lessonData,
-                lessonId
-            }
-        }
-    } catch (error) {
-        return {
-            props: { error: error.message }
+    return {
+        props: {
+            lessonId
         }
     }
-
 
 }
 
