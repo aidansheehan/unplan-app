@@ -19,6 +19,9 @@ import Script from 'next/script'
 config.autoAddCss = false
 
 export default function App({ Component, pageProps }) {
+
+  console.log('STAGING ENVRIONMENT!')
+  console.log(process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID)
   return (
     <>
       <Head>
