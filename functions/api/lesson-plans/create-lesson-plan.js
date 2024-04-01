@@ -5,6 +5,7 @@ const { httpMethodRestrictorMiddleware } = require('../../middleware/http-method
 const admin = require('firebase-admin')
 const { FieldValue } = require('@google-cloud/firestore')
 const authenticateRequestMiddleware = require('../../middleware/authenticate-request.middleware')
+const { mixpanel } = require('../../utils/mixpanel')
 const db = admin.firestore()
 
 /**
@@ -42,6 +43,11 @@ const createLessonPlan = functions.https.onRequest(async (req, res) => {
                         status: 'pending',
                         createdAt: timestamp,
                         updatedAt: timestamp
+                    })
+
+                    // Track plan created
+                    mixpanel.track('Plan Created', {
+                        distinct_id: uid
                     })
             
                     res.status(200).json({ lessonId: docRef.id })
