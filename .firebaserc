@@ -1,7 +1,7 @@
 {
   "projects": {
-    "default": "lesson-planner-3eff4",
-    "staging": "unplan-10304"
+    "default": "unplan-10304",
+    "staging": "lesson-planner-3eff4"
   },
   "targets": {},
   "etags": {}
