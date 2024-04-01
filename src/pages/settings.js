@@ -41,11 +41,13 @@ const SettingsPage = () => {
                   <dd className="mt-1 text-gray-700">{user.displayName}</dd>
                 </div>
               )}
-              
-              <div className="py-6">
-                <dt className="font-semibold text-gray-600">Email address</dt>
-                <dd className="mt-1 text-gray-700">{user.email}</dd>
-              </div>
+
+              { user.email && (
+                <div className="py-6">
+                  <dt className="font-semibold text-gray-600">Email address</dt>
+                  <dd className="mt-1 text-gray-700">{user.email}</dd>
+                </div>
+              )}
 
               { showChangePassword && (
                 <div className="py-6">

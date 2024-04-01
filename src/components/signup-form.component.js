@@ -2,17 +2,12 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import GoogleContinueButtonComponent from './google-continue-button.component'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth'
-import { useRouter } from 'next/router'
 import { auth } from '../../firebaseConfig'
 import { AUTH_ERROR_MESSAGES } from '@/constants/auth-error-messages.constant'
 import { toast } from 'react-hot-toast'
 
 const SignupForm = () => {
     const { register, handleSubmit, formState: { errors } } = useForm()
-
-    const router = useRouter()
-    
-    const { redirect } = router.query
 
     const onSubmit = async (data) => {
 
