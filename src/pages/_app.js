@@ -14,7 +14,8 @@ import { Analytics } from "@vercel/analytics/react"
 import { LessonsProvider } from '@/context/lessons.context'
 import { ActivitiesProvider } from '@/context/activities.context'
 import { LessonsLibraryProvider } from '@/context/lessons-library.context'
-import Script from 'next/script'
+import { UserDataProvider } from '@/context/user-data.context'
+// import Script from 'next/script'
 
 config.autoAddCss = false
 
@@ -30,15 +31,17 @@ export default function App({ Component, pageProps }) {
         /> */}
       </Head>
       <AuthContextProvider >
-        <LessonsProvider>
-          <ActivitiesProvider>
-            <LessonsLibraryProvider >
-              <LayoutComponent>
-                  <Component {...pageProps} />
-              </LayoutComponent>
-            </LessonsLibraryProvider>
-          </ActivitiesProvider>
-        </LessonsProvider>
+        <UserDataProvider >
+          <LessonsProvider>
+            <ActivitiesProvider>
+              <LessonsLibraryProvider >
+                <LayoutComponent>
+                    <Component {...pageProps} />
+                </LayoutComponent>
+              </LessonsLibraryProvider>
+            </ActivitiesProvider>
+          </LessonsProvider>
+        </UserDataProvider>
           
           <Toaster 
             position='top-right'

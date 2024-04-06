@@ -22,6 +22,8 @@ const { getUserLessons }                        = require('./api/content-managem
 const { getContent }                            = require('./api/content-management/get-content')
 const { updateContent }                         = require('./api/content-management/update-content')
 const { getActivities }                         = require('./api/content-management/get-activities')
+const { createUserDocument }                    = require('./user/create-user-document')
+const { updateLessonPlansCreated }              = require('./user/increment-lesson-plan-count')
 
 /** Lesson Plan Functions */
 exports.createLessonPlan                      = createLessonPlan
@@ -39,3 +41,7 @@ exports.getUserLessons    = getUserLessons
 exports.getContent        = getContent
 exports.updateContent     = updateContent
 exports.getActivities     = getActivities
+
+/** User Functions */
+exports.createUserDocument        = createUserDocument
+exports.updateLessonPlansCreated  = updateLessonPlansCreated
