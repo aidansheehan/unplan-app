@@ -20,7 +20,7 @@ const generateGrammarVocabularyWorksheet = functions.https.onRequest(async (req,
             authenticateRequestMiddleware(req, res, () => {
                 rateLimitMiddleware('gramVocab', req, res, async () => {
 
-                    const { uid } = req // Extract user ID from request
+                    const { uid } = req.user // Extract user ID from request
 
                     //Init OpenAI
                     const openai = new OpenAI()

@@ -10,6 +10,9 @@ import {
 import useNavigationWithCurrentPath from '@/hooks/use-navigation-with-current-path'
 import { useRouter } from 'next/router'
 import { useAuth } from '@/context/auth.context'
+import { useUserData } from '@/context/user-data.context'
+import ModalWrapperComponent from '../modal-wrapper.component'
+import SignupForm from '../signup-form.component'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -20,7 +23,10 @@ export default function AuthLayoutComponent({children}) {
 
   const router      = useRouter()
   const navigation  = useNavigationWithCurrentPath()
-  const { logout }  = useAuth()
+  const { user, logout }  = useAuth()
+
+  // Check if the user is anonymous
+  const isAnonymous = user.isAnonymous || false
 
   // Function to handle Sign Out
   const handleSignOut = async () => {
@@ -49,6 +55,35 @@ export default function AuthLayoutComponent({children}) {
     }
 
   }, [router.events])
+
+
+  const { userData } = useUserData()
+  const { lessonPlanCount } = userData
+
+  const [ displaySignupModal, setDisplaySignupModal ] = useState(false)
+
+  // Listen for changes to lessonPlanCount
+  useEffect(() => {
+
+      // If the user is anonymous
+      if (isAnonymous) {
+
+          // If the user has exceeded their quota of anonymous lesson plans
+          if (lessonPlanCount >= 1) {
+
+              // Set displaySignUpModal state true
+              setDisplaySignupModal(true)
+          }
+      }
+
+      // If the user is no longer anonymous but flag to display modal is true
+      if (!isAnonymous && displaySignupModal) {
+
+          // Set displaySignUpModal state false
+          setDisplaySignupModal(false)
+      }
+
+  }, [lessonPlanCount, isAnonymous])
 
   return (
     <>
@@ -359,6 +394,20 @@ export default function AuthLayoutComponent({children}) {
           </div>
         </main>
       </div>
+
+      {/* Prompt to Sign Up for a Full Account */}
+      {
+          displaySignupModal ? (
+            <ModalWrapperComponent >
+              <SignupForm isAnonymousUser={true} />
+            </ModalWrapperComponent>
+          ) : null
+      }
+          
+          {/* TODO REMOVE */}
+          <div className='absolute bottom-10 bg-red-100 text-2xl' >
+            PLANS CREATED: {lessonPlanCount}
+          </div>
     </>
   )
 }

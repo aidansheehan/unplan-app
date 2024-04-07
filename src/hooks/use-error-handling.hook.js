@@ -22,10 +22,19 @@ const logoutErrorMessages = [
  */
 export const useErrorHandling = () => {
 
-    const { logout } = useAuth()
+    const { user, logout } = useAuth()
 
-    // Function to force a user to logout
+    // Function to force a user to logout or signup
     const forceLogout = async () => {
+
+        // Check if the uesr is anonymous
+        const isAnonymous = user?.isAnonymous || false
+
+        // Don't log the user out if they're anonymous
+        if (isAnonymous) {
+            toast('Please create an account to continue')
+            return
+        }
 
         // Log the user out
         await logout()

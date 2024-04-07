@@ -16,7 +16,8 @@ const createLessonPlan = functions.https.onRequest(async (req, res) => {
             authenticateRequestMiddleware(req, res, async () => {
                 rateLimitMiddleware('createLessonPlan', req, res, async () => {
 
-                    const { uid } = req // Extract user ID from request
+                    const { user }  = req   // Extract user object from request
+                    const { uid }   = user  // Extract user ID
             
                     //Extract inputs
                     const { topic, level, duration, objectives, ageGroup, isOneToOne, isOnline } = req.body;

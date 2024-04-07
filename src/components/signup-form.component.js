@@ -6,7 +6,7 @@ import { auth } from '../../firebaseConfig'
 import { AUTH_ERROR_MESSAGES } from '@/constants/auth-error-messages.constant'
 import { toast } from 'react-hot-toast'
 
-const SignupForm = () => {
+const SignupForm = ({ isAnonymousUser = false }) => {
     const { register, handleSubmit, formState: { errors } } = useForm()
 
     const onSubmit = async (data) => {
@@ -60,10 +60,10 @@ const SignupForm = () => {
 
         <div className="sm:mx-auto sm:w-full sm:max-w-[480px]">
         
-          <div className="bg-white px-6 py-6 md:py-12 sm:shadow sm:rounded-lg sm:px-12">
+          <div className={`bg-white px-6 py-6 md:py-12 ${isAnonymousUser ? '' : 'sm:shadow sm:rounded-lg'} sm:px-12`}>
 
             <h2 className="mb-6 text-center text-2xl font-bold leading-9 tracking-tight font-heading">
-                Let's Go!
+                { isAnonymousUser ? "Sign Up to Continue Using UNPLAN" : "Let's Go!"}
             </h2>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" >

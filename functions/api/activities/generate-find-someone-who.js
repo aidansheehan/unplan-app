@@ -20,7 +20,7 @@ const generateFindSomeoneWhoWorksheet = functions.https.onRequest(async (req, re
             authenticateRequestMiddleware(req, res, () => {
                 rateLimitMiddleware('findSbWho', req, res, async () => {
 
-                    const { uid } = req     // Extract user ID from request
+                    const { uid } = req.user     // Extract user ID from request
 
                     //Initialize OpenAI
                     const openai = new OpenAI()

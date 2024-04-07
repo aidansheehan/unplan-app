@@ -20,7 +20,7 @@ const generateReadingComprehensionWorksheet = functions.https.onRequest(async (r
             authenticateRequestMiddleware(req, res, () => {
                 rateLimitMiddleware('readingComp', req, res, async () => {
 
-                    const { uid } = req     // Extract user ID from request
+                    const { uid } = req.user     // Extract user ID from request
 
                     //Initialize OpenAI
                     const openai = new OpenAI()

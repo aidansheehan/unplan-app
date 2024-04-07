@@ -14,7 +14,7 @@ const getActivities = functions.https.onRequest((req, res) => {
         httpMethodRestrictorMiddleware(['GET'])(req, res, async () => {
             authenticateRequestMiddleware(req, res, async () => {
 
-                const { uid }   = req                           // Extract user ID from request
+                const { uid }   = req.user                           // Extract user ID from request
                 const limit     = parseInt(req.query.limit)     // Optionally get a limit from query parameters
 
                 try {

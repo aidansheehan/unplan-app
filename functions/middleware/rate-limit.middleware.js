@@ -10,6 +10,23 @@ const db = admin.firestore()
  */
 const rateLimitMiddleware = async (functionName, req, res, next) => {
 
+    const { uid, isAnonymous } = req.user // Destructure request
+
+    // If the user is anonymous
+    if (isAnonymous) {
+
+        const userRef = db.collection('Users').doc(uid) // Get user document ref
+        const userDoc = await userRef.get()             // Get user document
+
+        // If user document exists and lesson plan limit reached
+        if (userDoc.exists && userDoc.data().lessonPlanCount >= 1) {
+
+            // Return error
+            res.status(403).json({ error: 'Lesson plan limit reached. Please sign up to continue.' })
+            return
+        }
+    }
+
     //Get rate limit config
     const config = rateLimitConfig[functionName]
 
