@@ -22,6 +22,7 @@ const { getUserLessons }                        = require('./api/content-managem
 const { getContent }                            = require('./api/content-management/get-content')
 const { updateContent }                         = require('./api/content-management/update-content')
 const { getActivities }                         = require('./api/content-management/get-activities')
+const { trackSignUp }                           = require('./analytics/track-sign-up')
 
 /** Lesson Plan Functions */
 exports.createLessonPlan                      = createLessonPlan
@@ -39,3 +40,6 @@ exports.getUserLessons    = getUserLessons
 exports.getContent        = getContent
 exports.updateContent     = updateContent
 exports.getActivities     = getActivities
+
+/** Analytics Functions */
+exports.trackSignUp = trackSignUp
