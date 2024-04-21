@@ -23,21 +23,24 @@ export default function App({ Component, pageProps }) {
 
   useEffect(() => {
     
-    const script = document.createElement('script') // Create a new script element
+    /**
+     * Commented out to avoid recording staging sessions
+     */
+    // const script = document.createElement('script') // Create a new script element
 
-    // Set script content - self-invoking function to load external clarity script
-    script.textContent = `(function(c,l,a,r,i,t,y){
-      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/" + i;
-      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "lwjqraybnb");`
+    // // Set script content - self-invoking function to load external clarity script
+    // script.textContent = `(function(c,l,a,r,i,t,y){
+    //   c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    //   t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/" + i;
+    //   y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    // })(window, document, "clarity", "script", "lwjqraybnb");`
 
-    document.body.appendChild(script) // Append the script to document body
+    // document.body.appendChild(script) // Append the script to document body
 
-    // Remove script element from the body on unmount
-    return () => {
-      document.body.removeChild(script)
-    }
+    // // Remove script element from the body on unmount
+    // return () => {
+    //   document.body.removeChild(script)
+    // }
   }, [])
 
   return (
