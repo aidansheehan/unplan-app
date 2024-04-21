@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "unplan-10304",
+    "prod": "unplan-10304",
     "staging": "lesson-planner-3eff4"
   },
   "targets": {},
