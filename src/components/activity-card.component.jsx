@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ActivityCard = ({ id, activity, ageGroup, level, topic, textComplexityLevel }) => {
 
-    const href = `/activities/${id}`
+    const href = `/activity/${id}`
 
     const activityInfo = ACTIVITY_INFO[activity]
 
